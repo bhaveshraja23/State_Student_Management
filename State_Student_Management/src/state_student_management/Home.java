@@ -42,19 +42,19 @@ public class Home extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/state_student_management/image 4.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/image 4.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/state_student_management/image 1.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/image 1.png"))); // NOI18N
         jLabel2.setText("jLabel1");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/state_student_management/image 2.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/image 2.png"))); // NOI18N
         jLabel3.setText("jLabel1");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/state_student_management/image 3.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/image 3.png"))); // NOI18N
         jLabel4.setText("jLabel1");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/state_student_management/SSM (1).png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SSM (1).png"))); // NOI18N
         jLabel5.setText("jLabel5");
 
         jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N

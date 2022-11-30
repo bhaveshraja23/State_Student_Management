@@ -43,7 +43,7 @@ public class ProfessorDashboard extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/bhaveshraja/Downloads/SSM.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SSM.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
         btnLogout.setForeground(new java.awt.Color(138, 138, 138));
