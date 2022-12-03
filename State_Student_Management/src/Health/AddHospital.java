@@ -4,8 +4,6 @@
  */
 package Health;
 
-import Universities.*;
-
 /**
  *
  * @author bhaveshraja
