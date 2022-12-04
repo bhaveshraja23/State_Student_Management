@@ -4,10 +4,22 @@
  */
 package state_student_management.SystemAdmin;
 
+import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Employee.Employee;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Role.HealthAdminRole;
+import Business.Role.LibraryAdminRole;
+import Business.Role.PharmaAdminRole;
+import Business.Role.TransportAdminRole;
+import Business.Role.UniversityAdminRole;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,12 +33,25 @@ public class SysAdminDashboard extends javax.swing.JPanel {
     EcoSystem ecosystem;
     UserAccount userAccount;
     JPanel userProcessContainer;
-    
+    ArrayList<Network> networkList = new ArrayList<>();
+    DefaultTableModel dtm, dtmEnterprise, dtmEnterpriseAdmin;
+    int row, col;
+    private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
+
     public SysAdminDashboard(JPanel userProcessContainer, EcoSystem ecosystem, UserAccount userAccount) {
         initComponents();
-        this.userProcessContainer  = userProcessContainer;
+        this.userProcessContainer = userProcessContainer;
         this.ecosystem = ecosystem;
         this.userAccount = userAccount;
+        dtm = (DefaultTableModel) tblNetwork.getModel();
+        dtmEnterprise = (DefaultTableModel) tableEnterprise.getModel();
+        dtmEnterpriseAdmin = (DefaultTableModel) tblUniversityAdmin1.getModel();
+        populateNetworkTable();
+        populateEnterpriseTable();
+        displayEnterpriseTypeComboBox();
+        displayNetworkComboBox();
+        populateEnterpriseAdminTable();
+        displayNetworkEnterpriseComboBox();
     }
 
     /**
@@ -39,52 +64,46 @@ public class SysAdminDashboard extends javax.swing.JPanel {
     private void initComponents() {
 
         ProfessorDirectoryPane = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
+        btnAddNetwork = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblNetwork = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        txtNetwork = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblUniversityAdmin = new javax.swing.JTable();
-        btnAddUniversityAdmin = new javax.swing.JButton();
-        btnView = new javax.swing.JButton();
+        tableEnterprise = new javax.swing.JTable();
+        btnAddEnterprise = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        txtUniADminUsername = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        txtEnterpriseName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtUniAdminPassword = new javax.swing.JPasswordField();
         jLabel12 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblColleges = new javax.swing.JTable();
-        btnDelete1 = new javax.swing.JButton();
-        btnView1 = new javax.swing.JButton();
-        btnAddCollege = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblCourses = new javax.swing.JTable();
-        btnDelete2 = new javax.swing.JButton();
-        btnView2 = new javax.swing.JButton();
-        btnAddCourse = new javax.swing.JButton();
-        jPanel7 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        btnDelete3 = new javax.swing.JButton();
-        btnView3 = new javax.swing.JButton();
-        btnAddStudent = new javax.swing.JButton();
+        cbEnterpriseType = new javax.swing.JComboBox();
+        cbNetwork = new javax.swing.JComboBox();
+        jPanel4 = new javax.swing.JPanel();
+        btnAddEnterpriseAdmin = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tblUniversityStudents = new javax.swing.JTable();
-        jPanel6 = new javax.swing.JPanel();
+        tblUniversityAdmin1 = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        tblUniversities4 = new javax.swing.JTable();
-        btnDelete4 = new javax.swing.JButton();
-        btnView4 = new javax.swing.JButton();
-        btnAddProfessor = new javax.swing.JButton();
-        jPanel8 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        comboNetwork1 = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tblAdmissionApplications = new javax.swing.JTable();
-        btnReject = new javax.swing.JButton();
-        btnAccept = new javax.swing.JButton();
+        cbEnterprise = new javax.swing.JComboBox();
+        jLabel14 = new javax.swing.JLabel();
+        txtAdminName = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        btnDelete3 = new javax.swing.JButton();
+        txtAdminUsername = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        txtAdminPassword = new javax.swing.JPasswordField();
+        txtAdminContact = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -92,18 +111,99 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
 
         ProfessorDirectoryPane.setBackground(new java.awt.Color(255, 255, 255));
+        ProfessorDirectoryPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProfessorDirectoryPaneMouseClicked(evt);
+            }
+        });
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel6.setText("University Admin");
+        btnAddNetwork.setBackground(new java.awt.Color(201, 3, 3));
+        btnAddNetwork.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddNetwork.setText("Add Network");
+        btnAddNetwork.setBorder(null);
+        btnAddNetwork.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddNetworkActionPerformed(evt);
+            }
+        });
 
-        tblUniversityAdmin.setModel(new javax.swing.table.DefaultTableModel(
+        tblNetwork.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "username", "Password"
+                "Network Name"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblNetwork);
+
+        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel7.setText("Add Network");
+
+        jLabel18.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel18.setText("Networks");
+
+        jLabel20.setText("Network Name");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtNetwork)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel20)
+                    .addComponent(btnAddNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel18))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel20)
+                        .addGap(8, 8, 8)
+                        .addComponent(txtNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(226, Short.MAX_VALUE))
+        );
+
+        ProfessorDirectoryPane.addTab("Manage Network", jPanel5);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel6.setText("Add Enterprise");
+
+        tableEnterprise.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Enterprise Name", "Network", "Enterprise Type"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -114,20 +214,19 @@ public class SysAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblUniversityAdmin);
+        jScrollPane1.setViewportView(tableEnterprise);
+        if (tableEnterprise.getColumnModel().getColumnCount() > 0) {
+            tableEnterprise.getColumnModel().getColumn(1).setHeaderValue("Network");
+            tableEnterprise.getColumnModel().getColumn(2).setHeaderValue("Enterprise Type");
+        }
 
-        btnAddUniversityAdmin.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddUniversityAdmin.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddUniversityAdmin.setText("Add Admin");
-        btnAddUniversityAdmin.setBorder(null);
-
-        btnView.setBackground(new java.awt.Color(52, 51, 242));
-        btnView.setForeground(new java.awt.Color(255, 255, 255));
-        btnView.setText("View");
-        btnView.setBorder(null);
-        btnView.addActionListener(new java.awt.event.ActionListener() {
+        btnAddEnterprise.setBackground(new java.awt.Color(201, 3, 3));
+        btnAddEnterprise.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddEnterprise.setText("Add Enterprise");
+        btnAddEnterprise.setBorder(null);
+        btnAddEnterprise.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewActionPerformed(evt);
+                btnAddEnterpriseActionPerformed(evt);
             }
         });
 
@@ -135,13 +234,20 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Delete");
         btnDelete.setBorder(null);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Username");
-
-        jLabel3.setText("Password");
+        jLabel3.setText("Choose Network");
 
         jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel12.setText("University Admin");
+        jLabel12.setText("Enterprises");
+
+        jLabel5.setText("Choose Enterprise Type");
+
+        jLabel9.setText("Enterprise Name");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -149,68 +255,71 @@ public class SysAdminDashboard extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel2)
-                        .addComponent(txtUniADminUsername)
-                        .addComponent(jLabel3)
-                        .addComponent(txtUniAdminPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))
-                    .addComponent(jLabel6))
-                .addGap(161, 161, 161)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAddUniversityAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEnterpriseName, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel9)
+                    .addComponent(cbEnterpriseType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbNetwork, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAddEnterprise, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(67, 67, 67)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel12))
+                .addGap(17, 17, 17)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(btnAddUniversityAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(118, 118, 118)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtUniADminUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)
-                        .addGap(3, 3, 3)
-                        .addComponent(txtUniAdminPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbEnterpriseType, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9)
+                        .addGap(8, 8, 8)
+                        .addComponent(txtEnterpriseName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddEnterprise, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
-        ProfessorDirectoryPane.addTab("University Admin", jPanel3);
+        ProfessorDirectoryPane.addTab("Manage Enterprise", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel7.setText("College Directory");
+        btnAddEnterpriseAdmin.setBackground(new java.awt.Color(201, 3, 3));
+        btnAddEnterpriseAdmin.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddEnterpriseAdmin.setText("Add Admin");
+        btnAddEnterpriseAdmin.setBorder(null);
+        btnAddEnterpriseAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddEnterpriseAdminActionPerformed(evt);
+            }
+        });
 
-        tblColleges.setModel(new javax.swing.table.DefaultTableModel(
+        tblUniversityAdmin1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "Name", "Official Email", "Official Telephone", "University"
+                "Network", "Enterprise", "Admin Name", "Username", "Password"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -221,377 +330,118 @@ public class SysAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tblColleges);
+        jScrollPane4.setViewportView(tblUniversityAdmin1);
+        if (tblUniversityAdmin1.getColumnModel().getColumnCount() > 0) {
+            tblUniversityAdmin1.getColumnModel().getColumn(1).setHeaderValue("Network");
+            tblUniversityAdmin1.getColumnModel().getColumn(2).setHeaderValue("Enterprise Type");
+        }
 
-        btnDelete1.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete1.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete1.setText("Delete");
-        btnDelete1.setBorder(null);
+        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel10.setText("Add Enterprise Admin");
 
-        btnView1.setBackground(new java.awt.Color(52, 51, 242));
-        btnView1.setForeground(new java.awt.Color(255, 255, 255));
-        btnView1.setText("View");
-        btnView1.setBorder(null);
-        btnView1.addActionListener(new java.awt.event.ActionListener() {
+        jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel13.setText("Admins");
+
+        comboNetwork1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView1ActionPerformed(evt);
+                comboNetwork1ActionPerformed(evt);
             }
         });
 
-        btnAddCollege.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddCollege.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddCollege.setText("Add College");
-        btnAddCollege.setBorder(null);
+        jLabel11.setText("Choose Network");
+
+        jLabel14.setText("Admin Name");
+
+        jLabel15.setText("Choose Enterprise");
+
+        btnDelete3.setBackground(new java.awt.Color(245, 1, 1));
+        btnDelete3.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete3.setText("Delete");
+        btnDelete3.setBorder(null);
+        btnDelete3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelete3ActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setText("Username");
+
+        jLabel17.setText("Password");
+
+        jLabel19.setText("Contact");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddCollege, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtAdminName)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel14)
+                    .addComponent(cbEnterprise, 0, 291, Short.MAX_VALUE)
+                    .addComponent(comboNetwork1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtAdminUsername)
+                    .addComponent(jLabel16)
+                    .addComponent(btnAddEnterpriseAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel17)
+                    .addComponent(txtAdminPassword)
+                    .addComponent(jLabel19)
+                    .addComponent(txtAdminContact))
+                .addGap(67, 67, 67)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(48, 48, 48)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(btnAddCollege, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("College Admin", jPanel4);
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel8.setText("Courses");
-
-        tblCourses.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Name", "Credit Hours", "Professor", "University", "College", "Price", "Seats"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(tblCourses);
-
-        btnDelete2.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete2.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete2.setText("Delete");
-        btnDelete2.setBorder(null);
-
-        btnView2.setBackground(new java.awt.Color(52, 51, 242));
-        btnView2.setForeground(new java.awt.Color(255, 255, 255));
-        btnView2.setText("View");
-        btnView2.setBorder(null);
-        btnView2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView2ActionPerformed(evt);
-            }
-        });
-
-        btnAddCourse.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddCourse.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddCourse.setText("Add Course");
-        btnAddCourse.setBorder(null);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addComponent(jLabel8)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("Courses", jPanel5);
-
-        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel9.setText("Students");
-
-        btnDelete3.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete3.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete3.setText("Delete");
-        btnDelete3.setBorder(null);
-
-        btnView3.setBackground(new java.awt.Color(52, 51, 242));
-        btnView3.setForeground(new java.awt.Color(255, 255, 255));
-        btnView3.setText("View");
-        btnView3.setBorder(null);
-        btnView3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView3ActionPerformed(evt);
-            }
-        });
-
-        btnAddStudent.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddStudent.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddStudent.setText("Add Student");
-        btnAddStudent.setBorder(null);
-
-        tblUniversityStudents.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Name", "Email", "Gender", "Age", "Address", "University", "College"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane4.setViewportView(tblUniversityStudents);
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(657, 657, 657)
-                        .addComponent(btnView3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAddStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel7Layout.createSequentialGroup()
-                    .addGap(39, 39, 39)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(51, Short.MAX_VALUE)))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(btnAddStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(387, 387, 387)
-                .addComponent(btnDelete3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
-            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel7Layout.createSequentialGroup()
-                    .addGap(79, 79, 79)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(87, Short.MAX_VALUE)))
-        );
-
-        ProfessorDirectoryPane.addTab("Students", jPanel7);
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel10.setText("Professors");
-
-        tblUniversities4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Name", "Email", "Mobile", "Specialization", "Salary"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane5.setViewportView(tblUniversities4);
-
-        btnDelete4.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete4.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete4.setText("Delete");
-        btnDelete4.setBorder(null);
-
-        btnView4.setBackground(new java.awt.Color(52, 51, 242));
-        btnView4.setForeground(new java.awt.Color(255, 255, 255));
-        btnView4.setText("View");
-        btnView4.setBorder(null);
-        btnView4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView4ActionPerformed(evt);
-            }
-        });
-
-        btnAddProfessor.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddProfessor.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddProfessor.setText("Add Professor");
-        btnAddProfessor.setBorder(null);
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel10)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(btnAddProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("Professors", jPanel6);
-
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel11.setText("Admission Applications");
-
-        tblAdmissionApplications.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Name", "Email", "Gender", "Age", "GRE", "IELTS", "Address", "University", "College"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane6.setViewportView(tblAdmissionApplications);
-
-        btnReject.setBackground(new java.awt.Color(255, 51, 51));
-        btnReject.setForeground(new java.awt.Color(255, 255, 255));
-        btnReject.setText("Reject");
-        btnReject.setBorder(null);
-        btnReject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRejectActionPerformed(evt);
-            }
-        });
-
-        btnAccept.setBackground(new java.awt.Color(0, 153, 0));
-        btnAccept.setForeground(new java.awt.Color(255, 255, 255));
-        btnAccept.setText("Accept");
-        btnAccept.setBorder(null);
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
+                    .addComponent(jLabel13))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollPane4)
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboNetwork1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbEnterprise, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel14)
+                        .addGap(8, 8, 8)
+                        .addComponent(txtAdminName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(jLabel19)
+                        .addGap(8, 8, 8)
+                        .addComponent(txtAdminContact, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
+                        .addComponent(jLabel16)
+                        .addGap(8, 8, 8)
+                        .addComponent(txtAdminUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel17)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtAdminPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddEnterpriseAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(90, 90, 90))
         );
 
-        ProfessorDirectoryPane.addTab("Admissions Applications", jPanel8);
+        ProfessorDirectoryPane.addTab("Manage Enterprise Admins", jPanel4);
 
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
@@ -628,13 +478,12 @@ public class SysAdminDashboard extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -655,92 +504,314 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewActionPerformed
-
-    private void btnView1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnView1ActionPerformed
-
-    private void btnView2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnView2ActionPerformed
-
-    private void btnView3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnView3ActionPerformed
-
-    private void btnView4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnView4ActionPerformed
-
-    private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRejectActionPerformed
-
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
         btnLogout.setEnabled(false);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         userProcessContainer.remove(this);
-        layout.next(userProcessContainer);       
-        //dB4OUtil.storeSystem(system);
+        layout.next(userProcessContainer);
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnAddNetworkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNetworkActionPerformed
+        // TODO add your handling code here:
+        String name = txtNetwork.getText().trim();
+        if (!name.isEmpty()) {
+            if (ecosystem.isUnique(name)) {
+                Network network = ecosystem.createAndAddNetwork();
+                network.setName(name);
+                JOptionPane.showMessageDialog(null, "Network Successfully Created");
+                txtNetwork.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Network Already Exits");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Enter city name");
+        }
+
+        populateNetworkTable();
+        displayNetworkComboBox();
+        displayNetworkEnterpriseComboBox();
+        displayEnterpriseTypeComboBox();
+        txtNetwork.setText("");
+    }//GEN-LAST:event_btnAddNetworkActionPerformed
+
+    private void btnAddEnterpriseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEnterpriseActionPerformed
+        // TODO add your handling code here:'
+        Network network = (Network) cbNetwork.getSelectedItem();
+
+        String EntType = cbEnterpriseType.getSelectedItem().toString();
+
+        if (network == null || EntType == null) {
+            JOptionPane.showMessageDialog(null, "Invalid Input!");
+            return;
+        }
+        if (txtEnterpriseName.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid Enterprise Name");
+            return;
+        }
+
+        String name = txtEnterpriseName.getText().trim();
+
+        ArrayList<String> enterpriseNameList = new ArrayList<>();
+
+        for (Enterprise e : network.getEnterpriseDirectory().getEnterpriseList()) {
+            enterpriseNameList.add(e.getName());
+
+        }
+        if (enterpriseNameList.contains(name)) {
+            JOptionPane.showMessageDialog(null, "Enterprise already exists with the same name");
+            return;
+
+        }
+        Enterprise enterprise = network.getEnterpriseDirectory().createAndAddEnterprise(name, EntType);
+
+        populateEnterpriseTable();
+        txtEnterpriseName.setText("");
+        cbEnterpriseType.setSelectedIndex(0);
+        cbNetwork.setSelectedIndex(0);
+    }//GEN-LAST:event_btnAddEnterpriseActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int row = tableEnterprise.getSelectedRow();
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a enterprise!!", "Select enterprise", 2);
+            return;
+        }
+
+        String enterpriseName = tableEnterprise.getValueAt(row, 2).toString();
+        String selectedEnterpriseType = tableEnterprise.getValueAt(row, 1).toString();
+        String NetworkName = tableEnterprise.getValueAt(row, 0).toString();
+
+        for (Network network : ecosystem.getNetworkList()) {
+
+            if (!network.getName().equalsIgnoreCase(NetworkName)) {
+                continue;
+            }
+
+            Enterprise deleteEnterprise = null;
+            for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+                String enterpriseType = enterprise.getEnterpriseType().toString();
+
+                if (enterpriseType.equals(selectedEnterpriseType) && enterpriseName.equalsIgnoreCase(enterprise.getName())) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(this, "Delete this data", "Delete", dialogButton);
+                    if (dialogResult == 0) {
+                        deleteEnterprise = enterprise;
+                        break;
+
+                    }
+                }
+            }
+
+            if (deleteEnterprise != null) {
+                network.getEnterpriseDirectory().getEnterpriseList().remove(deleteEnterprise);
+                JOptionPane.showMessageDialog(this, "Enterprise deleted successfully", "User deleted", 1);
+                populateEnterpriseTable();
+                return;
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnAddEnterpriseAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEnterpriseAdminActionPerformed
+        // TODO add your handling code here:
+        String networkName = cbNetwork.getSelectedItem().toString();
+        String enterpriseType = cbEnterprise.getSelectedItem().toString();
+        String adminName = txtAdminName.getText();
+        String contact = txtAdminContact.getText();
+        String userName = txtAdminUsername.getText().trim();
+        String password = txtAdminPassword.getText();
+
+        if (networkName.isEmpty() || enterpriseType.isEmpty() || adminName.isEmpty() || userName.isEmpty()
+                || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One or More fields are empty..!", "Empty Fields", 2);
+            return;
+        }
+
+        Network network = (Network) cbNetwork.getSelectedItem();
+
+        Enterprise enterprise = (Enterprise) cbEnterprise.getSelectedItem();
+
+        ArrayList<String> uName = new ArrayList<String>();
+        for (UserAccount u : enterprise.getUserAccountDirectory().getUserAccountList()) {
+            if (!uName.contains(userName)) {
+                uName.add(u.getUsername());
+            } else {
+                JOptionPane.showMessageDialog(this, "Provided Username already exists. Please try with other Username", "User Exists", 1);
+            }
+
+        }
+        if (uName.contains(userName)) {
+            JOptionPane.showMessageDialog(this, "Provided Username already exists. Please try with other Username", "User Exists", 1);
+            return;
+        }
+//        if (!ecosystem.checkIfUsernameIsUnique(txtUserName.getText())) {
+//            JOptionPane.showMessageDialog(null, "User Already Exists");
+//            return;
+//        }
+        Employee employee = enterprise.getEmployeeDirectory().createEmployee(adminName);
+
+        String typ = enterprise.getEnterpriseType().toString();
+        System.out.println(typ);
+        //System.out.println(network.getName() + " "+ enterprise.getName());
+        if ("university".equals(typ.toLowerCase())) {
+            UserAccount account = enterprise.getUserAccountDirectory().createEmployeeAccount(userName, password, contact, employee, new UniversityAdminRole());
+        } else if ("transport".equals(typ.toLowerCase())) {
+            UserAccount account = enterprise.getUserAccountDirectory().createEmployeeAccount(userName, password, contact, employee, new TransportAdminRole());
+        } else if ("library".equals(typ.toLowerCase())) {
+            UserAccount account = enterprise.getUserAccountDirectory().createEmployeeAccount(userName, password, contact, employee, new LibraryAdminRole());
+        } else if ("health".equals(typ.toLowerCase())) {
+            UserAccount account = enterprise.getUserAccountDirectory().createEmployeeAccount(userName, password, contact, employee, new HealthAdminRole());
+        }
+        populateEnterpriseAdminTable();
+        txtAdminName.setText("");
+        txtAdminUsername.setText("");
+        txtAdminPassword.setText("");
+        txtAdminContact.setText("");
+    }//GEN-LAST:event_btnAddEnterpriseAdminActionPerformed
+
+    private void comboNetwork1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboNetwork1ActionPerformed
+        // TODO add your handling code here:
+        Network network = (Network) comboNetwork1.getSelectedItem();
+        if (network != null)
+            displayEnterpriseComboBox(network);
+    }//GEN-LAST:event_comboNetwork1ActionPerformed
+
+    private void ProfessorDirectoryPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProfessorDirectoryPaneMouseClicked
+        // TODO add your handling code here:
+        populateEnterpriseTable();
+    }//GEN-LAST:event_ProfessorDirectoryPaneMouseClicked
+
+    private void btnDelete3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete3ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnDelete3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
-    private javax.swing.JButton btnAccept;
-    private javax.swing.JButton btnAddCollege;
-    private javax.swing.JButton btnAddCourse;
-    private javax.swing.JButton btnAddProfessor;
-    private javax.swing.JButton btnAddStudent;
-    private javax.swing.JButton btnAddUniversityAdmin;
+    private javax.swing.JButton btnAddEnterprise;
+    private javax.swing.JButton btnAddEnterpriseAdmin;
+    private javax.swing.JButton btnAddNetwork;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnDelete1;
-    private javax.swing.JButton btnDelete2;
     private javax.swing.JButton btnDelete3;
-    private javax.swing.JButton btnDelete4;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnReject;
-    private javax.swing.JButton btnView;
-    private javax.swing.JButton btnView1;
-    private javax.swing.JButton btnView2;
-    private javax.swing.JButton btnView3;
-    private javax.swing.JButton btnView4;
+    private javax.swing.JComboBox cbEnterprise;
+    private javax.swing.JComboBox cbEnterpriseType;
+    private javax.swing.JComboBox cbNetwork;
+    private javax.swing.JComboBox comboNetwork1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTable tblAdmissionApplications;
-    private javax.swing.JTable tblColleges;
-    private javax.swing.JTable tblCourses;
-    private javax.swing.JTable tblUniversities4;
-    private javax.swing.JTable tblUniversityAdmin;
-    private javax.swing.JTable tblUniversityStudents;
+    private javax.swing.JTable tableEnterprise;
+    private javax.swing.JTable tblNetwork;
+    private javax.swing.JTable tblUniversityAdmin1;
+    private javax.swing.JTextField txtAdminContact;
+    private javax.swing.JTextField txtAdminName;
+    private javax.swing.JPasswordField txtAdminPassword;
+    private javax.swing.JTextField txtAdminUsername;
+    private javax.swing.JTextField txtEnterpriseName;
+    private javax.swing.JTextField txtNetwork;
     private javax.swing.JTextField txtRole;
-    private javax.swing.JTextField txtUniADminUsername;
-    private javax.swing.JPasswordField txtUniAdminPassword;
     // End of variables declaration//GEN-END:variables
+
+    public void populateNetworkTable() {
+        dtm.setRowCount(0);
+        for (Network network : ecosystem.getNetworkList()) {
+            Object obj[] = {network.getName()};
+            dtm.addRow(obj);
+        }
+    }
+
+    private void populateEnterpriseTable() {
+
+        dtmEnterprise.setRowCount(0);
+        System.out.println(ecosystem.getNetworkList().size());
+        for (Network network : ecosystem.getNetworkList()) {
+            for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+
+                Object obj[] = {network.getName(), enterprise.getEnterpriseType().getValue(), enterprise.getName()};
+                dtmEnterprise.addRow(obj);
+            }
+        }
+    }
+
+    private void displayEnterpriseTypeComboBox() {
+
+        cbNetwork.removeAllItems();
+        cbEnterpriseType.removeAllItems();
+
+        for (Network network : ecosystem.getNetworkList()) {
+            cbNetwork.addItem(network);
+        }
+
+        for (Enterprise.EnterpriseType type : Enterprise.EnterpriseType.values()) {
+            cbEnterpriseType.addItem(type);
+        }
+
+    }
+
+    private void displayNetworkComboBox() {
+        cbNetwork.removeAllItems();
+        System.out.println(ecosystem.getNetworkList());
+        for (Network network : ecosystem.getNetworkList()) {
+            cbNetwork.addItem(network);
+        }
+    }
+
+    private void displayNetworkEnterpriseComboBox() {
+        comboNetwork1.removeAllItems();
+        System.out.println(ecosystem.getNetworkList());
+        for (Network network : ecosystem.getNetworkList()) {
+            comboNetwork1.addItem(network);
+        }
+    }
+
+    private void displayEnterpriseComboBox(Network network) {
+        cbEnterprise.removeAllItems();
+        for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+            cbEnterprise.addItem(enterprise);
+        }
+    }
+
+    private void populateEnterpriseAdminTable() {
+
+        dtmEnterpriseAdmin.setRowCount(0);
+        for (Network network : ecosystem.getNetworkList()) {
+            for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+                System.out.println("hi");
+                System.out.println(enterprise.getUserAccountDirectory().getUserAccountList().size());
+                for (UserAccount userAccount : enterprise.getUserAccountDirectory().getUserAccountList()) {
+
+                    userAccount.getEmployee().getName();
+                    Object obj[] = {network.getName(), enterprise.getEnterpriseType().getValue(), userAccount.getEmployee().getName(), userAccount.getUsername(), userAccount.getPassword()};
+                    dtmEnterpriseAdmin.addRow(obj);
+                }
+            }
+        }
+    }
 }

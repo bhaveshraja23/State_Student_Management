@@ -33,14 +33,15 @@ public class LogIn extends javax.swing.JPanel {
     private EcoSystem system;
     private Student student;
     private JPanel userProcessContainer;
+    private Network network;
     private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
     
-    public LogIn(JPanel userProcessContainer, EcoSystem system) {
+    public LogIn(JPanel userProcessContainer, EcoSystem system, Network network) {
         initComponents();
-        //system = dB4OUtil.retrieveSystem();
+        system = dB4OUtil.retrieveSystem();
         this.system = system;
         this.userProcessContainer = userProcessContainer;
-        this.setSize(1680, 1050);
+        this.network = network;
         displayTime(); 
         //this.setUndecorated(true);
         this.setVisible(true);
@@ -64,6 +65,8 @@ public class LogIn extends javax.swing.JPanel {
         btnLogIn = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
         jLabel6.setText("Log In");

@@ -8,8 +8,8 @@ import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import University.CollegeAdminDashboard;
-import University.StudentDashboard;
+import state_student_management.University.CollegeAdminDashboard;
+import state_student_management.University.StudentDashboard;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 

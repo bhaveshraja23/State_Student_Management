@@ -20,10 +20,10 @@ public class Network {
     private EnterpriseDirectory enterpriseDirectory;
 
     public Network() {
-        this.name = name;
-        this.userAccountDirectory = userAccountDirectory;
-        this.studentDirectory = studentDirectory;
-        this.enterpriseDirectory = enterpriseDirectory;
+
+        this.userAccountDirectory = new UserAccountDirectory();
+        this.studentDirectory = new StudentDirectory();
+        this.enterpriseDirectory = new EnterpriseDirectory();
     }
 
     public String getName() {

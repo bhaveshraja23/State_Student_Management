@@ -29,17 +29,17 @@ public class EnterpriseDirectory {
 
 
     //Create enterprise
-    public Enterprise createAndAddEnterprise(String name, Enterprise.EnterpriseType type) {
+    public Enterprise createAndAddEnterprise(String name, String type) {
         Enterprise enterprise = null;
 
 
-        if (type == Enterprise.EnterpriseType.University) {
+        if (type == Enterprise.EnterpriseType.University.toString()) {
             enterprise = new UniversityEnterprise(name);
-        } else if (type == Enterprise.EnterpriseType.Health) {
+        } else if (type == Enterprise.EnterpriseType.Health.toString()) {
             enterprise = new HealthEnterprise(name);
-        } else if (type == Enterprise.EnterpriseType.Library) {
+        } else if (type == Enterprise.EnterpriseType.Library.toString()) {
             enterprise = new LibraryEnterprise(name);
-        } else if (type == Enterprise.EnterpriseType.Transport) {
+        } else if (type == Enterprise.EnterpriseType.Transport.toString()) {
             enterprise = new TransportEnterprise(name);
         }
 
