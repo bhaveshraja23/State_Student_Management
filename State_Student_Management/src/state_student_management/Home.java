@@ -24,11 +24,12 @@ public class Home extends javax.swing.JFrame {
      */
     EcoSystem system;
     Network network;
-    private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
+    private DB4OUtil dB4OUtil;
     
     public Home() {
         initComponents();
-        system = dB4OUtil.retrieveSystem();
+        dB4OUtil = DB4OUtil.getInstance();
+        this.system = dB4OUtil.retrieveSystem();
         this.network=network;
         this.setContentPane(userProcessContainer);
         this.setVisible(true);
@@ -189,7 +190,7 @@ public class Home extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        LogIn panel = new LogIn(userProcessContainer, system, network);
+        LogIn panel = new LogIn(userProcessContainer, this.system, network);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         userProcessContainer.add("LoginJPanel", panel);
         layout.next(userProcessContainer);

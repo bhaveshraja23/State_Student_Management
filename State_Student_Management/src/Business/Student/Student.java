@@ -20,7 +20,7 @@ public class Student {
     private int age;
     private String mobile;
     private String gender;
-    private ImageIcon document;
+//    private ImageIcon document;
     private String GRE;
     private String IELTS;
 
@@ -93,13 +93,13 @@ public class Student {
         this.gender = gender;
     }
 
-    public ImageIcon getDocument() {
-        return document;
-    }
-
-    public void setDocument(ImageIcon document) {
-        this.document = document;
-    }
+//    public ImageIcon getDocument() {
+//        return document;
+//    }
+//
+//    public void setDocument(ImageIcon document) {
+//        this.document = document;
+//    }
 
     public String getGRE() {
         return GRE;

@@ -36,7 +36,7 @@ public class SysAdminDashboard extends javax.swing.JPanel {
     ArrayList<Network> networkList = new ArrayList<>();
     DefaultTableModel dtm, dtmEnterprise, dtmEnterpriseAdmin;
     int row, col;
-    private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
+    private DB4OUtil dB4OUtil; 
 
     public SysAdminDashboard(JPanel userProcessContainer, EcoSystem ecosystem, UserAccount userAccount) {
         initComponents();
@@ -46,6 +46,7 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         dtm = (DefaultTableModel) tblNetwork.getModel();
         dtmEnterprise = (DefaultTableModel) tableEnterprise.getModel();
         dtmEnterpriseAdmin = (DefaultTableModel) tblUniversityAdmin1.getModel();
+        dB4OUtil = DB4OUtil.getInstance();
         populateNetworkTable();
         populateEnterpriseTable();
         displayEnterpriseTypeComboBox();
@@ -478,12 +479,13 @@ public class SysAdminDashboard extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -506,7 +508,6 @@ public class SysAdminDashboard extends javax.swing.JPanel {
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
-        btnLogout.setEnabled(false);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         userProcessContainer.remove(this);
         layout.next(userProcessContainer);
@@ -534,6 +535,7 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         displayNetworkEnterpriseComboBox();
         displayEnterpriseTypeComboBox();
         txtNetwork.setText("");
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnAddNetworkActionPerformed
 
     private void btnAddEnterpriseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEnterpriseActionPerformed
@@ -570,6 +572,7 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         txtEnterpriseName.setText("");
         cbEnterpriseType.setSelectedIndex(0);
         cbNetwork.setSelectedIndex(0);
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnAddEnterpriseActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -613,6 +616,7 @@ public class SysAdminDashboard extends javax.swing.JPanel {
                 return;
             }
         }
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnAddEnterpriseAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEnterpriseAdminActionPerformed
@@ -670,6 +674,7 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         txtAdminUsername.setText("");
         txtAdminPassword.setText("");
         txtAdminContact.setText("");
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnAddEnterpriseAdminActionPerformed
 
     private void comboNetwork1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboNetwork1ActionPerformed

@@ -13,8 +13,8 @@ import Business.Organization.OrganizationDirectory;
  */
 public abstract class Enterprise extends Organization{
     
-    private EnterpriseType enterpriseType;
-     private OrganizationDirectory organizationDirectory;
+    public EnterpriseType enterpriseType;
+     public OrganizationDirectory organizationDirectory;
 
      public enum EnterpriseType {
          University("University"),
