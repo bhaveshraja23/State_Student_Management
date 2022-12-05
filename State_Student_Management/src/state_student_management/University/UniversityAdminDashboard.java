@@ -4,6 +4,15 @@
  */
 package state_student_management.University;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import java.awt.CardLayout;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bhaveshraja
@@ -13,8 +22,26 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
     /**
      * Creates new form UniversityAdminDashboard
      */
-    public UniversityAdminDashboard() {
+    EcoSystem ecosystem;
+    University university;
+    UserAccount userAccount;
+    JPanel userProcessContainer;
+    ArrayList<University> universityList = new ArrayList<>();
+    DefaultTableModel un,cl,crse;
+    int row, col;
+    private DB4OUtil dB4OUtil; 
+    
+    public UniversityAdminDashboard(JPanel userProcessContainer, EcoSystem ecosystem) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+        this.university = university;
+        un = (DefaultTableModel) tblUniversities.getModel();
+        cl = (DefaultTableModel) tblColleges.getModel();
+        crse = (DefaultTableModel) tblCourses.getModel();
+        dB4OUtil = DB4OUtil.getInstance();
+        //populateUniversityTable();
     }
 
     /**
@@ -37,15 +64,35 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUniversities = new javax.swing.JTable();
         btnAddUniversity = new javax.swing.JButton();
-        btnView = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
+        btnViewUniversity = new javax.swing.JButton();
+        btnDeleteUniversity = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        txtOfficialEmail1 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtaddress = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        txtUniversityName1 = new javax.swing.JTextField();
+        txtEstablishedIn = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        txtOfficialTelephone1 = new javax.swing.JTextField();
+        btnUpdateUniversity = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblColleges = new javax.swing.JTable();
-        btnDelete1 = new javax.swing.JButton();
-        btnView1 = new javax.swing.JButton();
+        btnDeleteClg = new javax.swing.JButton();
+        btnUpdateClg = new javax.swing.JButton();
         btnAddCollege = new javax.swing.JButton();
+        txtOfficialTelephone = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtOfficialEmail = new javax.swing.JTextField();
+        jComboUniversities = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        txtUniversityName = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        btnViewClg = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -53,6 +100,20 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         btnDelete2 = new javax.swing.JButton();
         btnView2 = new javax.swing.JButton();
         btnAddCourse = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        txtOfficialTelephone2 = new javax.swing.JTextField();
+        txtOfficialTelephone3 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        txtUniversityName2 = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        jComboUniversities2 = new javax.swing.JComboBox<>();
+        txtOfficialEmail2 = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jComboUniversities1 = new javax.swing.JComboBox<>();
+        jComboUniversities3 = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         btnDelete3 = new javax.swing.JButton();
@@ -67,6 +128,22 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         btnDelete4 = new javax.swing.JButton();
         btnView4 = new javax.swing.JButton();
         btnAddProfessor = new javax.swing.JButton();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jComboUniversities4 = new javax.swing.JComboBox<>();
+        txtProfessorName = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        txtProfessorEmail = new javax.swing.JTextField();
+        jComboColleges = new javax.swing.JComboBox<>();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        txtOfficialTelephone4 = new javax.swing.JTextField();
+        txtSalary = new javax.swing.JTextField();
+        jComboCourses = new javax.swing.JComboBox<>();
         jPanel8 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -81,6 +158,11 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
 
         btnLogout.setForeground(new java.awt.Color(138, 138, 138));
         btnLogout.setText("Log Out");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Role");
@@ -137,59 +219,161 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblUniversities.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUniversitiesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblUniversities);
 
         btnAddUniversity.setBackground(new java.awt.Color(201, 3, 3));
         btnAddUniversity.setForeground(new java.awt.Color(255, 255, 255));
         btnAddUniversity.setText("Add University");
         btnAddUniversity.setBorder(null);
-
-        btnView.setBackground(new java.awt.Color(52, 51, 242));
-        btnView.setForeground(new java.awt.Color(255, 255, 255));
-        btnView.setText("View");
-        btnView.setBorder(null);
-        btnView.addActionListener(new java.awt.event.ActionListener() {
+        btnAddUniversity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewActionPerformed(evt);
+                btnAddUniversityActionPerformed(evt);
             }
         });
 
-        btnDelete.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete.setText("Delete");
-        btnDelete.setBorder(null);
+        btnViewUniversity.setBackground(new java.awt.Color(52, 51, 242));
+        btnViewUniversity.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewUniversity.setText("View");
+        btnViewUniversity.setBorder(null);
+        btnViewUniversity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewUniversityActionPerformed(evt);
+            }
+        });
+
+        btnDeleteUniversity.setBackground(new java.awt.Color(245, 1, 1));
+        btnDeleteUniversity.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteUniversity.setText("Delete");
+        btnDeleteUniversity.setBorder(null);
+        btnDeleteUniversity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteUniversityActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Address");
+
+        jLabel3.setText("Official Email");
+
+        jLabel13.setText("Established in");
+
+        jLabel16.setText("Name");
+
+        jLabel17.setText("Official Telephone");
+
+        txtOfficialTelephone1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOfficialTelephone1ActionPerformed(evt);
+            }
+        });
+
+        btnUpdateUniversity.setBackground(new java.awt.Color(52, 51, 242));
+        btnUpdateUniversity.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateUniversity.setText("Update");
+        btnUpdateUniversity.setBorder(null);
+        btnUpdateUniversity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateUniversityActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtaddress)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtUniversityName1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                                    .addComponent(txtOfficialTelephone1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(0, 178, Short.MAX_VALUE)))
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtOfficialEmail1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                                    .addComponent(txtEstablishedIn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(0, 194, Short.MAX_VALUE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addContainerGap(248, Short.MAX_VALUE)
+                        .addComponent(btnAddUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(224, 224, 224)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnViewUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnUpdateUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(btnDeleteUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(btnAddUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel6))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnDeleteUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(47, 47, 47)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtOfficialEmail1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEstablishedIn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUniversityName1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtOfficialTelephone1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtaddress, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnViewUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpdateUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(284, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Universities", jPanel3);
@@ -218,20 +402,30 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblColleges.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCollegesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblColleges);
 
-        btnDelete1.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete1.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete1.setText("Delete");
-        btnDelete1.setBorder(null);
-
-        btnView1.setBackground(new java.awt.Color(52, 51, 242));
-        btnView1.setForeground(new java.awt.Color(255, 255, 255));
-        btnView1.setText("View");
-        btnView1.setBorder(null);
-        btnView1.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteClg.setBackground(new java.awt.Color(245, 1, 1));
+        btnDeleteClg.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteClg.setText("Delete");
+        btnDeleteClg.setBorder(null);
+        btnDeleteClg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView1ActionPerformed(evt);
+                btnDeleteClgActionPerformed(evt);
+            }
+        });
+
+        btnUpdateClg.setBackground(new java.awt.Color(52, 51, 242));
+        btnUpdateClg.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateClg.setText("Update");
+        btnUpdateClg.setBorder(null);
+        btnUpdateClg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateClgActionPerformed(evt);
             }
         });
 
@@ -239,38 +433,113 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         btnAddCollege.setForeground(new java.awt.Color(255, 255, 255));
         btnAddCollege.setText("Add College");
         btnAddCollege.setBorder(null);
+        btnAddCollege.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCollegeActionPerformed(evt);
+            }
+        });
+
+        txtOfficialTelephone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOfficialTelephoneActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Official Email");
+
+        jLabel14.setText("University");
+
+        jLabel5.setText("Name");
+
+        jLabel15.setText("Official Telephone");
+
+        btnViewClg.setBackground(new java.awt.Color(52, 51, 242));
+        btnViewClg.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewClg.setText("View");
+        btnViewClg.setBorder(null);
+        btnViewClg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewClgActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddCollege, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(50, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnViewClg, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnUpdateClg, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnDeleteClg, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel15)
+                                    .addComponent(txtUniversityName, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                                    .addComponent(txtOfficialTelephone))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(36, 36, 36)
+                                        .addComponent(jLabel2))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jComboUniversities, 0, 253, Short.MAX_VALUE)
+                                            .addComponent(jLabel14)
+                                            .addComponent(txtOfficialEmail)))))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(126, 126, 126)
+                                .addComponent(btnAddCollege, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(btnAddCollege, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel7)
+                        .addGap(84, 84, 84)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtUniversityName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtOfficialEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(34, 34, 34)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jLabel14)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(97, 97, 97)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtOfficialTelephone, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                            .addComponent(jComboUniversities))
+                        .addGap(74, 74, 74)
+                        .addComponent(btnAddCollege, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDeleteClg, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpdateClg, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnViewClg, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Colleges", jPanel4);
@@ -318,23 +587,70 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         btnAddCourse.setText("Add Course");
         btnAddCourse.setBorder(null);
 
+        jLabel18.setText("College");
+
+        txtOfficialTelephone2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOfficialTelephone2ActionPerformed(evt);
+            }
+        });
+
+        txtOfficialTelephone3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOfficialTelephone3ActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setText("Professor");
+
+        jLabel20.setText("Price");
+
+        jLabel21.setText("Seats");
+
+        jLabel22.setText("Name");
+
+        jLabel23.setText("University");
+
+        jLabel24.setText("Credit Hours");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addComponent(jLabel8)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(661, 661, 661)
+                                .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jComboUniversities1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtOfficialTelephone3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtOfficialTelephone2)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUniversityName2, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addComponent(jComboUniversities2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboUniversities3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtOfficialEmail2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel21))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,10 +661,41 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                     .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUniversityName2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel24))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtOfficialEmail2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel19)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtOfficialTelephone3, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                            .addComponent(jComboUniversities3))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel23)
+                            .addComponent(jLabel18))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboUniversities1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboUniversities2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel20)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtOfficialTelephone2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Courses", jPanel5);
@@ -413,12 +760,12 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                         .addComponent(btnView3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAddStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
-                    .addGap(39, 39, 39)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(48, Short.MAX_VALUE)))
+                    .addGap(478, 478, 478)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(75, Short.MAX_VALUE)))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,12 +777,12 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                     .addComponent(btnView3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(387, 387, 387)
                 .addComponent(btnDelete3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
                     .addGap(79, 79, 79)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(90, Short.MAX_VALUE)))
+                    .addContainerGap(285, Short.MAX_VALUE)))
         );
 
         ProfessorDirectoryPane.addTab("Students", jPanel7);
@@ -483,23 +830,74 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         btnAddProfessor.setText("Add Professor");
         btnAddProfessor.setBorder(null);
 
+        jLabel25.setText("Email");
+
+        jLabel26.setText("Course");
+
+        jLabel27.setText("Name");
+
+        jLabel28.setText("University");
+
+        jLabel29.setText("Telephone");
+
+        jLabel30.setText("Salary");
+
+        jLabel31.setText("College");
+
+        jLabel32.setText("Password");
+
+        txtOfficialTelephone4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOfficialTelephone4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
+                .addComponent(jLabel10)
+                .addGap(637, 637, 637)
+                .addComponent(btnView4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAddProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jLabel10)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProfessorName, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtOfficialTelephone4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel29)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel32)
+                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtSalary, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jComboColleges, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(35, 35, 35)
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jComboCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel28)
+                                        .addComponent(jComboUniversities4, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel26)
+                                        .addComponent(jLabel25)
+                                        .addComponent(txtProfessorEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -509,11 +907,48 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                     .addComponent(jLabel10)
                     .addComponent(btnAddProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnView4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel25)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtProfessorEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel28)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboUniversities4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel27)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtProfessorName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel29)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtOfficialTelephone4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboColleges, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel30)
+                            .addComponent(jLabel32))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addComponent(btnDelete4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Professors", jPanel6);
@@ -573,7 +1008,7 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -585,7 +1020,7 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
                     .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(284, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Admissions Applications", jPanel8);
@@ -606,13 +1041,27 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
+    private void btnViewUniversityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewUniversityActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewActionPerformed
+        int selectedRowIndex = tblUniversities.getSelectedRow();
+        if(selectedRowIndex<0){
+            JOptionPane.showMessageDialog(this,"Please select a row to view.");
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel) tblUniversities.getModel();
+        University selectedUniversity = (University) model.getValueAt(selectedRowIndex, 0);
+        
+        txtUniversityName1.setText(selectedUniversity.getName());
+        txtOfficialEmail1.setText(selectedUniversity.getOffemail());
+        txtOfficialTelephone1.setText(selectedUniversity.getOfftel());
+        txtEstablishedIn.setText(String.valueOf(selectedUniversity.getEstablished()));
+        txtaddress.setText(selectedUniversity.getAddress());
+        
+    }//GEN-LAST:event_btnViewUniversityActionPerformed
 
-    private void btnView1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView1ActionPerformed
+    private void btnUpdateClgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateClgActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnView1ActionPerformed
+    }//GEN-LAST:event_btnUpdateClgActionPerformed
 
     private void btnView2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView2ActionPerformed
         // TODO add your handling code here:
@@ -630,6 +1079,215 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRejectActionPerformed
 
+    private void txtOfficialTelephoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOfficialTelephoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOfficialTelephoneActionPerformed
+
+    private void btnViewClgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewClgActionPerformed
+        // TODO add your handling code here:
+      
+        
+    }//GEN-LAST:event_btnViewClgActionPerformed
+
+    private void txtOfficialTelephone1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOfficialTelephone1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOfficialTelephone1ActionPerformed
+
+    private void txtOfficialTelephone2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOfficialTelephone2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOfficialTelephone2ActionPerformed
+
+    private void txtOfficialTelephone3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOfficialTelephone3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOfficialTelephone3ActionPerformed
+
+    private void txtOfficialTelephone4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOfficialTelephone4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOfficialTelephone4ActionPerformed
+
+    private void btnUpdateUniversityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUniversityActionPerformed
+        // TODO add your handling code here:
+         DefaultTableModel model = (DefaultTableModel) tblUniversities.getModel();
+        
+        if(tblUniversities.getSelectedRowCount() == 1){
+            
+        University selectedUniversity = (University) model.getValueAt(tblUniversities.getSelectedRow(), 0);
+        
+        String name = txtUniversityName1.getText();
+        String offemail = txtOfficialEmail1.getText();
+        String offtel = txtOfficialTelephone1.getText();
+        int established = Integer.parseInt(txtEstablishedIn.getText());
+        String address = txtaddress.getText();
+        
+        model.setValueAt(name, tblUniversities.getSelectedRow(), 0);
+        model.setValueAt(offemail, tblUniversities.getSelectedRow(), 1);
+        model.setValueAt(offtel, tblUniversities.getSelectedRow(), 2);
+        model.setValueAt(established, tblUniversities.getSelectedRow(), 3);
+        model.setValueAt(address, tblUniversities.getSelectedRow(), 4);
+        
+        
+        selectedUniversity.setName(name);
+        selectedUniversity.setOffemail(offemail);
+        selectedUniversity.setOfftel(offtel);
+        selectedUniversity.setEstablished(established);
+        selectedUniversity.setAddress(address);
+        
+        JOptionPane.showMessageDialog(this, "Details updated");
+        }
+        else{
+            if(tblUniversities.getRowCount() ==0){
+                JOptionPane.showMessageDialog(this, "Table is empty");
+            }else{
+                JOptionPane.showMessageDialog(this, "Select a row to update");
+            }
+              
+        
+        }
+    }//GEN-LAST:event_btnUpdateUniversityActionPerformed
+
+    private void btnAddUniversityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUniversityActionPerformed
+        // TODO add your handling code here:
+        String name = txtUniversityName1.getText().trim();
+        String offemail = txtOfficialEmail1.getText().trim();
+        String offtel = txtOfficialTelephone1.getText().trim();
+        int established = Integer.parseInt(txtEstablishedIn.getText().trim());
+        String address = txtaddress.getText().trim();
+        
+        //University universityList=new University(name,offemail, offtel, established, address);
+        //cityList.add(city);
+        Object[] data = {name, offemail, offtel, established, address};
+        un.addRow(data);
+        
+//        if (!name.isEmpty()) {
+//            if (ecosystem.isUnique(name)) {
+//                University university = ecosystem.createAndAddUniversity();
+//                university.setName(name);
+//                university.setOffemail(offemail);
+//                university.setOfftel(offtel);
+//                university.setEstablished(established);
+//                university.setAddress(address);
+//              
+//                JOptionPane.showMessageDialog(null, "University Successfully Created");
+//                
+//            {
+//               JOptionPane.showMessageDialog(null, "University Already Exits");
+//            }
+//        }
+//        else {
+//            JOptionPane.showMessageDialog(null, "Enter university name");
+//        }
+//        
+        //populateUniversityTable();
+        txtUniversityName1.setText("");
+        txtOfficialEmail1.setText("");
+        txtOfficialTelephone1.setText("");
+        txtEstablishedIn.setText("");
+        txtaddress.setText("");
+        dB4OUtil.storeSystem(ecosystem);
+                                                   
+    //}
+    }//GEN-LAST:event_btnAddUniversityActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        userProcessContainer.remove(this);
+        layout.next(userProcessContainer);
+        dB4OUtil.storeSystem(ecosystem);
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void tblUniversitiesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUniversitiesMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblUniversities.getModel();
+
+        String name = model.getValueAt(tblUniversities.getSelectedRow(), 0).toString();
+        String offemail = model.getValueAt(tblUniversities.getSelectedRow(), 1).toString();
+        String offtel = model.getValueAt(tblUniversities.getSelectedRow(), 2).toString();
+        String established = model.getValueAt(tblUniversities.getSelectedRow(), 3).toString();
+        String address = model.getValueAt(tblUniversities.getSelectedRow(), 4).toString();
+
+        txtUniversityName1.setText(name);
+        txtOfficialEmail1.setText(offemail);
+        txtOfficialTelephone1.setText(offtel);
+        txtEstablishedIn.setText(established);
+        txtaddress.setText(address);
+    }//GEN-LAST:event_tblUniversitiesMouseClicked
+
+    private void btnDeleteUniversityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUniversityActionPerformed
+        // TODO add your handling code here:
+         un.removeRow(row);
+        
+        txtUniversityName1.setText("");
+        txtOfficialEmail1.setText("");
+        txtOfficialTelephone1.setText("");
+        txtEstablishedIn.setText("");
+        txtaddress.setText("");
+    }//GEN-LAST:event_btnDeleteUniversityActionPerformed
+
+    private void btnAddCollegeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCollegeActionPerformed
+        // TODO add your handling code here:
+        String nameclg = txtUniversityName.getText().trim();
+        String offemailclg = txtOfficialEmail.getText().trim();
+        String offtelclg = txtOfficialTelephone.getText().trim();
+        
+        //University universityList=new University(name,offemail, offtel, established, address);
+        //cityList.add(city);
+        Object[] data = {nameclg, offemailclg, offtelclg};
+        cl.addRow(data);
+        
+//        if (!name.isEmpty()) {
+//            if (ecosystem.isUnique(name)) {
+//                University university = ecosystem.createAndAddUniversity();
+//                university.setName(name);
+//                university.setOffemail(offemail);
+//                university.setOfftel(offtel);
+//                university.setEstablished(established);
+//                university.setAddress(address);
+//              
+//                JOptionPane.showMessageDialog(null, "University Successfully Created");
+//                
+//            {
+//               JOptionPane.showMessageDialog(null, "University Already Exits");
+//            }
+//        }
+//        else {
+//            JOptionPane.showMessageDialog(null, "Enter university name");
+//        }
+//        
+        //populateUniversityTable();
+        txtUniversityName.setText("");
+        txtOfficialEmail.setText("");
+        txtOfficialTelephone.setText("");
+        dB4OUtil.storeSystem(ecosystem);
+                                                   
+    //}
+    }//GEN-LAST:event_btnAddCollegeActionPerformed
+
+    private void tblCollegesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCollegesMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblColleges.getModel();
+
+        String name = model.getValueAt(tblColleges.getSelectedRow(), 0).toString();
+        String offemail = model.getValueAt(tblColleges.getSelectedRow(), 1).toString();
+        String offtel = model.getValueAt(tblColleges.getSelectedRow(), 2).toString();
+       
+
+        txtUniversityName.setText(name);
+        txtOfficialEmail.setText(offemail);
+        txtOfficialTelephone.setText(offtel);
+        
+    }//GEN-LAST:event_tblCollegesMouseClicked
+
+    private void btnDeleteClgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteClgActionPerformed
+        // TODO add your handling code here:
+        cl.removeRow(row);
+        
+        txtUniversityName.setText("");
+        txtOfficialEmail.setText("");
+        txtOfficialTelephone.setText("");
+        
+    }//GEN-LAST:event_btnDeleteClgActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
@@ -639,22 +1297,55 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JButton btnAddProfessor;
     private javax.swing.JButton btnAddStudent;
     private javax.swing.JButton btnAddUniversity;
-    private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnDelete1;
     private javax.swing.JButton btnDelete2;
     private javax.swing.JButton btnDelete3;
     private javax.swing.JButton btnDelete4;
+    private javax.swing.JButton btnDeleteClg;
+    private javax.swing.JButton btnDeleteUniversity;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReject;
-    private javax.swing.JButton btnView;
-    private javax.swing.JButton btnView1;
+    private javax.swing.JButton btnUpdateClg;
+    private javax.swing.JButton btnUpdateUniversity;
     private javax.swing.JButton btnView2;
     private javax.swing.JButton btnView3;
     private javax.swing.JButton btnView4;
+    private javax.swing.JButton btnViewClg;
+    private javax.swing.JButton btnViewUniversity;
+    private javax.swing.JComboBox<String> jComboColleges;
+    private javax.swing.JComboBox<String> jComboCourses;
+    private javax.swing.JComboBox<String> jComboUniversities;
+    private javax.swing.JComboBox<String> jComboUniversities1;
+    private javax.swing.JComboBox<String> jComboUniversities2;
+    private javax.swing.JComboBox<String> jComboUniversities3;
+    private javax.swing.JComboBox<String> jComboUniversities4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -666,6 +1357,7 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -678,6 +1370,22 @@ public class UniversityAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JTable tblUniversities;
     private javax.swing.JTable tblUniversities4;
     private javax.swing.JTable tblUniversityStudents;
+    private javax.swing.JTextField txtEstablishedIn;
+    private javax.swing.JTextField txtOfficialEmail;
+    private javax.swing.JTextField txtOfficialEmail1;
+    private javax.swing.JTextField txtOfficialEmail2;
+    private javax.swing.JTextField txtOfficialTelephone;
+    private javax.swing.JTextField txtOfficialTelephone1;
+    private javax.swing.JTextField txtOfficialTelephone2;
+    private javax.swing.JTextField txtOfficialTelephone3;
+    private javax.swing.JTextField txtOfficialTelephone4;
+    private javax.swing.JTextField txtProfessorEmail;
+    private javax.swing.JTextField txtProfessorName;
     private javax.swing.JTextField txtRole;
+    private javax.swing.JTextField txtSalary;
+    private javax.swing.JTextField txtUniversityName;
+    private javax.swing.JTextField txtUniversityName1;
+    private javax.swing.JTextField txtUniversityName2;
+    private javax.swing.JTextField txtaddress;
     // End of variables declaration//GEN-END:variables
 }

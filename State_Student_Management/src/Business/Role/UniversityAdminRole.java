@@ -25,7 +25,7 @@ public class UniversityAdminRole extends Role {
                                  Enterprise enterprise,
                                  EcoSystem ecosystem
                                  ) {
-        return new UniversityAdminDashboard();
+        return new UniversityAdminDashboard(userProcessContainer, ecosystem);
     }
  
 }
