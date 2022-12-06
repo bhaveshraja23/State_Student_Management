@@ -1134,7 +1134,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
 
     private void btnAddCollegeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCollegeActionPerformed
         // TODO add your handling code here:
-       String nameclg1 = txtCollegeName.getText().trim();
+        String nameclg1 = txtCollegeName.getText().trim();
         String offemailclg1 = txtClgOfficialEmail.getText().trim();
         String offtelclg1 = txtClgOfficialTelephone.getText().trim();
         

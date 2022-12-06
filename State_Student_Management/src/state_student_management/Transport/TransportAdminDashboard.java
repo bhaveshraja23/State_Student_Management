@@ -4,6 +4,14 @@
  */
 package state_student_management.Transport;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import state_student_management.University.University;
+
 /**
  *
  * @author bhaveshraja
@@ -13,8 +21,26 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
     /**
      * Creates new form TransportAdminDashboard
      */
+    EcoSystem ecosystem;
+    University university;
+    UserAccount userAccount;
+    JPanel userProcessContainer;
+    ArrayList<University> universityList = new ArrayList<>();
+    DefaultTableModel bs,trn,loco;
+    int row, col;
+    private DB4OUtil dB4OUtil; 
     public TransportAdminDashboard() {
         initComponents();
+        
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+        this.university = university;
+        bs = (DefaultTableModel) tblBuses.getModel();
+        trn = (DefaultTableModel) tblTrains.getModel();
+        loco = (DefaultTableModel) tblLocoEngineers.getModel();
+        
+        dB4OUtil = DB4OUtil.getInstance();
     }
 
     /**
@@ -36,23 +62,50 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblBuses = new javax.swing.JTable();
-        btnDelete1 = new javax.swing.JButton();
-        btnView1 = new javax.swing.JButton();
+        btnDeleteBus = new javax.swing.JButton();
+        btnUpdateBuses = new javax.swing.JButton();
         btnAddBus = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtBusNumber = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtRouteNameBus = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        txtStartingPoint = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        txtEndingPoint = new javax.swing.JTextField();
+        btnViewBuses = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblTrains = new javax.swing.JTable();
-        btnDelete2 = new javax.swing.JButton();
-        btnView2 = new javax.swing.JButton();
+        btnDeleteTrain = new javax.swing.JButton();
+        btnViewTrain = new javax.swing.JButton();
         btnAddTrain = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        txtTrainNumber = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        txtRouteNumberTrain = new javax.swing.JTextField();
+        btnUpdateTrain = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblLocoEngineers = new javax.swing.JTable();
-        btnDelete3 = new javax.swing.JButton();
-        btnView3 = new javax.swing.JButton();
+        btnDeleteLocoEngineer = new javax.swing.JButton();
+        btnUpdateLocoEngineer = new javax.swing.JButton();
         btnAddEngineer = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        txtLocoEngineerName = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        txtLocoEngineerEmail = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        txtLocoEngineerGender = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        txtLocoEngineerAge = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        txtLocoEngineerSSN = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jComboTransportType = new javax.swing.JComboBox<>();
+        btnViewLocoEngineer = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -62,7 +115,6 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/bhaveshraja/Downloads/SSM.png")); // NOI18N
         jLabel1.setText("jLabel1");
 
         btnLogout.setForeground(new java.awt.Color(138, 138, 138));
@@ -90,12 +142,13 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -125,20 +178,30 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblBuses.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBusesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblBuses);
 
-        btnDelete1.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete1.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete1.setText("Delete");
-        btnDelete1.setBorder(null);
-
-        btnView1.setBackground(new java.awt.Color(52, 51, 242));
-        btnView1.setForeground(new java.awt.Color(255, 255, 255));
-        btnView1.setText("View");
-        btnView1.setBorder(null);
-        btnView1.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteBus.setBackground(new java.awt.Color(245, 1, 1));
+        btnDeleteBus.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteBus.setText("Delete");
+        btnDeleteBus.setBorder(null);
+        btnDeleteBus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView1ActionPerformed(evt);
+                btnDeleteBusActionPerformed(evt);
+            }
+        });
+
+        btnUpdateBuses.setBackground(new java.awt.Color(52, 51, 242));
+        btnUpdateBuses.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateBuses.setText("Update");
+        btnUpdateBuses.setBorder(null);
+        btnUpdateBuses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateBusesActionPerformed(evt);
             }
         });
 
@@ -146,38 +209,123 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
         btnAddBus.setForeground(new java.awt.Color(255, 255, 255));
         btnAddBus.setText("Add Bus");
         btnAddBus.setBorder(null);
+        btnAddBus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddBusActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Bus Number");
+
+        jLabel6.setText("Route Name");
+
+        jLabel15.setText("Starting Point");
+
+        txtStartingPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStartingPointActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setText("Ending Point");
+
+        txtEndingPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEndingPointActionPerformed(evt);
+            }
+        });
+
+        btnViewBuses.setBackground(new java.awt.Color(52, 51, 242));
+        btnViewBuses.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewBuses.setText("View");
+        btnViewBuses.setBorder(null);
+        btnViewBuses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewBusesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddBus, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnViewBuses, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateBuses, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeleteBus, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel15)
+                                    .addComponent(txtBusNumber)
+                                    .addComponent(txtStartingPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jLabel16)
+                                        .addGap(118, 118, 118))
+                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtEndingPoint)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(txtRouteNameBus, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(32, 32, 32))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addComponent(btnAddBus, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(15, 15, 15))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(btnAddBus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel7))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDeleteBus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpdateBuses, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnViewBuses, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBusNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRouteNameBus, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtStartingPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtEndingPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(52, 52, 52)
+                        .addComponent(btnAddBus, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Buses", jPanel4);
@@ -203,27 +351,56 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblTrains.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTrainsMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblTrains);
 
-        btnDelete2.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete2.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete2.setText("Delete");
-        btnDelete2.setBorder(null);
-
-        btnView2.setBackground(new java.awt.Color(52, 51, 242));
-        btnView2.setForeground(new java.awt.Color(255, 255, 255));
-        btnView2.setText("View");
-        btnView2.setBorder(null);
-        btnView2.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteTrain.setBackground(new java.awt.Color(245, 1, 1));
+        btnDeleteTrain.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteTrain.setText("Delete");
+        btnDeleteTrain.setBorder(null);
+        btnDeleteTrain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView2ActionPerformed(evt);
+                btnDeleteTrainActionPerformed(evt);
+            }
+        });
+
+        btnViewTrain.setBackground(new java.awt.Color(52, 51, 242));
+        btnViewTrain.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewTrain.setText("View");
+        btnViewTrain.setBorder(null);
+        btnViewTrain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewTrainActionPerformed(evt);
             }
         });
 
         btnAddTrain.setBackground(new java.awt.Color(201, 3, 3));
         btnAddTrain.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddTrain.setText("Add Course");
+        btnAddTrain.setText("Add Train");
         btnAddTrain.setBorder(null);
+        btnAddTrain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddTrainActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Train Number");
+
+        jLabel12.setText("Route Name");
+
+        btnUpdateTrain.setBackground(new java.awt.Color(52, 51, 242));
+        btnUpdateTrain.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateTrain.setText("Update");
+        btnUpdateTrain.setBorder(null);
+        btnUpdateTrain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTrainActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -232,16 +409,32 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addComponent(jLabel8)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnViewTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(btnUpdateTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnDeleteTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(txtTrainNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(txtRouteNumberTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(184, 184, 184)
+                                .addComponent(btnAddTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,13 +442,25 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(btnAddTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                    .addComponent(btnViewTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTrainNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRouteNumberTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(102, 102, 102)
+                        .addComponent(btnAddTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Trains", jPanel5);
@@ -284,20 +489,30 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblLocoEngineers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblLocoEngineersMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tblLocoEngineers);
 
-        btnDelete3.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete3.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete3.setText("Delete");
-        btnDelete3.setBorder(null);
-
-        btnView3.setBackground(new java.awt.Color(52, 51, 242));
-        btnView3.setForeground(new java.awt.Color(255, 255, 255));
-        btnView3.setText("View");
-        btnView3.setBorder(null);
-        btnView3.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteLocoEngineer.setBackground(new java.awt.Color(245, 1, 1));
+        btnDeleteLocoEngineer.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteLocoEngineer.setText("Delete");
+        btnDeleteLocoEngineer.setBorder(null);
+        btnDeleteLocoEngineer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView3ActionPerformed(evt);
+                btnDeleteLocoEngineerActionPerformed(evt);
+            }
+        });
+
+        btnUpdateLocoEngineer.setBackground(new java.awt.Color(52, 51, 242));
+        btnUpdateLocoEngineer.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateLocoEngineer.setText("Update");
+        btnUpdateLocoEngineer.setBorder(null);
+        btnUpdateLocoEngineer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateLocoEngineerActionPerformed(evt);
             }
         });
 
@@ -305,38 +520,157 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
         btnAddEngineer.setForeground(new java.awt.Color(255, 255, 255));
         btnAddEngineer.setText("Add Engineer");
         btnAddEngineer.setBorder(null);
+        btnAddEngineer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddEngineerActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setText("Name");
+
+        jLabel14.setText("Email");
+
+        jLabel17.setText("Gender");
+
+        txtLocoEngineerGender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLocoEngineerGenderActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setText("Age");
+
+        txtLocoEngineerAge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLocoEngineerAgeActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setText("SSN");
+
+        txtLocoEngineerSSN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLocoEngineerSSNActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setText("Transport Type");
+
+        jComboTransportType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboTransportTypeActionPerformed(evt);
+            }
+        });
+
+        btnViewLocoEngineer.setBackground(new java.awt.Color(52, 51, 242));
+        btnViewLocoEngineer.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewLocoEngineer.setText("View");
+        btnViewLocoEngineer.setBorder(null);
+        btnViewLocoEngineer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewLocoEngineerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addComponent(jLabel9)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnViewLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeleteLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel7Layout.createSequentialGroup()
+                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel13)
+                                            .addComponent(jLabel17)
+                                            .addComponent(txtLocoEngineerName)
+                                            .addComponent(txtLocoEngineerGender, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtLocoEngineerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel14)
+                                                .addComponent(txtLocoEngineerEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
+                                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(118, 118, 118))))
+                                    .addGroup(jPanel7Layout.createSequentialGroup()
+                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel19)
+                                            .addComponent(txtLocoEngineerSSN, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel20)
+                                            .addComponent(jComboTransportType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(125, 125, 125)
+                                .addComponent(btnAddEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(43, 43, 43)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(btnAddEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel9))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDeleteLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpdateLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnViewLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel14))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtLocoEngineerName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtLocoEngineerEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtLocoEngineerGender, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtLocoEngineerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtLocoEngineerSSN, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addGap(0, 0, 0)
+                                .addComponent(jComboTransportType, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Loco Engineers", jPanel7);
@@ -396,7 +730,7 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,21 +764,191 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnView1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView1ActionPerformed
+    private void btnUpdateBusesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBusesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnView1ActionPerformed
+    }//GEN-LAST:event_btnUpdateBusesActionPerformed
 
-    private void btnView2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView2ActionPerformed
+    private void btnViewTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewTrainActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnView2ActionPerformed
+    }//GEN-LAST:event_btnViewTrainActionPerformed
 
-    private void btnView3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView3ActionPerformed
+    private void btnUpdateLocoEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateLocoEngineerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnView3ActionPerformed
+    }//GEN-LAST:event_btnUpdateLocoEngineerActionPerformed
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRejectActionPerformed
+
+    private void txtStartingPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStartingPointActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtStartingPointActionPerformed
+
+    private void txtEndingPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEndingPointActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEndingPointActionPerformed
+
+    private void btnViewBusesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBusesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewBusesActionPerformed
+
+    private void btnUpdateTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTrainActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdateTrainActionPerformed
+
+    private void txtLocoEngineerGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocoEngineerGenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLocoEngineerGenderActionPerformed
+
+    private void txtLocoEngineerAgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocoEngineerAgeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLocoEngineerAgeActionPerformed
+
+    private void txtLocoEngineerSSNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocoEngineerSSNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLocoEngineerSSNActionPerformed
+
+    private void jComboTransportTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboTransportTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboTransportTypeActionPerformed
+
+    private void btnViewLocoEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewLocoEngineerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewLocoEngineerActionPerformed
+
+    private void btnAddBusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBusActionPerformed
+        // TODO add your handling code here:
+        int busNumber = Integer.parseInt(txtBusNumber.getText().trim());
+        String routeName = txtRouteNameBus.getText().trim();
+        String startingPoint = txtStartingPoint.getText().trim();
+        String endingPoint = txtEndingPoint.getText().trim();
+        
+        Object[] data = {busNumber, routeName, startingPoint, endingPoint};
+        bs.addRow(data);
+        
+        txtBusNumber.setText("");
+        txtRouteNameBus.setText("");
+        txtStartingPoint.setText("");
+        txtEndingPoint.setText("");
+        
+        dB4OUtil.storeSystem(ecosystem);
+    }//GEN-LAST:event_btnAddBusActionPerformed
+
+    private void tblBusesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBusesMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblBuses.getModel();
+        
+        String busNumber = model.getValueAt(tblBuses.getSelectedRow(), 0).toString();
+        String routeName = model.getValueAt(tblBuses.getSelectedRow(), 1).toString();
+        String startingPoint = model.getValueAt(tblBuses.getSelectedRow(), 2).toString();
+        String endingPoint = model.getValueAt(tblBuses.getSelectedRow(), 3).toString();
+
+        txtBusNumber.setText(busNumber);
+        txtRouteNameBus.setText(routeName);
+        txtStartingPoint.setText(startingPoint);
+        txtEndingPoint.setText(endingPoint);
+        
+        
+    }//GEN-LAST:event_tblBusesMouseClicked
+
+    private void btnDeleteBusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBusActionPerformed
+        // TODO add your handling code here:
+        bs.removeRow(row);
+        
+        txtBusNumber.setText("");
+        txtRouteNameBus.setText("");
+        txtStartingPoint.setText("");
+        txtEndingPoint.setText("");
+        
+    }//GEN-LAST:event_btnDeleteBusActionPerformed
+
+    private void btnAddTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTrainActionPerformed
+        // TODO add your handling code here:
+        int trainNumber = Integer.parseInt(txtTrainNumber.getText().trim());
+        String routeNameT = txtRouteNumberTrain.getText().trim();
+        
+        
+        Object[] data = {trainNumber, routeNameT};
+        trn.addRow(data);
+        
+        txtTrainNumber.setText("");
+        txtRouteNumberTrain.setText("");
+        
+        
+        dB4OUtil.storeSystem(ecosystem);
+    }//GEN-LAST:event_btnAddTrainActionPerformed
+
+    private void tblTrainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTrainsMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblTrains.getModel();
+        
+        String trainNumber = model.getValueAt(tblTrains.getSelectedRow(), 0).toString();
+        String routeNameT = model.getValueAt(tblTrains.getSelectedRow(), 1).toString();
+        
+        txtTrainNumber.setText(trainNumber);
+        txtRouteNumberTrain.setText(routeNameT);
+        
+    }//GEN-LAST:event_tblTrainsMouseClicked
+
+    private void btnDeleteTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteTrainActionPerformed
+        // TODO add your handling code here:
+        trn.removeRow(row);
+        
+        txtTrainNumber.setText("");
+        txtRouteNumberTrain.setText("");
+        
+    }//GEN-LAST:event_btnDeleteTrainActionPerformed
+
+    private void btnAddEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEngineerActionPerformed
+        // TODO add your handling code here:
+        String locoName = txtLocoEngineerName.getText().trim();
+        String locoEmail = txtLocoEngineerEmail.getText().trim();
+        String locoGender = txtLocoEngineerGender.getText().trim();
+        int locoAge = Integer.parseInt(txtLocoEngineerAge.getText().trim());
+        int locoSSN = Integer.parseInt(txtLocoEngineerSSN.getText().trim());
+                
+        Object[] data = {locoName, locoEmail, locoGender, locoAge, locoSSN};
+        loco.addRow(data);
+        
+        txtLocoEngineerName.setText("");
+        txtLocoEngineerEmail.setText("");
+        txtLocoEngineerGender.setText("");
+        txtLocoEngineerAge.setText("");
+        txtLocoEngineerSSN.setText("");
+                
+        dB4OUtil.storeSystem(ecosystem);
+    }//GEN-LAST:event_btnAddEngineerActionPerformed
+
+    private void tblLocoEngineersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLocoEngineersMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblLocoEngineers.getModel();
+        
+        String locoName = model.getValueAt(tblLocoEngineers.getSelectedRow(), 0).toString();
+        String locoEmail = model.getValueAt(tblLocoEngineers.getSelectedRow(), 1).toString();
+        String locoGender = model.getValueAt(tblLocoEngineers.getSelectedRow(), 2).toString();
+        String locoAge = model.getValueAt(tblLocoEngineers.getSelectedRow(), 3).toString();
+        String locoSSN = model.getValueAt(tblLocoEngineers.getSelectedRow(), 4).toString();
+
+        
+        txtLocoEngineerName.setText(locoName);
+        txtLocoEngineerEmail.setText(locoEmail);
+        txtLocoEngineerGender.setText(locoGender);
+        txtLocoEngineerAge.setText(locoAge);
+        txtLocoEngineerSSN.setText(locoSSN);
+
+        
+    }//GEN-LAST:event_tblLocoEngineersMouseClicked
+
+    private void btnDeleteLocoEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteLocoEngineerActionPerformed
+        // TODO add your handling code here:
+        loco.removeRow(row);
+        
+        txtLocoEngineerName.setText("");
+        txtLocoEngineerEmail.setText("");
+        txtLocoEngineerGender.setText("");
+        txtLocoEngineerAge.setText("");
+        txtLocoEngineerSSN.setText("");
+    }//GEN-LAST:event_btnDeleteLocoEngineerActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -453,17 +957,33 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JButton btnAddBus;
     private javax.swing.JButton btnAddEngineer;
     private javax.swing.JButton btnAddTrain;
-    private javax.swing.JButton btnDelete1;
-    private javax.swing.JButton btnDelete2;
-    private javax.swing.JButton btnDelete3;
+    private javax.swing.JButton btnDeleteBus;
+    private javax.swing.JButton btnDeleteLocoEngineer;
+    private javax.swing.JButton btnDeleteTrain;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReject;
-    private javax.swing.JButton btnView1;
-    private javax.swing.JButton btnView2;
-    private javax.swing.JButton btnView3;
+    private javax.swing.JButton btnUpdateBuses;
+    private javax.swing.JButton btnUpdateLocoEngineer;
+    private javax.swing.JButton btnUpdateTrain;
+    private javax.swing.JButton btnViewBuses;
+    private javax.swing.JButton btnViewLocoEngineer;
+    private javax.swing.JButton btnViewTrain;
+    private javax.swing.JComboBox<String> jComboTransportType;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -480,6 +1000,17 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JTable tblLocoEngineers;
     private javax.swing.JTable tblTrains;
     private javax.swing.JTable tblTransportRequests;
+    private javax.swing.JTextField txtBusNumber;
+    private javax.swing.JTextField txtEndingPoint;
+    private javax.swing.JTextField txtLocoEngineerAge;
+    private javax.swing.JTextField txtLocoEngineerEmail;
+    private javax.swing.JTextField txtLocoEngineerGender;
+    private javax.swing.JTextField txtLocoEngineerName;
+    private javax.swing.JTextField txtLocoEngineerSSN;
     private javax.swing.JTextField txtRole;
+    private javax.swing.JTextField txtRouteNameBus;
+    private javax.swing.JTextField txtRouteNumberTrain;
+    private javax.swing.JTextField txtStartingPoint;
+    private javax.swing.JTextField txtTrainNumber;
     // End of variables declaration//GEN-END:variables
 }
