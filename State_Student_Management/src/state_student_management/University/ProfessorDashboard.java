@@ -4,6 +4,13 @@
  */
 package state_student_management.University;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bhaveshraja
@@ -13,8 +20,26 @@ public class ProfessorDashboard extends javax.swing.JPanel {
     /**
      * Creates new form ProfessorDashboard1
      */
+    EcoSystem ecosystem;
+    University university;
+    UserAccount userAccount;
+    JPanel userProcessContainer;
+    ArrayList<University> universityList = new ArrayList<>();
+    DefaultTableModel gr;
+    int row, col;
+    private DB4OUtil dB4OUtil; 
+    
     public ProfessorDashboard() {
         initComponents();
+        
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+        this.university = university;
+        gr = (DefaultTableModel) tblGradeStudent.getModel();
+        
+        dB4OUtil = DB4OUtil.getInstance();
+        //populateUniversityTable();
     }
 
     /**
@@ -27,7 +52,7 @@ public class ProfessorDashboard extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane4 = new javax.swing.JScrollPane();
-        tblUniversities3 = new javax.swing.JTable();
+        tblGradeStudent = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         btnAddGrade = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -35,10 +60,22 @@ public class ProfessorDashboard extends javax.swing.JPanel {
         btnLogout = new javax.swing.JButton();
         txtRole = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtGradeName = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtGradeEmail = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtGradeGender = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtGradeAge = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtGradeCourse = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtGrade = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        tblUniversities3.setModel(new javax.swing.table.DefaultTableModel(
+        tblGradeStudent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -57,7 +94,12 @@ public class ProfessorDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(tblUniversities3);
+        tblGradeStudent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblGradeStudentMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tblGradeStudent);
 
         jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel9.setText("Students");
@@ -112,25 +154,66 @@ public class ProfessorDashboard extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jLabel2.setText("Name");
+
+        jLabel3.setText("Email");
+
+        jLabel7.setText("Gender");
+
+        txtGradeGender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGradeGenderActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Age");
+
+        jLabel10.setText("Course");
+
+        txtGradeCourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGradeCourseActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Grade");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAddGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtGradeGender, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtGradeName, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtGradeCourse)
+                            .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAddGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtGradeEmail)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel11)
+                            .addComponent(txtGradeAge)
+                            .addComponent(txtGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,26 +223,141 @@ public class ProfessorDashboard extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel9)
                     .addComponent(btnAddGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtGradeName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel7))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtGradeEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel8)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtGradeGender, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtGradeAge, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(47, 47, 47))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtGradeCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(0, 59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddGradeActionPerformed
         // TODO add your handling code here:
+       String studentNameG = txtGradeName.getText().trim();
+       String studentEmailG = txtGradeEmail.getText().trim();
+       String studentGenderG = txtGradeGender.getText().trim();
+       int studentAgeG = Integer.parseInt(txtGradeAge.getText().trim());
+       String studentCourseG = txtGradeCourse.getText().trim();
+       String studentGrade = txtGrade.getText().trim();
+        //University universityList=new University(name,offemail, offtel, established, address);
+        //cityList.add(city);
+        Object[] data = {studentNameG, studentEmailG, studentGenderG, studentAgeG, studentCourseG, studentGrade };
+        gr.addRow(data);
+        
+//        if (!name.isEmpty()) {
+//            if (ecosystem.isUnique(name)) {
+//                University university = ecosystem.createAndAddUniversity();
+//                university.setName(name);
+//                university.setOffemail(offemail);
+//                university.setOfftel(offtel);
+//                university.setEstablished(established);
+//                university.setAddress(address);
+//              
+//                JOptionPane.showMessageDialog(null, "University Successfully Created");
+//                
+//            {
+//               JOptionPane.showMessageDialog(null, "University Already Exits");
+//            }
+//        }
+//        else {
+//            JOptionPane.showMessageDialog(null, "Enter university name");
+//        }
+//        
+        //populateUniversityTable();
+        txtGradeName.setText("");
+        txtGradeEmail.setText("");
+        txtGradeGender.setText("");
+        txtGradeAge.setText("");
+        txtGradeCourse.setText("");
+        txtGrade.setText("");
+      
+        dB4OUtil.storeSystem(ecosystem);
+                                                   
+    //} 
     }//GEN-LAST:event_btnAddGradeActionPerformed
+
+    private void txtGradeGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradeGenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGradeGenderActionPerformed
+
+    private void txtGradeCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradeCourseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGradeCourseActionPerformed
+
+    private void tblGradeStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGradeStudentMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblGradeStudent.getModel();
+
+        String studentNameG = model.getValueAt(tblGradeStudent.getSelectedRow(), 0).toString();
+        String studentEmailG = model.getValueAt(tblGradeStudent.getSelectedRow(), 1).toString();
+        String studentGenderG = model.getValueAt(tblGradeStudent.getSelectedRow(), 2).toString();
+        String studentAgeG = model.getValueAt(tblGradeStudent.getSelectedRow(), 2).toString();
+        String studentCourseG = model.getValueAt(tblGradeStudent.getSelectedRow(), 2).toString();
+        String studentGrade = model.getValueAt(tblGradeStudent.getSelectedRow(), 2).toString();
+
+       
+
+        txtGradeName.setText(studentNameG);
+        txtGradeEmail.setText(studentEmailG);
+        txtGradeGender.setText(studentGenderG);
+        txtGradeAge.setText(studentAgeG);
+        txtGradeCourse.setText(studentCourseG);
+        txtGrade.setText(studentGrade);
+
+    }//GEN-LAST:event_tblGradeStudentMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddGrade;
     private javax.swing.JButton btnLogout;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable tblUniversities3;
+    private javax.swing.JTable tblGradeStudent;
+    private javax.swing.JTextField txtGrade;
+    private javax.swing.JTextField txtGradeAge;
+    private javax.swing.JTextField txtGradeCourse;
+    private javax.swing.JTextField txtGradeEmail;
+    private javax.swing.JTextField txtGradeGender;
+    private javax.swing.JTextField txtGradeName;
     private javax.swing.JTextField txtRole;
     // End of variables declaration//GEN-END:variables
 }
