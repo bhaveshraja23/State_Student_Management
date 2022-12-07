@@ -4,6 +4,17 @@
  */
 package Auth;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
+import Business.Student.Student;
+import Business.Student.StudentDirectory;
+import Business.UserAccount.UserAccount;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import state_student_management.Health.Patient;
+import state_student_management.Health.PatientDirectory;
+
 /**
  *
  * @author bhaveshraja
@@ -13,8 +24,28 @@ public class RegisterAsPatient extends javax.swing.JFrame {
     /**
      * Creates new form RegisterAsPatient
      */
+    
+    EcoSystem ecosystem;
+    PatientDirectory patDir;
+    UserAccount userAccount;
+    JPanel userProcessContainer;
+    ArrayList<Patient> patientList = new ArrayList<>();
+    DefaultTableModel pat;
+    int row, col;
+    private DB4OUtil dB4OUtil; 
+
     public RegisterAsPatient() {
         initComponents();
+        
+          
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+        this.patDir = patDir;
+        //pat = (DefaultTableModel) tblUniversityAdmin1.getModel();
+       
+        dB4OUtil = DB4OUtil.getInstance();  
+        populatePatientTable();
     }
 
     /**
@@ -29,20 +60,20 @@ public class RegisterAsPatient extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        txtloginemail = new javax.swing.JTextField();
+        txtPatName = new javax.swing.JTextField();
         btnPatientRegister = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
-        txtloginemail1 = new javax.swing.JTextField();
+        txtPatGender = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        txtloginemail2 = new javax.swing.JTextField();
+        txtPatPwd = new javax.swing.JPasswordField();
+        txtPatMobile = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtloginemail3 = new javax.swing.JTextField();
+        txtPatAge = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        txtloginemail4 = new javax.swing.JTextField();
+        txtPatEmail = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtloginemail5 = new javax.swing.JTextField();
+        txtPatAddress = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jComboPatientType = new javax.swing.JComboBox<>();
@@ -108,9 +139,9 @@ public class RegisterAsPatient extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jComboPatientType, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtloginemail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(txtloginemail2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(txtloginemail1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPatName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                            .addComponent(txtPatMobile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                            .addComponent(txtPatGender, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,10 +155,10 @@ public class RegisterAsPatient extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtloginemail4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                            .addComponent(txtloginemail3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                            .addComponent(txtloginemail5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPatPwd, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPatEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                            .addComponent(txtPatAge, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                            .addComponent(txtPatAddress, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,36 +191,36 @@ public class RegisterAsPatient extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtloginemail4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPatEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtloginemail3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPatAge, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtloginemail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPatName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtloginemail2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtPatMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtloginemail1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPatGender, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtloginemail5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtPatAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(txtPatPwd, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addComponent(jComboPatientType))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(btnPatientRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -220,6 +251,27 @@ public class RegisterAsPatient extends javax.swing.JFrame {
 
     private void btnPatientRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPatientRegisterActionPerformed
         // TODO add your handling code here:
+       String patName = txtPatName.getText().trim();
+       String patEmail = txtPatEmail.getText().trim();
+       long patMobile = Long.parseLong(txtPatMobile.getText().trim());
+       int patAge = Integer.parseInt(txtPatAge.getText().trim());
+       String patGender = txtPatGender.getText();
+       String patAddress = txtPatAddress.getText().trim();
+       char[] passwordCharArray = txtPatPwd.getPassword();
+       String patPassword = String.valueOf(passwordCharArray); 
+        
+        populatePatientTable();
+        
+        txtPatName.setText("");
+        txtPatEmail.setText("");
+        txtPatMobile.setText("");
+        txtPatAge.setText("");
+        txtPatGender.setText("");
+        txtPatAddress.setText("");
+        txtPatPwd.setText("");
+        
+
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnPatientRegisterActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -276,12 +328,22 @@ public class RegisterAsPatient extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField txtloginemail;
-    private javax.swing.JTextField txtloginemail1;
-    private javax.swing.JTextField txtloginemail2;
-    private javax.swing.JTextField txtloginemail3;
-    private javax.swing.JTextField txtloginemail4;
-    private javax.swing.JTextField txtloginemail5;
+    private javax.swing.JTextField txtPatAddress;
+    private javax.swing.JTextField txtPatAge;
+    private javax.swing.JTextField txtPatEmail;
+    private javax.swing.JTextField txtPatGender;
+    private javax.swing.JTextField txtPatMobile;
+    private javax.swing.JTextField txtPatName;
+    private javax.swing.JPasswordField txtPatPwd;
     // End of variables declaration//GEN-END:variables
+
+    public void populatePatientTable() {
+        pat.setRowCount(0);
+        for (Patient patient : patDir.getPatientDirectory()) {
+            Object obj[] = {patient.getName(),patient.getEmailId(),patient.getMobile(),patient.getAge(),patient.getGender(),patient.getAddress(),patient.getPassword()};
+            
+            pat.addRow(obj);
+        }
+    }
+
 }
