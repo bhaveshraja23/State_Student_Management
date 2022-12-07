@@ -4,6 +4,14 @@
  */
 package Health.state_student_management;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import state_student_management.University.University;
+
 /**
  *
  * @author bhaveshraja
@@ -13,8 +21,22 @@ public class PharmaAdminDashboard extends javax.swing.JPanel {
     /**
      * Creates new form PharmaAdminDashboard1
      */
+    EcoSystem ecosystem;
+    UserAccount userAccount;
+    JPanel userProcessContainer;
+    DefaultTableModel med;
+    int row, col;
+    private DB4OUtil dB4OUtil; 
+    
     public PharmaAdminDashboard() {
         initComponents();
+        
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+        med = (DefaultTableModel) tblMedicines.getModel();
+       
+        dB4OUtil = DB4OUtil.getInstance();
     }
 
     /**
@@ -36,9 +58,16 @@ public class PharmaAdminDashboard extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMedicines = new javax.swing.JTable();
-        btnAddHospital = new javax.swing.JButton();
-        btnView = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
+        btnAddMedicine = new javax.swing.JButton();
+        btnUpdateMedicine = new javax.swing.JButton();
+        btnDeleteMedicine = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtMedicineName = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jDateChooserMedicine = new com.toedter.calendar.JDateChooser();
+        btnViewMedicines = new javax.swing.JButton();
+        jComboBoxStock = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -107,27 +136,60 @@ public class PharmaAdminDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblMedicines.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMedicinesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblMedicines);
 
-        btnAddHospital.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddHospital.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddHospital.setText("Add Medicines");
-        btnAddHospital.setBorder(null);
-
-        btnView.setBackground(new java.awt.Color(52, 51, 242));
-        btnView.setForeground(new java.awt.Color(255, 255, 255));
-        btnView.setText("View");
-        btnView.setBorder(null);
-        btnView.addActionListener(new java.awt.event.ActionListener() {
+        btnAddMedicine.setBackground(new java.awt.Color(201, 3, 3));
+        btnAddMedicine.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddMedicine.setText("Add Medicine");
+        btnAddMedicine.setBorder(null);
+        btnAddMedicine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewActionPerformed(evt);
+                btnAddMedicineActionPerformed(evt);
             }
         });
 
-        btnDelete.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete.setText("Delete");
-        btnDelete.setBorder(null);
+        btnUpdateMedicine.setBackground(new java.awt.Color(52, 51, 242));
+        btnUpdateMedicine.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateMedicine.setText("Update");
+        btnUpdateMedicine.setBorder(null);
+        btnUpdateMedicine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateMedicineActionPerformed(evt);
+            }
+        });
+
+        btnDeleteMedicine.setBackground(new java.awt.Color(245, 1, 1));
+        btnDeleteMedicine.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteMedicine.setText("Delete");
+        btnDeleteMedicine.setBorder(null);
+        btnDeleteMedicine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteMedicineActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Name");
+
+        jLabel14.setText("Stock");
+
+        jLabel13.setText("Expiry Date");
+
+        btnViewMedicines.setBackground(new java.awt.Color(52, 51, 242));
+        btnViewMedicines.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewMedicines.setText("View");
+        btnViewMedicines.setBorder(null);
+        btnViewMedicines.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewMedicinesActionPerformed(evt);
+            }
+        });
+
+        jComboBoxStock.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "In Stock", "Out of Stock" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -136,16 +198,29 @@ public class PharmaAdminDashboard extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnAddHospital, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel13)
+                            .addComponent(jDateChooserMedicine, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                            .addComponent(txtMedicineName)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(41, 41, 41)
+                                .addComponent(btnAddMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxStock, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 674, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnViewMedicines, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeleteMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,13 +228,29 @@ public class PharmaAdminDashboard extends javax.swing.JPanel {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(btnAddHospital, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addComponent(btnUpdateMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnViewMedicines, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtMedicineName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxStock, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooserMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(btnAddMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Medicines", jPanel3);
@@ -253,25 +344,71 @@ public class PharmaAdminDashboard extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
+    private void btnUpdateMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateMedicineActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewActionPerformed
+    }//GEN-LAST:event_btnUpdateMedicineActionPerformed
 
     private void btnView1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnView1ActionPerformed
 
+    private void btnViewMedicinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewMedicinesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewMedicinesActionPerformed
+
+    private void btnAddMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMedicineActionPerformed
+        // TODO add your handling code here:
+        String medName = txtMedicineName.getText().trim();
+        String medStock = (String)jComboBoxStock.getSelectedItem();
+        
+        Object[] data = {medName, medStock};
+        med.addRow(data);
+        
+        txtMedicineName.setText("");
+        jComboBoxStock.setSelectedIndex(-1);
+        
+        dB4OUtil.storeSystem(ecosystem);
+    }//GEN-LAST:event_btnAddMedicineActionPerformed
+
+    private void tblMedicinesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMedicinesMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblMedicines.getModel();
+        
+        String medName = model.getValueAt(tblMedicines.getSelectedRow(), 0).toString();
+        String medStock = model.getValueAt(tblMedicines.getSelectedRow(), 1).toString();
+        
+        txtMedicineName.setText(medName);
+        jComboBoxStock.setToolTipText(medStock);
+        
+
+    }//GEN-LAST:event_tblMedicinesMouseClicked
+
+    private void btnDeleteMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteMedicineActionPerformed
+        // TODO add your handling code here:
+        med.removeRow(row);
+        
+        txtMedicineName.setText("");
+        jComboBoxStock.setSelectedIndex(-1);
+        
+    }//GEN-LAST:event_btnDeleteMedicineActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
-    private javax.swing.JButton btnAddHospital;
-    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnAddMedicine;
     private javax.swing.JButton btnDelete1;
+    private javax.swing.JButton btnDeleteMedicine;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnView;
+    private javax.swing.JButton btnUpdateMedicine;
     private javax.swing.JButton btnView1;
+    private javax.swing.JButton btnViewMedicines;
+    private javax.swing.JComboBox<String> jComboBoxStock;
+    private com.toedter.calendar.JDateChooser jDateChooserMedicine;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
@@ -281,6 +418,7 @@ public class PharmaAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblDoctors;
     private javax.swing.JTable tblMedicines;
+    private javax.swing.JTextField txtMedicineName;
     private javax.swing.JTextField txtRole;
     // End of variables declaration//GEN-END:variables
 }

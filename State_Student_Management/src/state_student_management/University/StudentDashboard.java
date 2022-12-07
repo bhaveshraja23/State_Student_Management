@@ -4,6 +4,14 @@
  */
 package state_student_management.University;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
+import Business.UserAccount.UserAccount;
+import java.awt.CardLayout;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bhaveshraja
@@ -13,8 +21,21 @@ public class StudentDashboard extends javax.swing.JPanel {
     /**
      * Creates new form StudentDashboard1
      */
+    EcoSystem ecosystem;
+    UserAccount userAccount;
+    JPanel userProcessContainer;
+   
+    private DB4OUtil dB4OUtil; 
+    
     public StudentDashboard() {
         initComponents();
+        
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+           
+        
+        dB4OUtil = DB4OUtil.getInstance(); 
     }
 
     /**
@@ -217,7 +238,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Request Tyep", "Request Name", "From Date", "To Date", "Status"
+                "ID", "Request Type", "Request Name", "From Date", "To Date", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -383,6 +404,11 @@ public class StudentDashboard extends javax.swing.JPanel {
 
         btnLogout.setForeground(new java.awt.Color(138, 138, 138));
         btnLogout.setText("Log Out");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Status");
@@ -441,6 +467,14 @@ public class StudentDashboard extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        userProcessContainer.remove(this);
+        layout.next(userProcessContainer);
+        dB4OUtil.storeSystem(ecosystem);
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
