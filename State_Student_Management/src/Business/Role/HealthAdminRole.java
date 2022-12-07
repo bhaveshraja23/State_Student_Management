@@ -8,7 +8,7 @@ import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import Health.state_student_management.HealthAdminDashboard;
+import state_student_management.Health.HealthAdminDashboard;
 import state_student_management.Transport.TransportAdminDashboard;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
