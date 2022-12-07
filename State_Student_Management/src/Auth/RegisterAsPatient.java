@@ -80,8 +80,6 @@ public class RegisterAsPatient extends javax.swing.JFrame {
 
         jLabel4.setText("Password");
 
-        jPasswordField2.setText("jPasswordField1");
-
         jLabel7.setText("Mobile");
 
         jLabel8.setText("Age");
