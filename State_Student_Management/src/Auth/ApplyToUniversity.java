@@ -4,6 +4,16 @@
  */
 package Auth;
 
+import Business.DB4OUtil.DB4OUtil;
+import Business.EcoSystem;
+import Business.Network.Network;
+import Business.Student.Student;
+import Business.Student.StudentDirectory;
+import Business.UserAccount.UserAccount;
+import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bhaveshraja
@@ -13,8 +23,27 @@ public class ApplyToUniversity extends javax.swing.JFrame {
     /**
      * Creates new form RegisterAsPatient
      */
+    EcoSystem ecosystem;
+    StudentDirectory studDir;
+    UserAccount userAccount;
+    JPanel userProcessContainer;
+    ArrayList<Student> studentList = new ArrayList<>();
+    DefaultTableModel sdt;
+    int row, col;
+    private DB4OUtil dB4OUtil; 
+    
     public ApplyToUniversity() {
         initComponents();
+        
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+        this.studDir = studDir;
+        //sdt = (DefaultTableModel) tblUniversityAdmin1.getModel();
+       
+        dB4OUtil = DB4OUtil.getInstance();  
+        populateAdmissionTable();
+
     }
 
     /**
@@ -35,7 +64,7 @@ public class ApplyToUniversity extends javax.swing.JFrame {
         txtgre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        txtStudentPassword = new javax.swing.JPasswordField();
         txtgender = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtage = new javax.swing.JTextField();
@@ -44,11 +73,11 @@ public class ApplyToUniversity extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtielts = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        UploadDoc = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        txtmobile = new javax.swing.JTextField();
+        txtMobile = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -83,9 +112,9 @@ public class ApplyToUniversity extends javax.swing.JFrame {
 
         jLabel4.setText("Password");
 
-        jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
+        txtStudentPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField2ActionPerformed(evt);
+                txtStudentPasswordActionPerformed(evt);
             }
         });
 
@@ -133,13 +162,13 @@ public class ApplyToUniversity extends javax.swing.JFrame {
                             .addComponent(jLabel9)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(UploadDoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtStudentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
-                            .addComponent(txtmobile, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel14)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,7 +186,7 @@ public class ApplyToUniversity extends javax.swing.JFrame {
                 .addGap(382, 382, 382))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {UploadDoc, jPasswordField2, txtEmail, txtName, txtage, txtgender, txtgre, txtielts});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtEmail, txtName, txtStudentPassword, txtUsername, txtage, txtgender, txtgre, txtielts});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,11 +226,11 @@ public class ApplyToUniversity extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(UploadDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtStudentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -210,7 +239,7 @@ public class ApplyToUniversity extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtmobile, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(55, 55, 55)
                 .addComponent(btnUniversityApply, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -218,7 +247,7 @@ public class ApplyToUniversity extends javax.swing.JFrame {
                 .addContainerGap(162, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {UploadDoc, jPasswordField2, txtEmail, txtName, txtage, txtgender, txtgre, txtielts});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtEmail, txtName, txtStudentPassword, txtUsername, txtage, txtgender, txtgre, txtielts});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,15 +271,41 @@ public class ApplyToUniversity extends javax.swing.JFrame {
 
     private void btnUniversityApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUniversityApplyActionPerformed
         // TODO add your handling code here:
+        
+        String studentName = txtName.getText().trim();
+        String studentEmail = txtEmail.getText().trim();
+        String studentGender = txtgender.getText().trim();
+        int studentAge = Integer.parseInt(txtage.getText().trim());
+        int studentGre = Integer.parseInt(txtgre.getText().trim());
+        double studentIelts = Double.parseDouble(txtielts.getText().trim());
+        String studentUsername = txtUsername.getText().trim();
+        char[] passwordCharArray = txtStudentPassword.getPassword();
+        String studentPassword = String.valueOf(passwordCharArray); 
+        long studentMobile = Long.parseLong(txtMobile.getText().trim());
+        
+        populateAdmissionTable();
+        
+        txtName.setText("");
+        txtEmail.setText("");
+        txtgender.setText("");
+        txtage.setText("");
+        txtgre.setText("");
+        txtielts.setText("");
+        txtUsername.setText("");
+        txtStudentPassword.setText("");
+        txtMobile.setText("");
+
+        dB4OUtil.storeSystem(ecosystem);
+       
     }//GEN-LAST:event_btnUniversityApplyActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void jPasswordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField2ActionPerformed
+    private void txtStudentPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStudentPasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField2ActionPerformed
+    }//GEN-LAST:event_txtStudentPasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,7 +344,6 @@ public class ApplyToUniversity extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField UploadDoc;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnUniversityApply;
     private javax.swing.JLabel jLabel1;
@@ -305,13 +359,24 @@ public class ApplyToUniversity extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtMobile;
     private javax.swing.JTextField txtName;
+    private javax.swing.JPasswordField txtStudentPassword;
+    private javax.swing.JTextField txtUsername;
     private javax.swing.JTextField txtage;
     private javax.swing.JTextField txtgender;
     private javax.swing.JTextField txtgre;
     private javax.swing.JTextField txtielts;
-    private javax.swing.JTextField txtmobile;
     // End of variables declaration//GEN-END:variables
+
+    public void populateAdmissionTable() {
+        sdt.setRowCount(0);
+        for (Student student : studDir.getStudentDirectory()) {
+            Object obj[] = {student.getName(), student.getEmailId(),student.getGender(),student.getAge(),student.getGRE(),student.getIELTS(),student.getUserName(),student.getPassword(),student.getMobile()};
+            
+            sdt.addRow(obj);
+        }
+    }
+
 }

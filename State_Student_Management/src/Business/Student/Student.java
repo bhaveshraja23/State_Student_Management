@@ -18,13 +18,13 @@ public class Student {
     private String userName;
     private String name;
     private int age;
-    private String mobile;
+    private long mobile;
     private String gender;
 //    private ImageIcon document;
-    private String GRE;
-    private String IELTS;
+    private int GRE;
+    private double IELTS;
 
-    public Student(String emailId, String password, String userName, String name, int age, String mobile, String gender, String GRE, String IELTS) {
+    public Student(String emailId, String password, String userName, String name, int age, long mobile, String gender, int GRE, double IELTS) {
         this.emailId = emailId;
         this.password = password;
         this.userName = userName;
@@ -77,14 +77,7 @@ public class Student {
         this.age = age;
     }
 
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
+    
     public String getGender() {
         return gender;
     }
@@ -101,20 +94,30 @@ public class Student {
 //        this.document = document;
 //    }
 
-    public String getGRE() {
+    public long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(long mobile) {
+        this.mobile = mobile;
+    }
+
+    public int getGRE() {
         return GRE;
     }
 
-    public void setGRE(String GRE) {
+    public void setGRE(int GRE) {
         this.GRE = GRE;
     }
 
-    public String getIELTS() {
+    public double getIELTS() {
         return IELTS;
     }
 
-    public void setIELTS(String IELTS) {
+    public void setIELTS(double IELTS) {
         this.IELTS = IELTS;
     }
+
+   
     
 }
