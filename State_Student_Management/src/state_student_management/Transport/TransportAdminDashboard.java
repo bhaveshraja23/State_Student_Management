@@ -7,6 +7,7 @@ package state_student_management.Transport;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
 import Business.UserAccount.UserAccount;
+import java.awt.CardLayout;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -29,6 +30,7 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
     DefaultTableModel bs,trn,loco;
     int row, col;
     private DB4OUtil dB4OUtil; 
+    
     public TransportAdminDashboard() {
         initComponents();
         
@@ -119,6 +121,11 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
 
         btnLogout.setForeground(new java.awt.Color(138, 138, 138));
         btnLogout.setText("Log Out");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Role");
@@ -949,6 +956,14 @@ public class TransportAdminDashboard extends javax.swing.JPanel {
         txtLocoEngineerAge.setText("");
         txtLocoEngineerSSN.setText("");
     }//GEN-LAST:event_btnDeleteLocoEngineerActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        userProcessContainer.remove(this);
+        layout.next(userProcessContainer);
+        dB4OUtil.storeSystem(ecosystem);
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
