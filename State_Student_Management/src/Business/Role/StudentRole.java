@@ -6,11 +6,10 @@ package Business.Role;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import state_student_management.Transport.TransportAdminDashboard;
 import state_student_management.University.StudentDashboard;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -24,9 +23,10 @@ public class StudentRole extends Role {
                                  UserAccount account,
                                  Organization organization,
                                  Enterprise enterprise,
-                                 EcoSystem ecosystem
+                                 EcoSystem ecosystem,
+                                 Network network
                                  ) {
-        return new StudentDashboard();
+        return new StudentDashboard(userProcessContainer, ecosystem);
     }
     
 }

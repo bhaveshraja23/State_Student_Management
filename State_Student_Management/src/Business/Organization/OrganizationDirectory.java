@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class OrganizationDirectory {
     
-    private ArrayList<Organization> organizationList;
+    public ArrayList<Organization> organizationList;
 
     public OrganizationDirectory() {
         organizationList = new ArrayList();
@@ -24,21 +24,18 @@ public class OrganizationDirectory {
 
     public Organization createOrganization(Organization.Type type) {
         Organization organization = null;
-        if (type.getValue().equals(Organization.Type.UniversityAdmin.getValue())) {
-            organization = new UniversityAdminOrganization();
+        if (type.getValue().equals(Organization.Type.Admin.getValue())) {
+            organization = new AdminOrganization();
             organizationList.add(organization);
-        } else if (type.getValue().equals(Organization.Type.HealthAdmin.getValue())) {
-            organization = new HealthAdminOrganization();
+        } else if (type.getValue().equals(Organization.Type.EngineeringCollege.getValue())) {
+            organization = new EngineeringCollegeOrganization();
             organizationList.add(organization);
-        } else if (type.getValue().equals(Organization.Type.TransportAdmin.getValue())) {
-            organization = new TransportAdminOrganization();
+        } else if (type.getValue().equals(Organization.Type.ArtsCollege.getValue())) {
+            organization = new ArtsCollegeOrganization();
             organizationList.add(organization);   
-        } else if (type.getValue().equals(Organization.Type.LibraryAdmin.getValue())) {
-            organization = new LibraryAdminOrganization();
+        } else if (type.getValue().equals(Organization.Type.MedicalCollege.getValue())) {
+            organization = new MedicalCollegeOrganization();
             organizationList.add(organization);   
-        } else if (type.getValue().equals(Organization.Type.College.getValue())) {
-            organization = new CollegeOrganization();
-            organizationList.add(organization);
         } else if (type.getValue().equals(Organization.Type.Hospital.getValue())) {
             organization = new HospitalOrganization();
             organizationList.add(organization);

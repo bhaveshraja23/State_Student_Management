@@ -4,9 +4,8 @@
  */
 package Business.Organization;
 
-import Business.Role.PharmaAdminRole;
 import Business.Role.Role;
-import Business.Role.TransportAdminRole;
+import Business.Role.TrainManagerRole;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +21,7 @@ public class TrainOrganization extends Organization{
     @Override
     public ArrayList<Role> getSupportedRole() {
         ArrayList<Role> roles = new ArrayList();
-        roles.add(new TransportAdminRole());
+        roles.add(new TrainManagerRole());
         return roles;
     }
     

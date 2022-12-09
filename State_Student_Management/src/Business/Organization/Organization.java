@@ -17,19 +17,18 @@ import java.util.ArrayList;
  */
 public abstract class Organization {
     
-    private String name;
-    private EmployeeDirectory employeeDirectory;
-    private UserAccountDirectory userAccountDirectory;
-    private StudentDirectory studentDirectory;
-    private int organizationID;
-    private static int counter = 0;
+    public String name;
+    public EmployeeDirectory employeeDirectory;
+    public UserAccountDirectory userAccountDirectory;
+    public StudentDirectory studentDirectory;
+    public int organizationID;
+    public static int counter = 0;
 
     public enum Type {
-        UniversityAdmin("UniversityAdmin Organization"),
-        HealthAdmin("HealthAdmin Organization"),
-        TransportAdmin("TransportAdmin Organization"),
-        LibraryAdmin("LibraryAdmin Organization"),
-        College("College Organization"),
+        Admin("Admin Organization"),
+        EngineeringCollege("EngineeringCollege Organization"),
+        ArtsCollege("ArtsCollege Organization"),
+        MedicalCollege("MedicalCollege Organization"),
         Hospital("Hospital Organization"),
         Pharma("Pharma Organization"),
         Bus("Bus Organization"),
@@ -37,7 +36,7 @@ public abstract class Organization {
         ITS("ITS Organization"),
         Books("Books Organization");
         
-        private String value;
+        public String value;
 
         private Type(String value) {
             this.value = value;

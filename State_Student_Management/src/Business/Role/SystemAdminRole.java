@@ -6,6 +6,7 @@ package Business.Role;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import javax.swing.JFrame;
@@ -23,7 +24,8 @@ public class SystemAdminRole extends Role {
                                  UserAccount account,
                                  Organization organization,
                                  Enterprise enterprise,
-                                 EcoSystem ecosystem
+                                 EcoSystem ecosystem,
+                                 Network network
                                  ) {
         return new SysAdminDashboard(userProcessContainer, ecosystem, account);
     }

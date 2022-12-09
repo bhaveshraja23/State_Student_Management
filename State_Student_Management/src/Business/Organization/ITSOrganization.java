@@ -4,9 +4,8 @@
  */
 package Business.Organization;
 
-import Business.Role.HealthAdminRole;
-import Business.Role.ITSEmployeeRole;
-import Business.Role.LibraryAdminRole;
+
+import Business.Role.ITSManagerRole;
 import Business.Role.Role;
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public class ITSOrganization extends Organization{
     @Override
     public ArrayList<Role> getSupportedRole() {
         ArrayList<Role> roles = new ArrayList();
-        roles.add(new LibraryAdminRole());
+        roles.add(new ITSManagerRole());
         return roles;
     }
     

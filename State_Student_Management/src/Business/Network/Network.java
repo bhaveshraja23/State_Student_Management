@@ -14,10 +14,10 @@ import Business.UserAccount.UserAccountDirectory;
  */
 public class Network {
     
-    private String name;
-    private UserAccountDirectory userAccountDirectory;
-    private StudentDirectory studentDirectory;
-    private EnterpriseDirectory enterpriseDirectory;
+    public String name;
+    public UserAccountDirectory userAccountDirectory;
+    public StudentDirectory studentDirectory;
+    public EnterpriseDirectory enterpriseDirectory;
 
     public Network() {
 

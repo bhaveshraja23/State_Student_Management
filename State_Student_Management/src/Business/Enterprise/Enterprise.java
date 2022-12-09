@@ -14,7 +14,7 @@ import Business.Organization.OrganizationDirectory;
 public abstract class Enterprise extends Organization{
     
     public EnterpriseType enterpriseType;
-     public OrganizationDirectory organizationDirectory;
+    public OrganizationDirectory organizationDirectory;
 
      public enum EnterpriseType {
          University("University"),
@@ -22,7 +22,7 @@ public abstract class Enterprise extends Organization{
          Library("Library"),
          Transport("Transport");
 
-         private String value;
+         public String value;
 
          private EnterpriseType(String value) {
              this.value = value;
