@@ -6,12 +6,14 @@ package Business.Role;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import state_student_management.Library.ITSEmployeeDashboard;
-import state_student_management.Transport.TransportAdminDashboard;
+import state_student_management.Transport.TrainManagerDashboard;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import state_student_management.Library.ITSManagerDashboard;
 
 /**
  *
@@ -23,7 +25,8 @@ public class ITSEmployeeRole extends Role{
     public JPanel createWorkArea(JPanel userProcessContainer,UserAccount account,
                                  Organization organization,
                                  Enterprise enterprise,
-                                 EcoSystem ecosystem
+                                 EcoSystem ecosystem,
+                                 Network network
                                  ) {
         return new ITSEmployeeDashboard();
     }

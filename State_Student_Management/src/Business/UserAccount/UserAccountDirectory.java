@@ -43,7 +43,7 @@ public class UserAccountDirectory {
         return userAccount;
     }
 
-    public UserAccount createStudentAccount(String username, String password, String contact, Student student, Role role) {
+    public UserAccount createStudentAccount(String username, String password, Student student, Role role) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUsername(username);
         userAccount.setPassword(password);

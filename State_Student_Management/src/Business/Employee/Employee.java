@@ -22,11 +22,13 @@ public class Employee {
     private String password;
     private String userName;
     private int age;
-    private Role role;
+    private int roleNumber;
 
-    public Employee() {
+    public Employee(String name, int roleNumber) {
         id = count;
         count++;
+        this.name = name;
+        this.roleNumber = roleNumber;
     }
     
     public String getSsn() {
@@ -92,13 +94,102 @@ public class Employee {
     public void setAge(int age) {
         this.age = age;
     }
+  
+    public int getRoleNumber() {
+        return roleNumber;
+    }
 
-    public Role getRole() {
+    public void setRoleNumber(int roleNumber) {
+        this.roleNumber = roleNumber;
+    }
+    
+    
+    public String getRole() {
+        
+        int roleNumber = this.getRoleNumber();
+        
+        String role = "";
+        switch (roleNumber) {
+            case 2:
+                role = "EngineeringCollegeAdmin";
+                break;
+            case 3:
+                role = "ArtsCollegeAdmin";
+                break;
+            case 4:
+                role = "MedicalCollegeAdmin";
+                break;
+            case 5:
+                role = "Professor";
+                break;
+            case 6:
+                role = "Doctor";
+                break;
+            case 7:
+                role = "HospitalManager";
+                break;
+            case 8:
+                role = "PharmaManager";
+                break;
+            case 9:
+                role = "BusManager";
+                break;
+            case 10:
+                role = "FireControlOrganizationEmployee";
+                break;
+            case 11:
+                role = "TrainManager";
+                break;
+            case 12:
+                role = "ITSManager";
+                break;
+            case 13:
+                role = "ITSEmployee";
+                break;
+            case 14:
+                role = "BooksManager";
+                break;
+            case 15:
+                role = "LocoEngineer";
+                break;
+             
+        }
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public String getOrg() {
+        
+        int roleNumber = this.getRoleNumber();
+        
+        String org = "";
+        if (roleNumber == 2 || roleNumber == 5) {
+            org = "EngineeringCollegeOrganization";
+        }
+        if (roleNumber == 3 || roleNumber == 5) {
+            org = "ArtsCollegeOrganization";
+        }
+        if (roleNumber == 4 || roleNumber == 5) {
+            org = "MedicalCollegeOrganization";
+        }
+        if (roleNumber == 6 || roleNumber == 7) {
+            org = "HospitalOrganization";
+        }
+        if (roleNumber == 8) {
+            org = "PharmaOrganization";
+        }
+        if (roleNumber == 9 || roleNumber == 14) {
+            org = "BusOrganization";
+        }
+        if (roleNumber == 10 || roleNumber == 14) {
+            org = "TrainOrganization";
+        }
+         if (roleNumber == 11 || roleNumber == 12) {
+            org = "ITSOrganization";
+        }
+         if (roleNumber == 13) {
+            org = "BooksOrganization";
+        }
+        return org;
     }
     
 }

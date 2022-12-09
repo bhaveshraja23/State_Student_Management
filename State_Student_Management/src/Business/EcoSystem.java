@@ -17,9 +17,9 @@ import state_student_management.University.University;
  */
 public class EcoSystem extends Organization{
 
-  private static EcoSystem business;
-  private ArrayList<Network> networkList;
-  private ArrayList<University>universityList = new ArrayList<University>();
+  public static EcoSystem business;
+  public ArrayList<Network> networkList;
+  public ArrayList<University>universityList = new ArrayList<University>();
 
 
     public static EcoSystem getInstance() {

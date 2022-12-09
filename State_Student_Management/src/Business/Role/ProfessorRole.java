@@ -6,9 +6,10 @@ package Business.Role;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import state_student_management.Transport.TransportAdminDashboard;
+import state_student_management.Transport.TrainManagerDashboard;
 import state_student_management.University.ProfessorDashboard;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,7 +24,8 @@ public class ProfessorRole extends Role{
     public JPanel createWorkArea(JPanel userProcessContainer,UserAccount account,
                                  Organization organization,
                                  Enterprise enterprise,
-                                 EcoSystem ecosystem
+                                 EcoSystem ecosystem,
+                                 Network network
                                  ) {
         return new ProfessorDashboard();
     }

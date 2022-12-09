@@ -4,7 +4,8 @@
  */
 package state_student_management;
 
-import Auth.LogIn;
+import state_student_management.Auth.ApplyToUniversity;
+import state_student_management.Auth.LogIn;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
 import Business.Network.Network;
@@ -90,6 +91,11 @@ public class Home extends javax.swing.JFrame {
         btnApplyUniversity.setBackground(new java.awt.Color(201, 3, 3));
         btnApplyUniversity.setForeground(new java.awt.Color(255, 255, 255));
         btnApplyUniversity.setText("Apply to Univeristy");
+        btnApplyUniversity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApplyUniversityActionPerformed(evt);
+            }
+        });
 
         btnRegisterPatient.setBackground(new java.awt.Color(201, 3, 3));
         btnRegisterPatient.setForeground(new java.awt.Color(255, 255, 255));
@@ -198,6 +204,14 @@ public class Home extends javax.swing.JFrame {
         userProcessContainer.add("LoginJPanel", panel);
         layout.next(userProcessContainer);
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnApplyUniversityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyUniversityActionPerformed
+        // TODO add your handling code here:
+        ApplyToUniversity panel = new ApplyToUniversity(userProcessContainer, this.system);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        userProcessContainer.add("ApplyUniversityJPanel", panel);
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnApplyUniversityActionPerformed
 
     /**
      * @param args the command line arguments
