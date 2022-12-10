@@ -27,7 +27,7 @@ public class BusManagerRole extends Role {
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new BusManagerDashboard();
+        return new BusManagerDashboard(userProcessContainer, account);
     }
     
 }

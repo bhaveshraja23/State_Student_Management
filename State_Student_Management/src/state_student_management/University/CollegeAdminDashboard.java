@@ -6,6 +6,8 @@ package state_student_management.University;
 
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     University university;
     UserAccount userAccount;
     JPanel userProcessContainer;
+    private Enterprise enterprise;
     ArrayList<University> universityList = new ArrayList<>();
     DefaultTableModel cl1,crse1,sdnt1,prof1;
     int row, col;
@@ -37,7 +40,12 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         this.userAccount = userAccount;
         this.ecosystem = ecosystem;
         this.university = university;
+
         //cl1 = (DefaultTableModel) tblColleges.getModel();
+
+        this.enterprise=enterprise;
+
+
         crse1 = (DefaultTableModel) tblCourses1.getModel();
         sdnt1 = (DefaultTableModel) tblStudents1.getModel();
         prof1 = (DefaultTableModel) tblProfessors1.getModel();
@@ -702,6 +710,45 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnViewCollegessActionPerformed
 
+    private void btnAddCollegeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCollegeActionPerformed
+        // TODO add your handling code here:
+//        String nameclg1 = txtCollegeName.getText().trim();
+//        String offemailclg1 = txtClgOfficialEmail.getText().trim();
+//        String offtelclg1 = txtClgOfficialTelephone.getText().trim();
+//        //University university  = (university) jComboUniversities1.getSelectedItem();
+//                          
+//        
+//        
+//        
+//        Object[] data = {nameclg1, offemailclg1, offtelclg1};
+//        cl1.addRow(data);
+//        
+//
+//        txtCollegeName.setText("");
+//        txtClgOfficialEmail.setText("");
+//        txtClgOfficialTelephone.setText("");
+//        
+//        dB4OUtil.storeSystem(ecosystem);
+                                                   
+    //} 
+    }//GEN-LAST:event_btnAddCollegeActionPerformed
+
+    private void tblColleges1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblColleges1MouseClicked
+        // TODO add your handling code here:
+//        DefaultTableModel model = (DefaultTableModel) tblColleges1.getModel();
+//
+//        String nameclg1 = model.getValueAt(tblColleges1.getSelectedRow(), 0).toString();
+//        String offemailclg1 = model.getValueAt(tblColleges1.getSelectedRow(), 1).toString();
+//        String offtelclg1 = model.getValueAt(tblColleges1.getSelectedRow(), 2).toString();
+//       
+//
+//        txtCollegeName.setText(nameclg1);
+//        txtClgOfficialEmail.setText(offemailclg1);
+//        txtClgOfficialTelephone.setText(offtelclg1);
+        
+    }//GEN-LAST:event_tblColleges1MouseClicked
+
+
     private void btnAddCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCourseActionPerformed
         // TODO add your handling code here:
        String nameCourse1 = txtCourse.getText().trim();
@@ -914,3 +961,14 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtSeats;
     // End of variables declaration//GEN-END:variables
 }
+//public void populateOrganizationEmployeeComboBox() {
+        
+   //     jComboUniversities1.removeAllItems();
+        //System.out.println(this);
+       //
+     //   for (Organization organization : this.enterprise) {
+         //   jComboUniversities1.addItem(organization);
+        //}
+    //}
+
+

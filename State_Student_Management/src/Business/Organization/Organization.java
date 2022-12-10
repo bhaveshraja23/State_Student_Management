@@ -19,6 +19,7 @@ public abstract class Organization {
     
     public String name;
     public EmployeeDirectory employeeDirectory;
+    public BusDirectory busDirectory;
     public UserAccountDirectory userAccountDirectory;
     public StudentDirectory studentDirectory;
     public int organizationID;
@@ -51,6 +52,7 @@ public abstract class Organization {
         this.name = name;
         employeeDirectory = new EmployeeDirectory();
         studentDirectory = new StudentDirectory();
+        busDirectory = new BusDirectory();
         userAccountDirectory = new UserAccountDirectory();
         organizationID = counter;
         ++counter;
@@ -85,6 +87,15 @@ public abstract class Organization {
     public void setName(String name) {
         this.name = name;
     }
+
+    public BusDirectory getBusDirectory() {
+        return busDirectory;
+    }
+
+    public void setBusDirectory(BusDirectory busDirectory) {
+        this.busDirectory = busDirectory;
+    }
+    
 
     @Override
     public String toString() {
