@@ -6,6 +6,8 @@ package state_student_management.University;
 
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     University university;
     UserAccount userAccount;
     JPanel userProcessContainer;
+    private Enterprise enterprise;
     ArrayList<University> universityList = new ArrayList<>();
     DefaultTableModel cl1,crse1,sdnt1,prof1;
     int row, col;
@@ -37,6 +40,8 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         this.userAccount = userAccount;
         this.ecosystem = ecosystem;
         this.university = university;
+        this.enterprise=enterprise;
+
         cl1 = (DefaultTableModel) tblColleges1.getModel();
         crse1 = (DefaultTableModel) tblCourses1.getModel();
         sdnt1 = (DefaultTableModel) tblStudents1.getModel();
@@ -1143,32 +1148,15 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         String nameclg1 = txtCollegeName.getText().trim();
         String offemailclg1 = txtClgOfficialEmail.getText().trim();
         String offtelclg1 = txtClgOfficialTelephone.getText().trim();
+        //University university  = (university) jComboUniversities1.getSelectedItem();
+                          
         
-        //University universityList=new University(name,offemail, offtel, established, address);
-        //cityList.add(city);
+        
+        
         Object[] data = {nameclg1, offemailclg1, offtelclg1};
         cl1.addRow(data);
         
-//        if (!name.isEmpty()) {
-//            if (ecosystem.isUnique(name)) {
-//                University university = ecosystem.createAndAddUniversity();
-//                university.setName(name);
-//                university.setOffemail(offemail);
-//                university.setOfftel(offtel);
-//                university.setEstablished(established);
-//                university.setAddress(address);
-//              
-//                JOptionPane.showMessageDialog(null, "University Successfully Created");
-//                
-//            {
-//               JOptionPane.showMessageDialog(null, "University Already Exits");
-//            }
-//        }
-//        else {
-//            JOptionPane.showMessageDialog(null, "Enter university name");
-//        }
-//        
-        //populateUniversityTable();
+
         txtCollegeName.setText("");
         txtClgOfficialEmail.setText("");
         txtClgOfficialTelephone.setText("");
@@ -1500,3 +1488,14 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtSeats;
     // End of variables declaration//GEN-END:variables
 }
+//public void populateOrganizationEmployeeComboBox() {
+        
+   //     jComboUniversities1.removeAllItems();
+        //System.out.println(this);
+       //
+     //   for (Organization organization : this.enterprise) {
+         //   jComboUniversities1.addItem(organization);
+        //}
+    //}
+
+

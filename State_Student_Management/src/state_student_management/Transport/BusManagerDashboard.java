@@ -4,8 +4,13 @@
  */
 package state_student_management.Transport;
 
+import Business.Organization.BusDirectory;
+import Business.Organization.Bus;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.util.ArrayList;
@@ -17,31 +22,43 @@ import state_student_management.University.University;
  *
  * @author bhaveshraja
  */
+
 public class BusManagerDashboard extends javax.swing.JPanel {
 
     /**
      * Creates new form BusManagerDashboard
      */
+   
     EcoSystem ecosystem;
     University university;
     UserAccount userAccount;
     JPanel userProcessContainer;
+    Bus bus;
+    BusDirectory busDirectory;
+    private Enterprise enterprise;
+    private OrganizationDirectory organizationDirectory;
     ArrayList<University> universityList = new ArrayList<>();
     DefaultTableModel bs,trn,loco;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public BusManagerDashboard() {
+    public BusManagerDashboard(JPanel userProcessContainer, UserAccount account) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
         this.userAccount = userAccount;
         this.ecosystem = ecosystem;
         this.university = university;
+        this.enterprise=enterprise;
+        this.bus = bus;
+        this.busDirectory = busDirectory;
+        this.organizationDirectory = organizationDirectory;
+
         bs = (DefaultTableModel) tblBuses.getModel();
         loco = (DefaultTableModel) tblLocoEngineers.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
+       // populateBusTable();
     }
 
     /**
@@ -138,12 +155,13 @@ public class BusManagerDashboard extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -416,6 +434,7 @@ public class BusManagerDashboard extends javax.swing.JPanel {
 
         jLabel20.setText("Transport Type");
 
+        jComboTransportType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bus", "Train" }));
         jComboTransportType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboTransportTypeActionPerformed(evt);
@@ -670,9 +689,12 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         String routeName = txtRouteNameBus.getText().trim();
         String startingPoint = txtStartingPoint.getText().trim();
         String endingPoint = txtEndingPoint.getText().trim();
-
-        Object[] data = {busNumber, routeName, startingPoint, endingPoint};
-        bs.addRow(data);
+        
+        busDirectory.addBus(bus);
+        //populateBusTable();
+        
+        //Object[] data = {busNumber, routeName, startingPoint, endingPoint};
+        //bs.addRow(data);
 
         txtBusNumber.setText("");
         txtRouteNameBus.setText("");
@@ -822,4 +844,19 @@ public class BusManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtRouteNameBus;
     private javax.swing.JTextField txtStartingPoint;
     // End of variables declaration//GEN-END:variables
-}
+ //private void populateBusTable() {
+        
+
+        //bs.setRowCount(0);
+        //if(organization)
+          //for (Bus bus : this.busDirectory.getBusList()) {
+            
+        //        Object[] objs = {bus.getBusNumber(),bus.getRouteName(),bus.getStartingPoint(),bus.getEndingPoint()};                       
+          //      bs.addRow(objs);
+       //     }
+        //}//
+
+    }
+                      
+
+

@@ -13,6 +13,7 @@ import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import javax.swing.JPanel;
+//import state_student_management.Auth.RegisterAsPatient;
 import state_student_management.University.University;
 
 /**
@@ -63,7 +64,6 @@ public class Home extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnApplyUniversity = new javax.swing.JButton();
-        btnRegisterPatient = new javax.swing.JButton();
         btnLogin = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -96,10 +96,6 @@ public class Home extends javax.swing.JFrame {
                 btnApplyUniversityActionPerformed(evt);
             }
         });
-
-        btnRegisterPatient.setBackground(new java.awt.Color(201, 3, 3));
-        btnRegisterPatient.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegisterPatient.setText("Register as Patient");
 
         btnLogin.setBackground(new java.awt.Color(201, 3, 3));
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
@@ -136,8 +132,7 @@ public class Home extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(btnApplyUniversity)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btnRegisterPatient))
+                                    .addGap(145, 145, 145))
                                 .addComponent(jLabel6))
                             .addGap(354, 354, 354)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -167,9 +162,7 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegisterPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnApplyUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnApplyUniversity, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(189, Short.MAX_VALUE))
         );
 
@@ -251,7 +244,6 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApplyUniversity;
     private javax.swing.JButton btnLogin;
-    private javax.swing.JButton btnRegisterPatient;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
