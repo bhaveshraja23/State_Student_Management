@@ -37,12 +37,12 @@ public class BusManagerDashboard extends javax.swing.JPanel {
     BusDirectory busDirectory;
     private Enterprise enterprise;
     private OrganizationDirectory organizationDirectory;
-    ArrayList<University> universityList = new ArrayList<>();
+    ArrayList<Bus> busList = new ArrayList<>();
     DefaultTableModel bs,trn,loco;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public BusManagerDashboard(JPanel userProcessContainer, UserAccount account) {
+    public BusManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, BusDirectory busDirectory ) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -690,8 +690,9 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         String startingPoint = txtStartingPoint.getText().trim();
         String endingPoint = txtEndingPoint.getText().trim();
         
+        
         busDirectory.addBus(bus);
-        //populateBusTable();
+        populateBusTable();
         
         //Object[] data = {busNumber, routeName, startingPoint, endingPoint};
         //bs.addRow(data);
@@ -844,17 +845,17 @@ public class BusManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtRouteNameBus;
     private javax.swing.JTextField txtStartingPoint;
     // End of variables declaration//GEN-END:variables
- //private void populateBusTable() {
+    private void populateBusTable() {
         
 
-        //bs.setRowCount(0);
-        //if(organization)
-          //for (Bus bus : this.busDirectory.getBusList()) {
+        bs.setRowCount(0);
+      
+        for (Bus bus : this.ecosystem.busDirectory.getBusList()) {
             
-        //        Object[] objs = {bus.getBusNumber(),bus.getRouteName(),bus.getStartingPoint(),bus.getEndingPoint()};                       
-          //      bs.addRow(objs);
-       //     }
-        //}//
+               Object[] objs = {bus.getBusNumber(),bus.getRouteName(),bus.getStartingPoint(),bus.getEndingPoint()};                       
+               bs.addRow(objs);
+           }
+        }
 
     }
                       

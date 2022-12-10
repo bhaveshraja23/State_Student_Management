@@ -7,6 +7,7 @@ package Business.Role;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Network.Network;
+import Business.Organization.BusDirectory;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import javax.swing.JPanel;
@@ -27,7 +28,8 @@ public class BusManagerRole extends Role {
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new BusManagerDashboard(userProcessContainer, account);
+       
+        return new BusManagerDashboard(userProcessContainer, ecosystem, ecosystem.getBusDirectory());
     }
     
 }
