@@ -1109,7 +1109,7 @@
                                       <Component id="jLabel30" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel31" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jComboCollegesProfessors" alignment="1" min="-2" pref="272" max="-2" attributes="0"/>
-                                      <Component id="txtSalaryProfessors" alignment="0" min="-2" pref="272" max="-2" attributes="0"/>
+                                      <Component id="txtProfessorUsername" alignment="0" min="-2" pref="272" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
@@ -1204,7 +1204,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jPasswordFieldProfessors" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
-                                  <Component id="txtSalaryProfessors" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
+                                  <Component id="txtProfessorUsername" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -1382,12 +1382,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel30">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Salary"/>
+                <Property name="text" type="java.lang.String" value="Username"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtSalaryProfessors">
+            <Component class="javax.swing.JTextField" name="txtProfessorUsername">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSalaryProfessorsActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProfessorUsernameActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel32">

@@ -147,7 +147,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         jLabel26 = new javax.swing.JLabel();
         jComboCoursesProfessors = new javax.swing.JComboBox<>();
         jLabel30 = new javax.swing.JLabel();
-        txtSalaryProfessors = new javax.swing.JTextField();
+        txtProfessorUsername = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
         jPasswordFieldProfessors = new javax.swing.JPasswordField();
         btnViewCollegess = new javax.swing.JButton();
@@ -883,11 +883,11 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
 
         jLabel26.setText("Course");
 
-        jLabel30.setText("Salary");
+        jLabel30.setText("Username");
 
-        txtSalaryProfessors.addActionListener(new java.awt.event.ActionListener() {
+        txtProfessorUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSalaryProfessorsActionPerformed(evt);
+                txtProfessorUsernameActionPerformed(evt);
             }
         });
 
@@ -923,7 +923,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                                 .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jComboCollegesProfessors, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtSalaryProfessors, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtProfessorUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel6Layout.createSequentialGroup()
                                     .addGap(35, 35, 35)
@@ -999,7 +999,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jPasswordFieldProfessors, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSalaryProfessors, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtProfessorUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1130,9 +1130,9 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtProfessorsTelephoneActionPerformed
 
-    private void txtSalaryProfessorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSalaryProfessorsActionPerformed
+    private void txtProfessorUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProfessorUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSalaryProfessorsActionPerformed
+    }//GEN-LAST:event_txtProfessorUsernameActionPerformed
 
     private void btnViewCollegessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewCollegessActionPerformed
         // TODO add your handling code here:
@@ -1321,7 +1321,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
        String professorName1 = txtProfessorsName.getText().trim();
        String professorEmail1 = txtProfessorsEmail.getText().trim();
        int professorTelephone1 = Integer.parseInt(txtProfessorsTelephone.getText().trim());
-       int professorSalary1 = Integer.parseInt(txtSalaryProfessors.getText().trim());
+       int professorSalary1 = Integer.parseInt(txtProfessorUsername.getText().trim());
        char[] passwordCharArray11 = jPasswordFieldProfessors.getPassword();
        String professorPassword1 = String.valueOf(passwordCharArray11);
        //String professorEmail = jPasswordFieldProfessor.getText();
@@ -1356,7 +1356,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         txtProfessorsName.setText("");
         txtProfessorsEmail.setText("");
         txtProfessorsTelephone.setText("");
-        txtSalaryProfessors.setText("");
+        txtProfessorUsername.setText("");
         jPasswordFieldProfessors.setText("");
         
         dB4OUtil.storeSystem(ecosystem);
@@ -1377,7 +1377,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         txtProfessorsName.setText(professorName1);
         txtProfessorsEmail.setText(professorEmail1);
         txtProfessorsTelephone.setText(professorTelephone1);
-        txtSalaryProfessors.setText(professorSalary1);
+        txtProfessorUsername.setText(professorSalary1);
         jPasswordFieldProfessors.setText(professorPassword1);
         
     }//GEN-LAST:event_tblProfessors1MouseClicked
@@ -1389,7 +1389,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         txtProfessorsName.setText("");
         txtProfessorsEmail.setText("");
         txtProfessorsTelephone.setText("");
-        txtSalaryProfessors.setText("");
+        txtProfessorUsername.setText("");
         jPasswordFieldProfessors.setText("");
         
     }//GEN-LAST:event_btnDeleteProfessorsActionPerformed
@@ -1492,11 +1492,11 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtGenderStudentClg;
     private javax.swing.JTextField txtNameStudentClg;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtProfessorUsername;
     private javax.swing.JTextField txtProfessorsEmail;
     private javax.swing.JTextField txtProfessorsName;
     private javax.swing.JTextField txtProfessorsTelephone;
     private javax.swing.JTextField txtRole;
-    private javax.swing.JTextField txtSalaryProfessors;
     private javax.swing.JTextField txtSeats;
     // End of variables declaration//GEN-END:variables
 }
