@@ -28,7 +28,7 @@ public class PharmaManagerRole extends Role{
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new PharmaManagerDashboard();
+        return new PharmaManagerDashboard(userProcessContainer, account, organization);
     }
     
 }

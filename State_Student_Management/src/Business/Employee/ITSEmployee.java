@@ -12,7 +12,7 @@ public class ITSEmployee extends Employee{
     
     public ITSEmployee(String name) {
         
-        super(name, 12);
+        super(name, 13);
     }
     
 }

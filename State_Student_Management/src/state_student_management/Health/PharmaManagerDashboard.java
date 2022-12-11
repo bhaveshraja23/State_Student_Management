@@ -4,11 +4,17 @@
  */
 package state_student_management.Health;
 
+import Business.Organization.Medicines;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import state_student_management.University.University;
@@ -25,18 +31,21 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
     EcoSystem ecosystem;
     UserAccount userAccount;
     JPanel userProcessContainer;
-    DefaultTableModel med;
+    Organization organization;
+    DefaultTableModel med, order;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public PharmaManagerDashboard() {
+    public PharmaManagerDashboard(JPanel userProcessContainer, UserAccount userAccount, Organization organization) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
         this.userAccount = userAccount;
         this.ecosystem = ecosystem;
+        this.organization = organization;
         med = (DefaultTableModel) tblMedicines.getModel();
-       
+        order = (DefaultTableModel) tblOrders.getModel();
+        populateMedicinesTable();
         dB4OUtil = DB4OUtil.getInstance();
     }
 
@@ -71,10 +80,10 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         jComboBoxStock = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblOrganizationManager = new javax.swing.JTable();
         btnAccept = new javax.swing.JButton();
         btnReject = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblOrders = new javax.swing.JTable();
 
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
@@ -265,29 +274,6 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel7.setText("Orders");
 
-        tblOrganizationManager.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Paitent Name", "Priority", "Message", "Status"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblOrganizationManager.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblOrganizationManagerMouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(tblOrganizationManager);
-
         btnAccept.setBackground(new java.awt.Color(0, 153, 0));
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
         btnAccept.setText("Accept");
@@ -303,6 +289,29 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
             }
         });
 
+        tblOrders.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "StudentID", "Student Name", "Priority", "Message", "Status", "Request Date", "Update Date"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblOrders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblOrderstblAppointmentsMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tblOrders);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -315,21 +324,21 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 982, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel7)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Orders", jPanel4);
@@ -361,10 +370,13 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
     private void btnAddMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMedicineActionPerformed
         // TODO add your handling code here:
         String medName = txtMedicineName.getText().trim();
-        String medStock = (String)jComboBoxStock.getSelectedItem();
+        String medStock = jComboBoxStock.getSelectedItem().toString();
+        String date = jDateChooserMedicine.getDateFormatString();
         
-        Object[] data = {medName, medStock};
-        med.addRow(data);
+        Medicines medicine = new Medicines(medStock, medName, date);
+        organization.medicinesDirectory.addMedicines(medicine);
+        
+        populateMedicinesTable();
         
         txtMedicineName.setText("");
         jComboBoxStock.setSelectedIndex(-1);
@@ -402,14 +414,49 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void tblOrganizationManagerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrganizationManagerMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tblOrganizationManagerMouseClicked
-
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRejectActionPerformed
 
+    private void tblOrderstblAppointmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrderstblAppointmentsMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblOrderstblAppointmentsMouseClicked
+
+    private void populateMedicinesTable() {
+       
+        med.setRowCount(0);
+      
+        for (Medicines medicines : this.organization.getMedicinesDirectory().getMedicinesList()) {
+            
+               Object[] objs = {medicines.getName(), medicines.getStock(), medicines.getExpiryDate()};                       
+               med.addRow(objs);
+           }
+}
+    
+    private void populateOrdersTable() {
+      
+        order.setRowCount(0);
+  
+        WorkQueue workQueue = organization.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            LibraryRequest req = (LibraryRequest) workRequest;
+            
+            String receiver = "Not yet Assigned"; 
+            if( req.getReceiver() != null)
+                receiver = req.getReceiver().getEmployee().getName();
+            
+            Date date = null;
+       
+            if(req.getStatus().equalsIgnoreCase("Complaint Resolved")) {
+                  date = req.getResolveDate();
+            }
+
+            Object[] objs = {req.getSender().getStudent().getId(),req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(), req.getRequestDate(),date};
+            order.addRow(objs);
+            
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
@@ -433,9 +480,9 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable tblMedicines;
-    private javax.swing.JTable tblOrganizationManager;
+    private javax.swing.JTable tblOrders;
     private javax.swing.JTextField txtMedicineName;
     private javax.swing.JTextField txtRole;
     // End of variables declaration//GEN-END:variables

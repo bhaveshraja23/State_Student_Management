@@ -12,7 +12,7 @@ public class BooksManager extends Employee{
     
     public BooksManager(String name) {
         
-        super(name, 13);
+        super(name, 14);
     }
     
 }

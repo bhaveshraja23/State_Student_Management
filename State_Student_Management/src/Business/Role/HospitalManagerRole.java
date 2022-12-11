@@ -9,10 +9,10 @@ import Business.Enterprise.Enterprise;
 import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import state_student_management.Health.HospitalManagerDashboard;
 import state_student_management.University.StudentDashboard;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import state_student_management.Health.HospitalManagerDashboard;
 
 /**
  *
@@ -27,7 +27,7 @@ public class HospitalManagerRole extends Role {
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new HospitalManagerDashboard();
+        return new HospitalManagerDashboard(userProcessContainer, account, organization);
     }
     
 }

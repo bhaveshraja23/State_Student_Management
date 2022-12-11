@@ -12,7 +12,7 @@ public class LocoEngineerEmployee extends Employee{
     
     public LocoEngineerEmployee(String name) {
         
-        super(name, 14);
+        super(name, 11);
     }
     
 }
