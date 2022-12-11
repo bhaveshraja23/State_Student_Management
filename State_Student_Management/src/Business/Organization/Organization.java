@@ -4,6 +4,7 @@
  */
 package Business.Organization;
 
+
 import Business.Employee.EmployeeDirectory;
 import Business.Role.Role;
 import Business.Student.Student;
@@ -144,10 +145,14 @@ public abstract class Organization {
     public void setWorkQueue(WorkQueue workQueue) {
         this.workQueue = workQueue;
     }
-
+    
     public MedicinesDirectory getMedicinesDirectory() {
         return medicinesDirectory;
     }
+
+
+
+
 
     public void setMedicinesDirectory(MedicinesDirectory medicinesDirectory) {
         this.medicinesDirectory = medicinesDirectory;
@@ -160,8 +165,6 @@ public abstract class Organization {
     public void setItsServicesDirectory(ItsServicesDirectory itsServicesDirectory) {
         this.itsServicesDirectory = itsServicesDirectory;
     }
-
-    
 
     
     @Override

@@ -26,7 +26,7 @@ public class AdminRole extends Role{
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new EnterpriseAdminDashboard(userProcessContainer, ecosystem, enterprise, enterprise.getOrganizationDirectory());
+        return new EnterpriseAdminDashboard(userProcessContainer, ecosystem, enterprise, enterprise.getOrganizationDirectory(), network);
     }
     
 }

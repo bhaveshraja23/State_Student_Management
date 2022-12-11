@@ -19,19 +19,19 @@ public class StudentDirectory {
         studentList = new ArrayList();
     }
 
-    public ArrayList<Student> getStudentDirectory() {
+    public ArrayList<Student> getStudentList() {
         return studentList;
     }
 
-    public void setStudentDirectory(ArrayList<Student> studentDirectory) {
+    public void setStudentList(ArrayList<Student> studentDirectory) {
         this.studentList = studentDirectory;
     }
     
-    public Student getStudent(String studentId){
+    public Student getStudent(String name){
         
         for (Student student : studentList) {
 
-            if(studentId.equals(student.getId()))
+            if(name.equals(student.getName()))
                   return student;
         }
         return null;

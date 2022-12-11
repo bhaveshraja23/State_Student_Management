@@ -7,12 +7,14 @@ package state_student_management.Health;
 import Business.Organization.Patient;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Network.Network;
 import Business.Organization.Encounter;
 import Business.Organization.Organization;
 import Business.Organization.VitalSign;
 import Business.Student.Student;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.TransportRequest;
 import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
@@ -36,16 +38,18 @@ public class DoctorDashboard extends javax.swing.JPanel {
     UserAccount userAccount;
     JPanel userProcessContainer;
     Organization organization;
+    Network network;
     DefaultTableModel enc, app;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public DoctorDashboard(JPanel userProcessContainer, UserAccount userAccount, Organization organization) {
+    public DoctorDashboard(JPanel userProcessContainer, UserAccount userAccount, Organization organization, Network network) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
         this.organization = organization;
         this.userAccount = userAccount;
+        this.network = network;
         this.ecosystem = ecosystem;
         enc = (DefaultTableModel) tblEncounters.getModel();
         app = (DefaultTableModel) tblDoctorAppointments.getModel();
@@ -80,13 +84,11 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jLabel19 = new javax.swing.JLabel();
         txtPatientName = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtPatientID = new javax.swing.JTextField();
-        jLabel20 = new javax.swing.JLabel();
         txtbp = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        date = new com.toedter.calendar.JDateChooser();
         jLabel23 = new javax.swing.JLabel();
+        txtDate = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -194,14 +196,6 @@ public class DoctorDashboard extends javax.swing.JPanel {
 
         jLabel7.setText("Sugar");
 
-        txtPatientID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPatientIDActionPerformed(evt);
-            }
-        });
-
-        jLabel20.setText("Patient ID");
-
         jLabel21.setText("Blood Pressure");
 
         jLabel22.setText("Date");
@@ -217,22 +211,18 @@ public class DoctorDashboard extends javax.swing.JPanel {
                 .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtPatientID)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jLabel19)
-                                        .addGap(0, 95, Short.MAX_VALUE))
-                                    .addComponent(txtPatientName))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel21)
-                                    .addComponent(txtbp, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addGap(0, 95, Short.MAX_VALUE))
+                            .addComponent(txtPatientName))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addComponent(txtbp, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(63, 63, 63))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel20)
                             .addComponent(jLabel23)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,7 +237,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
                                     .addComponent(jLabel22)
                                     .addComponent(jLabel17)
                                     .addComponent(txtPulse)
-                                    .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))))
+                                    .addComponent(txtDate, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel16)
@@ -258,19 +248,16 @@ public class DoctorDashboard extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(51, 51, 51)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel23))
+                .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel23)
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(txtPatientID, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addComponent(jLabel19)
@@ -293,15 +280,13 @@ public class DoctorDashboard extends javax.swing.JPanel {
                             .addComponent(jLabel18)
                             .addComponent(jLabel22))
                         .addGap(5, 5, 5)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtDate)
+                            .addComponent(txtTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(btnAddEncounters, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(77, Short.MAX_VALUE))
         );
-
-        jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {date, txtTemperature});
 
         ProfessorDirectoryPane.addTab("Encounters", jPanel4);
 
@@ -398,13 +383,12 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private void btnAddEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEncountersActionPerformed
         // TODO add your handling code here:
         
-        String patientId = txtPatientID.getText();
         String studentName = txtPatientName.getText();
         String bp  = txtbp.getText();
         String strPulse  = txtPulse.getText();
         String sugar = txtsugar.getText();
         String temperature = txtTemperature.getText();
-        String date = this.date.getDateFormatString();
+        String date = txtDate.getText();
          
         
         int pulse = Integer.parseInt(strPulse);
@@ -412,19 +396,22 @@ public class DoctorDashboard extends javax.swing.JPanel {
         int temp = Integer.parseInt(temperature);
         
         VitalSign vitalSign = new VitalSign(pulse,bp,temp,sug);
+        
+        System.out.println(vitalSign);
 
         Encounter encounter = new Encounter(date,vitalSign);
+        
+        System.out.println(encounter);
 
-        Student patient = organization.studentDirectory.getStudent(patientId);
+        Student patient = this.network.getStudentDirectory().getStudent(studentName);
+        
+        System.out.println(patient.getName());
+        
         patient.addEncounter(encounter);
         
         enc.setRowCount(0);
         displayEncounters(patient.getEncounterHistory().getEncounterDirectory(),patient);
     }//GEN-LAST:event_btnAddEncountersActionPerformed
-
-    private void txtPatientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatientIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPatientIDActionPerformed
 
     private void displayEncounters(List<Encounter> encounterList, Student patient) {
         
@@ -438,7 +425,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private void displayEcounter(Encounter encounter, Student patient){
         
         VitalSign vitalsign = encounter.getVitalSign();
-        Object[] obj = {patient.getId(), patient.getName(),date,vitalsign.getBloodPressure(),vitalsign.getSugar(),vitalsign.getPulse(),vitalsign.getTemperature()};
+        Object[] obj = {patient.getId(), patient.getName(),txtDate,vitalsign.getBloodPressure(),vitalsign.getSugar(),vitalsign.getPulse(),vitalsign.getTemperature()};
         enc.addRow(obj);
         
     }
@@ -449,7 +436,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         WorkQueue workQueue = userAccount.getWorkQueue();
         
         for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
-            LibraryRequest request = (LibraryRequest) workRequest;
+            TransportRequest request = (TransportRequest) workRequest;
             
             String receiver = "Not yet Assigned"; 
             if( request.getReceiver() != null)
@@ -471,13 +458,11 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
     private javax.swing.JButton btnAddEncounters;
     private javax.swing.JButton btnLogout;
-    private com.toedter.calendar.JDateChooser date;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -491,7 +476,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblDoctorAppointments;
     private javax.swing.JTable tblEncounters;
-    private javax.swing.JTextField txtPatientID;
+    private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtPatientName;
     private javax.swing.JTextField txtPulse;
     private javax.swing.JTextField txtRole;

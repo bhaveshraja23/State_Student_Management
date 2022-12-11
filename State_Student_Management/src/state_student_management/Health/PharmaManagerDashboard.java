@@ -10,11 +10,13 @@ import Business.EcoSystem;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.TransportRequest;
 import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import state_student_management.University.University;
@@ -46,6 +48,7 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         med = (DefaultTableModel) tblMedicines.getModel();
         order = (DefaultTableModel) tblOrders.getModel();
         populateMedicinesTable();
+        populateOrdersTable();
         dB4OUtil = DB4OUtil.getInstance();
     }
 
@@ -129,6 +132,11 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         );
 
         ProfessorDirectoryPane.setBackground(new java.awt.Color(255, 255, 255));
+        ProfessorDirectoryPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProfessorDirectoryPaneMouseClicked(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -278,6 +286,11 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
         btnAccept.setText("Accept");
         btnAccept.setBorder(null);
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
 
         btnReject.setBackground(new java.awt.Color(255, 51, 51));
         btnReject.setForeground(new java.awt.Color(255, 255, 255));
@@ -416,11 +429,62 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
+        row = tblOrders.getSelectedRow();
+        System.out.println(row);
+        String currentStatus = order.getValueAt(row, 4).toString();
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
+            
+        }
+         else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateOrdersTable();
     }//GEN-LAST:event_btnRejectActionPerformed
 
     private void tblOrderstblAppointmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrderstblAppointmentsMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tblOrderstblAppointmentsMouseClicked
+
+    private void ProfessorDirectoryPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProfessorDirectoryPaneMouseClicked
+        // TODO add your handling code here:
+        populateOrdersTable();
+    }//GEN-LAST:event_ProfessorDirectoryPaneMouseClicked
+
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        // TODO add your handling code here:
+        
+        row = tblOrders.getSelectedRow();
+        
+        String currentStatus = order.getValueAt(row, 4).toString();
+        
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Accepted");          
+            JOptionPane.showMessageDialog(this, "Request is Accepted", " Request Accepted", 1);
+           
+        }
+        
+        else if(currentStatus.equalsIgnoreCase("Complaint Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);        
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateOrdersTable();
+    }//GEN-LAST:event_btnAcceptActionPerformed
 
     private void populateMedicinesTable() {
        
@@ -440,7 +504,7 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         WorkQueue workQueue = organization.getWorkQueue();
         
         for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
-            LibraryRequest req = (LibraryRequest) workRequest;
+            TransportRequest req = (TransportRequest) workRequest;
             
             String receiver = "Not yet Assigned"; 
             if( req.getReceiver() != null)

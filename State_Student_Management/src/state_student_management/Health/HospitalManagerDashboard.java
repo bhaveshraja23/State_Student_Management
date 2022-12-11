@@ -10,6 +10,7 @@ import Business.Organization.Organization;
 import Business.Role.DoctorRole;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.TransportRequest;
 import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
@@ -43,6 +44,7 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         this.organization = organization;
         app = (DefaultTableModel) tblAppointments.getModel();
         populateAppointmentTable();
+        displayDoctors();
         dB4OUtil = DB4OUtil.getInstance();
     }
     /**
@@ -63,11 +65,11 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         jLabel22 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblAppointments = new javax.swing.JTable();
-        comboDoctors = new javax.swing.JComboBox();
         jLabel17 = new javax.swing.JLabel();
         btnAssignDoctor3 = new javax.swing.JButton();
         btnAccept = new javax.swing.JButton();
         btnReject = new javax.swing.JButton();
+        comboDoctors = new javax.swing.JComboBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -98,9 +100,9 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 708, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLogout)
-                .addGap(43, 43, 43))
+                .addGap(313, 313, 313))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,10 +111,9 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -144,12 +145,6 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         });
         jScrollPane5.setViewportView(tblAppointments);
 
-        comboDoctors.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboDoctorsActionPerformed(evt);
-            }
-        });
-
         jLabel17.setText("Assign Doctor");
 
         btnAssignDoctor3.setBackground(new java.awt.Color(52, 51, 242));
@@ -165,10 +160,20 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         btnAccept.setBackground(new java.awt.Color(0, 153, 0));
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
         btnAccept.setText("Accept");
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
 
         btnReject.setBackground(new java.awt.Color(255, 51, 51));
         btnReject.setForeground(new java.awt.Color(255, 255, 255));
         btnReject.setText("Reject");
+        btnReject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRejectActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -183,16 +188,16 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
                         .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel22)
-                        .addContainerGap(899, Short.MAX_VALUE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel17)
-                            .addComponent(comboDoctors, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAssignDoctor3, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34))))
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAssignDoctor3, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel17)
+                                    .addComponent(comboDoctors, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(270, Short.MAX_VALUE))))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,11 +208,11 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboDoctors, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboDoctors, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnAssignDoctor3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAccept, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
@@ -246,14 +251,10 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblAppointmentstblAppointmentsMouseClicked
 
-    private void comboDoctorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDoctorsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboDoctorsActionPerformed
-
     private void btnAssignDoctor3btnAssignDoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignDoctor3btnAssignDoctorActionPerformed
         // TODO add your handling code here:
         
-        UserAccount doctor =  (UserAccount) comboDoctors.getSelectedItem();
+        UserAccount doctor = (UserAccount) comboDoctors.getSelectedItem();
         
         if(doctor.isEmployeeBusy())
         {        
@@ -264,32 +265,32 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         row = tblAppointments.getSelectedRow();
         String currentStatus = app.getValueAt(row, 4).toString();
         
-        LibraryRequest request = (LibraryRequest) organization.getWorkQueue().getListOfWorkQueues().get(row);
+        TransportRequest request = (TransportRequest) organization.getWorkQueue().getListOfWorkQueues().get(row);
         
-        if(!currentStatus.equalsIgnoreCase("Complaint Accepted"))
+        if(!currentStatus.equalsIgnoreCase("Request Accepted"))
         {
 
-            JOptionPane.showMessageDialog(this, "Please accept complaint to assign", " Complaint not accepted", 1);
+            JOptionPane.showMessageDialog(this, "Please accept complaint to assign", " Request not accepted", 1);
            return;
         }
-        if(currentStatus.equalsIgnoreCase("Complaint Accepted"))
+        if(currentStatus.equalsIgnoreCase("Request Accepted"))
         {
 
-            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Assigned Employee");
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Assigned to Doctor");
             
           
-            JOptionPane.showMessageDialog(this, "Complaint is Accepted and assigned to respective Employee", " Complaint is forwarded to employee", 1);
+            JOptionPane.showMessageDialog(this, "Request is Accepted and assigned to respective doctor", " Request is forwarded to employee", 1);
            
         }
         
-        else if(currentStatus.equalsIgnoreCase("Complaint Declined")){
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
             
-            JOptionPane.showMessageDialog(this, "This complaint is Already declined earlier", " Complaint declined", 1);
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);
             
             
         }
         else{
-            JOptionPane.showMessageDialog(this, "Complaint is already Assigend to Employee", " Complaint Accepted", 1);
+            JOptionPane.showMessageDialog(this, "Request is already Assigend to Employee", " Request Accepted", 1);
             
         }
         
@@ -304,6 +305,56 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         doctor.getWorkQueue().addWorkRequest(request);
         populateAppointmentTable();
     }//GEN-LAST:event_btnAssignDoctor3btnAssignDoctorActionPerformed
+
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        // TODO add your handling code here:
+        row = tblAppointments.getSelectedRow();
+        
+        String currentStatus = app.getValueAt(row, 4).toString();
+        
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Accepted");          
+            JOptionPane.showMessageDialog(this, "Request is Accepted", " Request Accepted", 1);
+           
+        }
+        
+        else if(currentStatus.equalsIgnoreCase("Complaint Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);        
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateAppointmentTable();
+       
+    }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
+        // TODO add your handling code here:
+        
+        row = tblAppointments.getSelectedRow();
+        String currentStatus = app.getValueAt(row, 4).toString();
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
+            
+        }
+         else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateAppointmentTable();
+    }//GEN-LAST:event_btnRejectActionPerformed
     
     private void populateAppointmentTable() {
       
@@ -312,7 +363,7 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
         WorkQueue workQueue = organization.getWorkQueue();
         
         for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
-            LibraryRequest req = (LibraryRequest) workRequest;
+            TransportRequest req = (TransportRequest) workRequest;
             
             String receiver = "Not yet Assigned"; 
             if( req.getReceiver() != null)
@@ -320,9 +371,11 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
             
             Date date = null;
        
-            if(req.getStatus().equalsIgnoreCase("Complaint Resolved")) {
+            if(req.getStatus().equalsIgnoreCase("Assigned to Doctor")) {
                   date = req.getResolveDate();
             }
+            
+            System.out.println(req.getStatus());
 
             Object[] objs = {req.getSender().getStudent().getId(),req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(), receiver, req.getRequestDate(),date};
             app.addRow(objs);
