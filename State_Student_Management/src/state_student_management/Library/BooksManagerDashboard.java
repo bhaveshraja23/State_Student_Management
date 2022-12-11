@@ -51,6 +51,7 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.ecosystem = ecosystem;
         this.organization = organization;
+        this.userAccount = userAccount;
         
         book = (DefaultTableModel) tblBooks.getModel();  
         request = (DefaultTableModel)tblRequests.getModel();
@@ -407,12 +408,12 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
-        //row = tblRequests.getSelectedRow();
+        row = tblRequests.getSelectedRow();
         String currentStatus = request.getValueAt(row, 3).toString();
         if(currentStatus.equalsIgnoreCase("Request raised"))
         {
-            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
-    
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Rejected");
+            JOptionPane.showMessageDialog(this, "Request is Rejected", " Request Rejected", 1);    
         }
          else if(currentStatus.equalsIgnoreCase("Request Declined")){
             

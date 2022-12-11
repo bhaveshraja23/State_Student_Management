@@ -12,8 +12,13 @@ import Business.Organization.OrganizationDirectory;
 import Business.Organization.Train;
 import Business.Organization.TrainDirectory;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.TransportRequest;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,23 +41,26 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
     private Enterprise enterprise;
     private OrganizationDirectory organizationDirectory;
     ArrayList<Train> trainList = new ArrayList<>();
-    DefaultTableModel trn,loco;
+    DefaultTableModel trn,loco,trainReq;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public TrainManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
+    public TrainManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization, UserAccount userAccount) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
         this.ecosystem = ecosystem;
         this.organization = organization;
+        this.userAccount = userAccount;
      
         trn = (DefaultTableModel) tblTrains.getModel();
         loco = (DefaultTableModel) tblLocoEngineers.getModel();
+        trainReq = (DefaultTableModel) tblTransportRequests1.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
         
         populateTrainTable();
+        populateTrainRequestTable();
     }
 
     /**
@@ -105,7 +113,7 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
         jPanel8 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        tblTransportRequests = new javax.swing.JTable();
+        tblTransportRequests1 = new javax.swing.JTable();
         btnReject = new javax.swing.JButton();
         btnAccept = new javax.swing.JButton();
 
@@ -505,7 +513,7 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
         jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel11.setText("Transport Requests");
 
-        tblTransportRequests.setModel(new javax.swing.table.DefaultTableModel(
+        tblTransportRequests1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -524,7 +532,12 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane6.setViewportView(tblTransportRequests);
+        tblTransportRequests1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTransportRequests1MouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tblTransportRequests1);
 
         btnReject.setBackground(new java.awt.Color(255, 51, 51));
         btnReject.setForeground(new java.awt.Color(255, 255, 255));
@@ -540,6 +553,11 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
         btnAccept.setText("Accept");
         btnAccept.setBorder(null);
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -599,6 +617,25 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
+        row = tblTransportRequests1.getSelectedRow();
+        String currentStatus = trainReq.getValueAt(row, 3).toString();
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Rejected");
+            JOptionPane.showMessageDialog(this, "Request is Rejected", " Request Rejected", 1);
+    
+        }
+         else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateTrainRequestTable();
     }//GEN-LAST:event_btnRejectActionPerformed
 
     private void btnUpdateTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTrainActionPerformed
@@ -726,6 +763,39 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
         dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        // TODO add your handling code here:
+        
+         String currentStatus = trainReq.getValueAt(row, 3).toString();
+        
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Accepted");          
+            JOptionPane.showMessageDialog(this, "Request is Accepted", " Request Accepted", 1);
+           
+        }
+        
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        
+        populateTrainRequestTable();
+    }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void tblTransportRequests1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTransportRequests1MouseClicked
+        // TODO add your handling code here:
+        
+        row = tblTransportRequests1.getSelectedRow();
+        col = tblTransportRequests1.getSelectedColumn();
+    }//GEN-LAST:event_tblTransportRequests1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
@@ -763,7 +833,7 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable tblLocoEngineers;
     private javax.swing.JTable tblTrains;
-    private javax.swing.JTable tblTransportRequests;
+    private javax.swing.JTable tblTransportRequests1;
     private javax.swing.JTextField txtLocoEngineerAge;
     private javax.swing.JTextField txtLocoEngineerEmail;
     private javax.swing.JTextField txtLocoEngineerGender;
@@ -784,5 +854,26 @@ private void populateTrainTable() {
                trn.addRow(objs);
            }
         }
+
+
+ private void populateTrainRequestTable() {
+      trainReq.setRowCount(0);
+        
+        WorkQueue workQueue = organization.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            TransportRequest req = (TransportRequest) workRequest;
+              
+            
+            Date date = null;
+            if(req.getStatus().equalsIgnoreCase("Request Accepted")) {
+                  date = req.getResolveDate();
+            }
+
+            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
+            trainReq.addRow(objs);
+            
+        }
+    }
 
 }

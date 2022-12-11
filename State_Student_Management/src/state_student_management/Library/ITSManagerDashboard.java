@@ -20,6 +20,7 @@ import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -248,12 +249,22 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblRequestsIts.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRequestsItsMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tblRequestsIts);
 
         btnAccept.setBackground(new java.awt.Color(0, 153, 0));
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
         btnAccept.setText("Accept");
         btnAccept.setBorder(null);
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
 
         btnReject.setBackground(new java.awt.Color(255, 51, 51));
         btnReject.setForeground(new java.awt.Color(255, 255, 255));
@@ -385,6 +396,25 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
+        row = tblRequestsIts.getSelectedRow();
+        String currentStatus = requests.getValueAt(row, 3).toString();
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
+    
+        }
+         else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateItsRequestTable();
+        
     }//GEN-LAST:event_btnRejectActionPerformed
 
     private void btnUpdateBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBookActionPerformed
@@ -433,6 +463,38 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
         txtServiceName.setText(bookName);
     }//GEN-LAST:event_tblServicesMouseClicked
 
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        // TODO add your handling code here:
+        
+         String currentStatus = requests.getValueAt(row, 3).toString();
+        
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Accepted");          
+            JOptionPane.showMessageDialog(this, "Request is Accepted", " Request Accepted", 1);
+           
+        }
+        
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        
+        populateItsRequestTable();
+    }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void tblRequestsItsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRequestsItsMouseClicked
+        // TODO add your handling code here:
+        row = tblRequestsIts.getSelectedRow();
+        col = tblRequestsIts.getSelectedColumn();
+    }//GEN-LAST:event_tblRequestsItsMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
@@ -473,26 +535,22 @@ private void populateItsServicesTable() {
 
 private void populateItsRequestTable() {
       requests.setRowCount(0);
-  
+        
         WorkQueue workQueue = organization.getWorkQueue();
         
         for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
             LibraryRequest req = (LibraryRequest) workRequest;
-            
-            String receiver = "Not yet Assigned"; 
-            if( req.getReceiver() != null)
-                receiver = req.getReceiver().getEmployee().getName();
+              
             
             Date date = null;
-       
-            if(req.getStatus().equalsIgnoreCase("Complaint Resolved")) {
+            if(req.getStatus().equalsIgnoreCase("Request Accepted")) {
                   date = req.getResolveDate();
             }
 
-            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(), receiver, req.getRequestDate(),date};
+            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
             requests.addRow(objs);
             
         }
-    }
+}
 }
 
