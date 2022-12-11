@@ -41,11 +41,11 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
     private Enterprise enterprise;
     private OrganizationDirectory organizationDirectory;
     ArrayList<ItsServices> itsServicesList = new ArrayList<>();
-    DefaultTableModel itss;
+    DefaultTableModel itss, requests;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public ITSManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
+    public ITSManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization,UserAccount userAccount ) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -53,12 +53,12 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
         this.organization = organization;
         
         itss = (DefaultTableModel) tblServices.getModel();  
-       
+        requests = (DefaultTableModel) tblRequestsIts.getModel(); 
         
         dB4OUtil = DB4OUtil.getInstance();
         
         populateItsServicesTable();
-        //populateRequestTable();
+        populateItsRequestTable();
 
     }
 
@@ -86,7 +86,7 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tblRequests = new javax.swing.JTable();
+        tblRequestsIts = new javax.swing.JTable();
         btnAccept = new javax.swing.JButton();
         btnReject = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -229,7 +229,7 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel9.setText("Requests");
 
-        tblRequests.setModel(new javax.swing.table.DefaultTableModel(
+        tblRequestsIts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -248,7 +248,7 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(tblRequests);
+        jScrollPane4.setViewportView(tblRequestsIts);
 
         btnAccept.setBackground(new java.awt.Color(0, 153, 0));
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
@@ -454,7 +454,7 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable tblRequests;
+    private javax.swing.JTable tblRequestsIts;
     private javax.swing.JTable tblServices;
     private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtServiceName;
@@ -470,5 +470,29 @@ private void populateItsServicesTable() {
                itss.addRow(objs);
            }
 }
+
+private void populateItsRequestTable() {
+      requests.setRowCount(0);
+  
+        WorkQueue workQueue = organization.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            LibraryRequest req = (LibraryRequest) workRequest;
+            
+            String receiver = "Not yet Assigned"; 
+            if( req.getReceiver() != null)
+                receiver = req.getReceiver().getEmployee().getName();
+            
+            Date date = null;
+       
+            if(req.getStatus().equalsIgnoreCase("Complaint Resolved")) {
+                  date = req.getResolveDate();
+            }
+
+            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(), receiver, req.getRequestDate(),date};
+            requests.addRow(objs);
+            
+        }
+    }
 }
 

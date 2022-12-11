@@ -18,6 +18,7 @@ import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,7 +45,7 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public BooksManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
+    public BooksManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization,UserAccount userAccount ) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -265,6 +266,11 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
         btnAccept.setText("Accept");
         btnAccept.setBorder(null);
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
 
         btnReject.setBackground(new java.awt.Color(255, 51, 51));
         btnReject.setForeground(new java.awt.Color(255, 255, 255));
@@ -396,6 +402,8 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_btnRejectActionPerformed
 
     private void btnUpdateBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBookActionPerformed
@@ -444,6 +452,25 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
         txtBookName.setText(bookName);
     }//GEN-LAST:event_tblBooksMouseClicked
+
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        // TODO add your handling code here:
+        
+         row = tblRequests.getSelectedRow();
+        if (row < 0){
+            return;
+        }
+        
+        LibraryRequest libreq = (LibraryRequest) userAccount.getWorkQueue().getListOfWorkQueues().get(row);
+         if (request.getValueAt(row, 1).toString().equalsIgnoreCase("Employee On the way"))
+            {
+                JOptionPane.showMessageDialog(this,"Request already accepted by the employee", "Request already accepted", 2);
+            }
+        
+
+         else libreq.setStatus("Employee On the way");
+         populateRequestTable();
+    }//GEN-LAST:event_btnAcceptActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
