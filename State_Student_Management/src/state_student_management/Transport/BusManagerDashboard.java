@@ -12,8 +12,14 @@ import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.TransportRequest;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import state_student_management.University.University;
@@ -38,22 +44,26 @@ public class BusManagerDashboard extends javax.swing.JPanel {
     private Enterprise enterprise;
     private OrganizationDirectory organizationDirectory;
     ArrayList<Bus> busList = new ArrayList<>();
-    DefaultTableModel bs,loco;
+    DefaultTableModel bs,loco, busReq;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public BusManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
+    public BusManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization, UserAccount userAccount) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
         this.ecosystem = ecosystem;
         this.organization = organization;
+        this.userAccount = userAccount;
 
         bs = (DefaultTableModel) tblBuses.getModel();
         loco = (DefaultTableModel) tblLocoEngineers.getModel();
+        busReq = (DefaultTableModel)tblTransportRequests.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
         populateBusTable();
+        populateBusRequestTable();
+
     }
 
     /**
@@ -574,6 +584,11 @@ public class BusManagerDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblTransportRequests.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTransportRequestsMouseClicked(evt);
+            }
+        });
         jScrollPane6.setViewportView(tblTransportRequests);
 
         btnReject.setBackground(new java.awt.Color(255, 51, 51));
@@ -590,6 +605,11 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         btnAccept.setForeground(new java.awt.Color(255, 255, 255));
         btnAccept.setText("Accept");
         btnAccept.setBorder(null);
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -790,7 +810,59 @@ public class BusManagerDashboard extends javax.swing.JPanel {
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
+        row = tblTransportRequests.getSelectedRow();
+        String currentStatus = busReq.getValueAt(row, 3).toString();
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Rejected");
+            JOptionPane.showMessageDialog(this, "Request is Rejected", " Request Rejected", 1);
+
+        }
+         else if(currentStatus.equalsIgnoreCase("Request Rejected")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already Rejected earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateBusRequestTable();
     }//GEN-LAST:event_btnRejectActionPerformed
+
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        // TODO add your handling code here:
+         String currentStatus = busReq.getValueAt(row, 3).toString();
+        
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Accepted");          
+            JOptionPane.showMessageDialog(this, "Request is Accepted", " Request Accepted", 1);
+           
+        }
+        
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        
+        populateBusRequestTable();
+       
+    }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void tblTransportRequestsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTransportRequestsMouseClicked
+        // TODO add your handling code here:
+        
+        row = tblTransportRequests.getSelectedRow();
+        col = tblTransportRequests.getSelectedColumn();
+    }//GEN-LAST:event_tblTransportRequestsMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -854,7 +926,27 @@ public class BusManagerDashboard extends javax.swing.JPanel {
            }
         }
 
-    }
-                      
+    
+       
 
+    private void populateBusRequestTable() {
+      busReq.setRowCount(0);
+        
+        WorkQueue workQueue = organization.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            TransportRequest req = (TransportRequest) workRequest;
+              
+            
+            Date date = null;
+            if(req.getStatus().equalsIgnoreCase("Request Accepted")) {
+                  date = req.getResolveDate();
+            }
+
+            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
+            busReq.addRow(objs);
+            
+        }
+    }
+}
 

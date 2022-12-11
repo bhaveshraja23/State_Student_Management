@@ -25,7 +25,7 @@ public class TrainManagerRole extends Role {
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new TrainManagerDashboard(userProcessContainer,ecosystem, organization );
+        return new TrainManagerDashboard(userProcessContainer,ecosystem, organization, account );
     }
     
 }
