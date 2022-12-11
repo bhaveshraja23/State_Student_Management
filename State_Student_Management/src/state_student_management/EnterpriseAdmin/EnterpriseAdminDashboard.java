@@ -522,11 +522,6 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
         dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnAddOrgActionPerformed
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-       
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void btnAddEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEmployeeActionPerformed
         // TODO add your handling code here:
         Organization organization = (Organization) orgTypeComboBox.getSelectedItem();
@@ -684,6 +679,45 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
 
     private void btnDelete3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete3ActionPerformed
         // TODO add your handling code here:
+        int row = tableEmployee.getSelectedRow();
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a employee!!", "Select employee", 2);
+            return;
+        }
+
+        String username = tableEmployee.getValueAt(row, 4).toString();
+        String empType = tableEmployee.getValueAt(row, 1).toString();
+        String orgName = tableEmployee.getValueAt(row, 0).toString();
+
+        for (Organization org : organizationDirectory.getOrganizationList()) {
+
+            if (!org.getName().equalsIgnoreCase(orgName)) {
+                continue;
+            }
+
+            for(Organization organization : organizationDirectory.getOrganizationList())
+            {
+                UserAccount deleteAccount = null;
+                
+                for (UserAccount userAccount : enterprise.getUserAccountDirectory().getUserAccountList())
+                {
+
+                    if (userAccount.getUsername().equalsIgnoreCase(username))
+                    {
+                        deleteAccount = userAccount;
+                        break;
+                    }
+                }
+                if(deleteAccount != null){
+                    enterprise.getUserAccountDirectory().getUserAccountList().remove(deleteAccount);
+                    JOptionPane.showMessageDialog(this, "Employee deleted successfully" ,"User deleted", 1);
+                    populateEmployeeTable();
+                    return;
+                }
+            }
+        }
+        dB4OUtil.storeSystem(ecosystem);
 
     }//GEN-LAST:event_btnDelete3ActionPerformed
 
@@ -710,6 +744,11 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRejectActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void populateComboBox()
     {

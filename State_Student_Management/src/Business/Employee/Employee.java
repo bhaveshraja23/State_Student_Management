@@ -135,10 +135,10 @@ public class Employee {
                 role = "BusManager";
                 break;
             case 10:
-                role = "FireControlOrganizationEmployee";
+                role = "TrainManager";
                 break;
             case 11:
-                role = "TrainManager";
+                role = "LocoEngineer";   
                 break;
             case 12:
                 role = "ITSManager";
@@ -148,11 +148,7 @@ public class Employee {
                 break;
             case 14:
                 role = "BooksManager";
-                break;
-            case 15:
-                role = "LocoEngineer";
-                break;
-             
+                break;       
         }
         return role;
     }
@@ -177,16 +173,16 @@ public class Employee {
         if (roleNumber == 8) {
             org = "PharmaOrganization";
         }
-        if (roleNumber == 9 || roleNumber == 14) {
+        if (roleNumber == 9 || roleNumber == 11) {
             org = "BusOrganization";
         }
-        if (roleNumber == 10 || roleNumber == 14) {
+        if (roleNumber == 10 || roleNumber == 11) {
             org = "TrainOrganization";
         }
-         if (roleNumber == 11 || roleNumber == 12) {
+         if (roleNumber == 12 || roleNumber == 13) {
             org = "ITSOrganization";
         }
-         if (roleNumber == 13) {
+         if (roleNumber == 14) {
             org = "BooksOrganization";
         }
         return org;

@@ -27,6 +27,7 @@ public abstract class Organization {
     public TrainDirectory trainDirectory;
     public UserAccountDirectory userAccountDirectory;
     public StudentDirectory studentDirectory;
+    public PatientDirectory patientDirectory;
     public int organizationID;
     public static int counter = 0;
 
@@ -62,7 +63,11 @@ public abstract class Organization {
         booksDirectory = new BooksDirectory();
         trainDirectory = new TrainDirectory();
         userAccountDirectory = new UserAccountDirectory();
+
+        patientDirectory = new PatientDirectory();
+
         courseDirectory = new CourseDirectory();
+
         organizationID = counter;
         ++counter;
     }

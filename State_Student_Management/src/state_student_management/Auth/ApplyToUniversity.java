@@ -14,6 +14,7 @@ import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -261,7 +262,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         char[] passwordCharArray = txtStudentPassword.getPassword();
         String studentPassword = String.valueOf(passwordCharArray);
         long studentMobile = Long.parseLong(txtMobile.getText().trim());
-
+        UUID uuid=UUID.randomUUID();
         Network network = (Network) cbNetwork.getSelectedItem();
 
         //populateAdmissionTable();
@@ -270,8 +271,9 @@ public class ApplyToUniversity extends javax.swing.JPanel {
 
             //int age = Integer.parseInt(strAge);
             //sendEmailMessage(studentEmail);
-            Student student = new Student(studentEmail, studentPassword, studentUsername, studentName, studentAge, studentMobile, studentGender, studentGre, studentIelts);
+            Student student = new Student(uuid.toString(), studentEmail, studentPassword, studentUsername, studentName, studentAge, studentMobile, studentGender, studentGre, studentIelts);
             UserAccount userAccount = network.getUserAccountDirectory().createStudentAccount(studentUsername, studentPassword, student, new StudentRole());
+            
             network.getStudentDirectory().addStudent(student);
             System.out.println(student.getName());
             JOptionPane.showMessageDialog(null,"Registration successfull");

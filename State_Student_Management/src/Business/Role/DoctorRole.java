@@ -26,7 +26,7 @@ public class DoctorRole extends Role{
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new DoctorDashboard();
+        return new DoctorDashboard(userProcessContainer, organization);
     }
     
 }

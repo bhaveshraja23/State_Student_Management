@@ -26,9 +26,19 @@ public class StudentDirectory {
     public void setStudentDirectory(ArrayList<Student> studentDirectory) {
         this.studentList = studentDirectory;
     }
+    
+    public Student getStudent(String studentId){
+        
+        for (Student student : studentList) {
+
+            if(studentId.equals(student.getId()))
+                  return student;
+        }
+        return null;
+    }
 
     public Student addStudent(Student student) {
-
+        
         studentList.add(student);
         return student;
 
