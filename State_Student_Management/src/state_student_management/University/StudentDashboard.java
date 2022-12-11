@@ -6,9 +6,18 @@ package state_student_management.University;
 
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import static Business.Enterprise.Enterprise.EnterpriseType.Library;
+import static Business.Enterprise.Enterprise.EnterpriseType.Transport;
+import Business.Network.Network;
+import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.TransportRequest;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,16 +32,26 @@ public class StudentDashboard extends javax.swing.JPanel {
      */
     EcoSystem ecosystem;
     JPanel userProcessContainer;
+    private UserAccount userAccount;
+    Enterprise enterprise;
+    Network network;
    
     private DB4OUtil dB4OUtil; 
     
-    public StudentDashboard(JPanel userProcessContainer, EcoSystem ecosystem) {
+    public StudentDashboard(JPanel userProcessContainer, EcoSystem ecosystem, UserAccount userAccount, Enterprise enterprise, Network network) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
         this.ecosystem = ecosystem;
+        this.enterprise = enterprise;
+        this.network = network;
+        this.userAccount = userAccount;
         
         dB4OUtil = DB4OUtil.getInstance(); 
+        
+        displayRequestType();
+        displayTransRequestType();
+
     }
 
     /**
@@ -58,26 +77,34 @@ public class StudentDashboard extends javax.swing.JPanel {
         btnDrop1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtFees = new javax.swing.JTextField();
+        jPanel6 = new javax.swing.JPanel();
+        btnAddCollege2 = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblStudentRequests1 = new javax.swing.JTable();
+        jLabel15 = new javax.swing.JLabel();
+        comboRequestType1 = new javax.swing.JComboBox();
+        jLabel16 = new javax.swing.JLabel();
+        txtRequest1 = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        comboRequestPriority1 = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        txtMessage1 = new javax.swing.JTextField();
+        btnRequestTransport = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblStudentRequests = new javax.swing.JTable();
         btnRemoveRequest = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jComboRequestType = new javax.swing.JComboBox<>();
+        comboRequestType = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
-        jComboRequestName = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jLabel14 = new javax.swing.JLabel();
         btnRequest = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tblCourseCatalog2 = new javax.swing.JTable();
-        btnAddCollege2 = new javax.swing.JButton();
+        txtMessage = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        comboRequestPriority = new javax.swing.JComboBox<>();
+        txtRequest = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -142,7 +169,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                     .addComponent(btnAddCollege, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Course Catalog", jPanel4);
@@ -217,15 +244,138 @@ public class StudentDashboard extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnDrop, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Registered Courses", jPanel3);
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel8.setText("Course Catalog");
+        btnAddCollege2.setBackground(new java.awt.Color(201, 3, 3));
+        btnAddCollege2.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddCollege2.setText("Remove Request");
+        btnAddCollege2.setBorder(null);
+
+        tblStudentRequests1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Request Type", "Request Name", "From Date", "To Date", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tblStudentRequests1);
+
+        jLabel15.setText("Request Type");
+
+        comboRequestType1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboRequestType1ActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setText("Choose Request");
+
+        jLabel17.setText("Request Priority");
+
+        comboRequestPriority1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "High", "Medium", "Low" }));
+
+        jLabel18.setText("Message");
+
+        txtMessage1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMessage1ActionPerformed(evt);
+            }
+        });
+
+        btnRequestTransport.setBackground(new java.awt.Color(52, 51, 242));
+        btnRequestTransport.setForeground(new java.awt.Color(255, 255, 255));
+        btnRequestTransport.setText("Request");
+        btnRequestTransport.setBorder(null);
+        btnRequestTransport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRequestTransportActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel19.setText("Request");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(729, 729, 729)
+                        .addComponent(btnAddCollege2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(59, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnRequestTransport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel16)
+                            .addComponent(comboRequestType1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel18)
+                            .addComponent(txtMessage1)
+                            .addComponent(jLabel17)
+                            .addComponent(comboRequestPriority1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(btnAddCollege2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel19)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(comboRequestType1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel16)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(comboRequestPriority1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRequestTransport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42))
+        );
+
+        ProfessorDirectoryPane.addTab("Transport", jPanel6);
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         tblStudentRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -256,18 +406,37 @@ public class StudentDashboard extends javax.swing.JPanel {
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel10.setText("Request");
 
+        comboRequestType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboRequestTypeActionPerformed(evt);
+            }
+        });
+
         jLabel11.setText("Request Type");
 
-        jLabel12.setText("Request Name");
+        jLabel12.setText("Choose Request");
 
-        jLabel13.setText("From Date");
-
-        jLabel14.setText("To Date");
+        jLabel13.setText("Message");
 
         btnRequest.setBackground(new java.awt.Color(52, 51, 242));
         btnRequest.setForeground(new java.awt.Color(255, 255, 255));
         btnRequest.setText("Request");
         btnRequest.setBorder(null);
+        btnRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRequestActionPerformed(evt);
+            }
+        });
+
+        txtMessage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMessageActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setText("Request Priority");
+
+        comboRequestPriority.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "High", "Medium", "Low" }));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -280,17 +449,16 @@ public class StudentDashboard extends javax.swing.JPanel {
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
                     .addComponent(jLabel12)
-                    .addComponent(jComboRequestType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboRequestName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(comboRequestType, 0, 230, Short.MAX_VALUE)
                     .addComponent(jLabel13)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                    .addComponent(txtMessage)
                     .addComponent(jLabel14)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
+                    .addComponent(comboRequestPriority, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtRequest))
                 .addGap(61, 61, 61)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(367, 367, 367)
+                        .addGap(515, 515, 515)
                         .addComponent(btnRemoveRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(75, Short.MAX_VALUE))
@@ -298,101 +466,35 @@ public class StudentDashboard extends javax.swing.JPanel {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(35, 35, 35)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRemoveRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnRemoveRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel8)))
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboRequestType, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
+                        .addComponent(comboRequestType, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)
                         .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboRequestName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(comboRequestPriority, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(jLabel14)
+                        .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
                         .addComponent(btnRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Library", jPanel5);
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel9.setText("Course Catalog");
-
-        tblCourseCatalog2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Course Name", "Professor", "Total Seats", "Seats Available", "Credit Hours", "Price"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane4.setViewportView(tblCourseCatalog2);
-
-        btnAddCollege2.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddCollege2.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddCollege2.setText("Register");
-        btnAddCollege2.setBorder(null);
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAddCollege2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(58, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(btnAddCollege2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("Transport", jPanel6);
 
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
@@ -436,14 +538,15 @@ public class StudentDashboard extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtStudentStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtStudentStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -459,7 +562,7 @@ public class StudentDashboard extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ProfessorDirectoryPane)
+                .addComponent(ProfessorDirectoryPane, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -472,6 +575,106 @@ public class StudentDashboard extends javax.swing.JPanel {
         dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
+    private void txtMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMessageActionPerformed
+
+    private void btnRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestActionPerformed
+        // TODO add your handling code here:
+        String requestType = comboRequestType.getSelectedItem().toString();
+        String request = txtRequest.getText();
+        String priority = comboRequestPriority.getSelectedItem().toString();
+        String message = txtMessage.getText();
+        
+        if(requestType.isEmpty() || request.isEmpty() || priority.isEmpty() || message.isEmpty())
+         {
+             
+            JOptionPane.showMessageDialog(this, "One or More fields are empty !!", "Empty Fields", 2);
+            return;       
+         }
+
+        LibraryRequest libReq = new LibraryRequest();
+        libReq.setMessage(message);
+        libReq.setSender(userAccount);
+        libReq.setPriority(priority);
+        libReq.setRequest(request);
+        libReq.setOrganizationType(requestType);
+        libReq.setStatus("Request raised");
+        libReq.setRequestType("Request");
+        
+        userAccount.getWorkQueue().addWorkRequest(libReq);
+        
+        Organization org = (Organization) comboRequestType.getSelectedItem();
+        
+        System.out.println(org);       
+        System.out.println(libReq);
+        
+        org.getWorkQueue().addWorkRequest(libReq);
+        
+        JOptionPane.showMessageDialog(this, "Request placed successfully !!", "Request", 1);
+
+        comboRequestType.setSelectedIndex(0);
+        comboRequestPriority.setSelectedIndex(0);
+        txtRequest.setText("");
+        txtMessage.setText("");
+        
+    }//GEN-LAST:event_btnRequestActionPerformed
+
+    private void comboRequestTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRequestTypeActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_comboRequestTypeActionPerformed
+
+    private void comboRequestType1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRequestType1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboRequestType1ActionPerformed
+
+    private void txtMessage1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessage1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMessage1ActionPerformed
+
+    private void btnRequestTransportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestTransportActionPerformed
+        // TODO add your handling code here:
+        String requestTypeT = comboRequestType1.getSelectedItem().toString();
+        String requestT = txtRequest1.getText();
+        String priorityT = comboRequestPriority1.getSelectedItem().toString();
+        String messageT = txtMessage1.getText();
+        
+        if(requestTypeT.isEmpty() || requestT.isEmpty() || priorityT.isEmpty() || messageT.isEmpty())
+         {
+             
+            JOptionPane.showMessageDialog(this, "One or More fields are empty !!", "Empty Fields", 2);
+            return;       
+         }
+
+        TransportRequest trans = new TransportRequest();
+        trans.setMessage(messageT);
+        trans.setSender(userAccount);
+        trans.setPriority(priorityT);
+        trans.setRequest(requestT);
+        trans.setOrganizationType(requestTypeT);
+        trans.setStatus("Request raised");
+        trans.setRequestType("Request");
+        
+        userAccount.getWorkQueue().addWorkRequest(trans);
+        
+        Organization org = (Organization) comboRequestType1.getSelectedItem();
+        
+        System.out.println(org);       
+        System.out.println(trans);
+        
+        org.getWorkQueue().addWorkRequest(trans);
+        
+        JOptionPane.showMessageDialog(this, "Request placed successfully !!", "Request", 1);
+
+        comboRequestType1.setSelectedIndex(-1);
+        comboRequestPriority1.setSelectedIndex(-1);
+        txtRequest1.setText("");
+        txtMessage1.setText("");
+        
+        
+    }//GEN-LAST:event_btnRequestTransportActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
@@ -482,23 +685,27 @@ public class StudentDashboard extends javax.swing.JPanel {
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnRemoveRequest;
     private javax.swing.JButton btnRequest;
-    private javax.swing.JComboBox<String> jComboRequestName;
-    private javax.swing.JComboBox<String> jComboRequestType;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JButton btnRequestTransport;
+    private javax.swing.JComboBox<String> comboRequestPriority;
+    private javax.swing.JComboBox<String> comboRequestPriority1;
+    private javax.swing.JComboBox comboRequestType;
+    private javax.swing.JComboBox comboRequestType1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -507,13 +714,41 @@ public class StudentDashboard extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable tblCourseCatalog;
-    private javax.swing.JTable tblCourseCatalog2;
     private javax.swing.JTable tblRegisteredCourses;
     private javax.swing.JTable tblStudentRequests;
+    private javax.swing.JTable tblStudentRequests1;
     private javax.swing.JTextField txtFees;
+    private javax.swing.JTextField txtMessage;
+    private javax.swing.JTextField txtMessage1;
+    private javax.swing.JTextField txtRequest;
+    private javax.swing.JTextField txtRequest1;
     private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtStudentStatus;
     // End of variables declaration//GEN-END:variables
+
+ private void displayRequestType() {
+      
+        System.out.println(network);
+        for(Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()){
+            if(enterprise.getEnterpriseType().equals(Library)){
+                for(Organization org : enterprise.getOrganizationDirectory().getOrganizationList())
+                    comboRequestType.addItem(org);
+            }
+   
+        }
+    }
+ 
+ private void displayTransRequestType() {
+      
+        System.out.println(network);
+        for(Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()){
+            if(enterprise.getEnterpriseType().equals(Transport)){
+                for(Organization org : enterprise.getOrganizationDirectory().getOrganizationList())
+                    comboRequestType1.addItem(org);
+            }
+   
+        }
+    }
 }

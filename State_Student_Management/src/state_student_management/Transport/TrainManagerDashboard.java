@@ -6,6 +6,11 @@ package state_student_management.Transport;
 
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
+import Business.Organization.Train;
+import Business.Organization.TrainDirectory;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.util.ArrayList;
@@ -23,25 +28,31 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
      * Creates new form TrainManagerDashboard
      */
     EcoSystem ecosystem;
-    University university;
+    Organization organization;
     UserAccount userAccount;
     JPanel userProcessContainer;
-    ArrayList<University> universityList = new ArrayList<>();
-    DefaultTableModel bs,trn,loco;
+    Train train;
+    TrainDirectory trainDirectory;
+    private Enterprise enterprise;
+    private OrganizationDirectory organizationDirectory;
+    ArrayList<Train> trainList = new ArrayList<>();
+    DefaultTableModel trn,loco;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public TrainManagerDashboard() {
+    public TrainManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
-        this.userAccount = userAccount;
         this.ecosystem = ecosystem;
-        this.university = university;
+        this.organization = organization;
+     
         trn = (DefaultTableModel) tblTrains.getModel();
         loco = (DefaultTableModel) tblLocoEngineers.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
+        
+        populateTrainTable();
     }
 
     /**
@@ -619,9 +630,14 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
         int trainNumber = Integer.parseInt(txtTrainNumber.getText().trim());
         String routeNameT = txtRouteNumberTrain.getText().trim();
         
+        Train train = new Train(trainNumber,routeNameT );
         
-        Object[] data = {trainNumber, routeNameT};
-        trn.addRow(data);
+        organization.trainDirectory.addTrain(train);
+        populateTrainTable();
+        
+        
+        //Object[] data = {trainNumber, routeNameT};
+        //trn.addRow(data);
         
         txtTrainNumber.setText("");
         txtRouteNumberTrain.setText("");
@@ -757,4 +773,16 @@ public class TrainManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtRouteNumberTrain;
     private javax.swing.JTextField txtTrainNumber;
     // End of variables declaration//GEN-END:variables
+
+private void populateTrainTable() {
+       
+        trn.setRowCount(0);
+      
+        for (Train train : this.organization.getTrainDirectory().getTrainList()) {
+            
+               Object[] objs = {train.getTrainNumber(), train.getRouteName()};                       
+               trn.addRow(objs);
+           }
+        }
+
 }

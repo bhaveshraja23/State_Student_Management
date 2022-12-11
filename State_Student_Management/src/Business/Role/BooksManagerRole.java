@@ -27,7 +27,7 @@ public class BooksManagerRole extends Role{
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new BooksManagerDashboard();
+        return new BooksManagerDashboard(userProcessContainer, ecosystem,organization );
     }
     
     
