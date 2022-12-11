@@ -26,7 +26,7 @@ public class ITSManagerRole extends Role {
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new ITSManagerDashboard();
+        return new ITSManagerDashboard(userProcessContainer, ecosystem, organization);
     }
     
 }
