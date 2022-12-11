@@ -150,6 +150,10 @@ public abstract class Organization {
         return medicinesDirectory;
     }
 
+
+
+
+
     public void setMedicinesDirectory(MedicinesDirectory medicinesDirectory) {
         this.medicinesDirectory = medicinesDirectory;
     }
@@ -160,9 +164,7 @@ public abstract class Organization {
 
     public void setItsServicesDirectory(ItsServicesDirectory itsServicesDirectory) {
         this.itsServicesDirectory = itsServicesDirectory;
-
     }
-    
 
     
     @Override
