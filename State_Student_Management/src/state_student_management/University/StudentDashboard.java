@@ -36,7 +36,8 @@ public class StudentDashboard extends javax.swing.JPanel {
     private UserAccount userAccount;
     Enterprise enterprise;
     Network network;
-   
+    DefaultTableModel courses,transport,library,hospital,encounter;
+    
     private DB4OUtil dB4OUtil; 
     
     public StudentDashboard(JPanel userProcessContainer, EcoSystem ecosystem, UserAccount userAccount, Enterprise enterprise, Network network) {
@@ -47,6 +48,12 @@ public class StudentDashboard extends javax.swing.JPanel {
         this.enterprise = enterprise;
         this.network = network;
         this.userAccount = userAccount;
+        
+        courses = (DefaultTableModel) tblCourseCatalog.getModel();
+        transport = (DefaultTableModel) tblStudentTransportRequests.getModel();
+        library = (DefaultTableModel) tblStudentLibraryRequests.getModel();
+        hospital = (DefaultTableModel) tblMedicalRequestsDirectory.getModel();
+        encounter = (DefaultTableModel) tblEncounters.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
         txtRole.setText("Student");
@@ -80,7 +87,7 @@ public class StudentDashboard extends javax.swing.JPanel {
         btnDrop1 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        tblStudentRequests1 = new javax.swing.JTable();
+        tblStudentTransportRequests = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         comboRequestType1 = new javax.swing.JComboBox();
         jLabel16 = new javax.swing.JLabel();
@@ -93,7 +100,7 @@ public class StudentDashboard extends javax.swing.JPanel {
         jLabel19 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblStudentRequests = new javax.swing.JTable();
+        tblStudentLibraryRequests = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
         comboRequestType = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
@@ -106,7 +113,7 @@ public class StudentDashboard extends javax.swing.JPanel {
         txtRequest = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tblMedicalRequestsDirectpry = new javax.swing.JTable();
+        tblMedicalRequestsDirectory = new javax.swing.JTable();
         jLabel20 = new javax.swing.JLabel();
         cbMedicalRequest = new javax.swing.JComboBox();
         jLabel21 = new javax.swing.JLabel();
@@ -260,7 +267,7 @@ public class StudentDashboard extends javax.swing.JPanel {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        tblStudentRequests1.setModel(new javax.swing.table.DefaultTableModel(
+        tblStudentTransportRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -279,7 +286,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(tblStudentRequests1);
+        jScrollPane5.setViewportView(tblStudentTransportRequests);
 
         jLabel15.setText("Request Type");
 
@@ -374,7 +381,7 @@ public class StudentDashboard extends javax.swing.JPanel {
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
-        tblStudentRequests.setModel(new javax.swing.table.DefaultTableModel(
+        tblStudentLibraryRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -393,7 +400,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tblStudentRequests);
+        jScrollPane3.setViewportView(tblStudentLibraryRequests);
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel10.setText("Books & Services Request");
@@ -484,7 +491,7 @@ public class StudentDashboard extends javax.swing.JPanel {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
-        tblMedicalRequestsDirectpry.setModel(new javax.swing.table.DefaultTableModel(
+        tblMedicalRequestsDirectory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -503,7 +510,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(tblMedicalRequestsDirectpry);
+        jScrollPane4.setViewportView(tblMedicalRequestsDirectory);
 
         jLabel20.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel20.setText("Medical Request");
@@ -732,11 +739,11 @@ public class StudentDashboard extends javax.swing.JPanel {
     private void btnRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestActionPerformed
         // TODO add your handling code here:
         String requestType = comboRequestType.getSelectedItem().toString();
-        String request = txtRequest.getText();
+        String chooseRequest = txtRequest.getText();
         String priority = comboRequestPriority.getSelectedItem().toString();
         String message = txtMessage.getText();
         
-        if(requestType.isEmpty() || request.isEmpty() || priority.isEmpty() || message.isEmpty())
+        if(requestType.isEmpty() || chooseRequest.isEmpty() || priority.isEmpty() || message.isEmpty())
          {
              
             JOptionPane.showMessageDialog(this, "One or More fields are empty !!", "Empty Fields", 2);
@@ -747,7 +754,7 @@ public class StudentDashboard extends javax.swing.JPanel {
         libReq.setMessage(message);
         libReq.setSender(userAccount);
         libReq.setPriority(priority);
-        libReq.setRequest(request);
+        libReq.setRequest(chooseRequest);
         libReq.setOrganizationType(requestType);
         libReq.setStatus("Request raised");
         libReq.setRequestType("Request");
@@ -955,10 +962,10 @@ public class StudentDashboard extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTable tblCourseCatalog;
     private javax.swing.JTable tblEncounters;
-    private javax.swing.JTable tblMedicalRequestsDirectpry;
+    private javax.swing.JTable tblMedicalRequestsDirectory;
     private javax.swing.JTable tblRegisteredCourses;
-    private javax.swing.JTable tblStudentRequests;
-    private javax.swing.JTable tblStudentRequests1;
+    private javax.swing.JTable tblStudentLibraryRequests;
+    private javax.swing.JTable tblStudentTransportRequests;
     private javax.swing.JTextField txtMedicalMessage;
     private javax.swing.JTextField txtMedicalTitle;
     private javax.swing.JTextField txtMessage;

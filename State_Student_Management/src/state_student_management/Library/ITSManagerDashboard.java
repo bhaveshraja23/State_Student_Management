@@ -52,6 +52,7 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.ecosystem = ecosystem;
         this.organization = organization;
+        this.userAccount = userAccount;
         
         itss = (DefaultTableModel) tblServices.getModel();  
         requests = (DefaultTableModel) tblRequestsIts.getModel(); 
@@ -400,7 +401,7 @@ public class ITSManagerDashboard extends javax.swing.JPanel {
         String currentStatus = requests.getValueAt(row, 3).toString();
         if(currentStatus.equalsIgnoreCase("Request raised"))
         {
-            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
     
         }
          else if(currentStatus.equalsIgnoreCase("Request Declined")){

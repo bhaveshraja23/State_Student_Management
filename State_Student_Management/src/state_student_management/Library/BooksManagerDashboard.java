@@ -7,6 +7,7 @@ package state_student_management.Library;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
+import Business.Network.Network;
 import Business.Organization.Books;
 import Business.Organization.BooksDirectory;
 import Business.Organization.Organization;
@@ -486,6 +487,18 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
     private void btnDeleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBookActionPerformed
         // TODO add your handling code here:
+        int row = tblBooks.getSelectedRow();
+        
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete!!");
+            return;
+        }
+        
+        String bookName = tblBooks.getValueAt(row,0 ).toString();
+        
+        for(Books books : organization.getBooksDirectory().getBooksList()){
+            
+        }
 
         book.removeRow(row);
 
