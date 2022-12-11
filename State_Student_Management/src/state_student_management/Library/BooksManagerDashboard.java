@@ -84,7 +84,7 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
         txtBookName = new javax.swing.JTextField();
         btnUpdateBook = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        comboBookStock = new javax.swing.JComboBox<>();
+        comboBookStock = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -173,7 +173,7 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
         jLabel7.setText("Availability");
 
-        comboBookStock.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "In Stock", "Out of Stock" }));
+        comboBookStock.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "In Stock", "Out of Stock" }));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -258,6 +258,11 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblRequests.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRequestsMouseClicked(evt);
             }
         });
         jScrollPane4.setViewportView(tblRequests);
@@ -402,12 +407,57 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
-        
+        //row = tblRequests.getSelectedRow();
+        String currentStatus = request.getValueAt(row, 3).toString();
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
+    
+        }
+         else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
+        populateRequestTable();
         
     }//GEN-LAST:event_btnRejectActionPerformed
 
     private void btnUpdateBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBookActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblBooks.getModel();
+        
+        if(tblBooks.getSelectedRowCount() == 1){
+            
+        String name =  model.getValueAt(tblBooks.getSelectedRow(), 0).toString();       
+        String bookStock = model.getValueAt(tblBooks.getSelectedRow(), 1).toString();
+        
+        txtBookName.setText(name);
+        comboBookStock.setSelectedItem(bookStock);
+        
+        model.setValueAt(name, tblBooks.getSelectedRow(), 0);
+        model.setValueAt(bookStock,tblBooks.getSelectedRow() ,1 );
+       
+
+        
+        
+        JOptionPane.showMessageDialog(this, "Details updated");
+        }
+        else{
+            if(tblBooks.getRowCount() ==0){
+                JOptionPane.showMessageDialog(this, "Table is empty");
+            }else{
+                JOptionPane.showMessageDialog(this, "Select a row to update");
+            }
+              
+        }
+        
+        
     }//GEN-LAST:event_btnUpdateBookActionPerformed
 
     private void btnAddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBookActionPerformed
@@ -456,21 +506,36 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
     private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
         // TODO add your handling code here:
         
-         row = tblRequests.getSelectedRow();
-        if (row < 0){
-            return;
+        String currentStatus = request.getValueAt(row, 3).toString();
+        
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Accepted");          
+            JOptionPane.showMessageDialog(this, "Request is Accepted", " Request Accepted", 1);
+           
         }
         
-        LibraryRequest libreq = (LibraryRequest) userAccount.getWorkQueue().getListOfWorkQueues().get(row);
-         if (request.getValueAt(row, 1).toString().equalsIgnoreCase("Employee On the way"))
-            {
-                JOptionPane.showMessageDialog(this,"Request already accepted by the employee", "Request already accepted", 2);
-            }
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This request is Already declined earlier", " Request declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+            
+        }
         
-
-         else libreq.setStatus("Employee On the way");
-         populateRequestTable();
+        populateRequestTable();
+       
     }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void tblRequestsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRequestsMouseClicked
+        // TODO add your handling code here:
+        
+        row = tblRequests.getSelectedRow();
+        col = tblRequests.getSelectedColumn();
+    }//GEN-LAST:event_tblRequestsMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -482,7 +547,7 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JButton btnReject;
     private javax.swing.JButton btnUpdateBook;
     private javax.swing.JButton btnViewBook;
-    private javax.swing.JComboBox<String> comboBookStock;
+    private javax.swing.JComboBox comboBookStock;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -514,26 +579,23 @@ private void populateBooksTable() {
 
 private void populateRequestTable() {
       request.setRowCount(0);
-  
+        
         WorkQueue workQueue = organization.getWorkQueue();
         
         for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
             LibraryRequest req = (LibraryRequest) workRequest;
-            
-            String receiver = "Not yet Assigned"; 
-            if( req.getReceiver() != null)
-                receiver = req.getReceiver().getEmployee().getName();
+              
             
             Date date = null;
-       
-            if(req.getStatus().equalsIgnoreCase("Complaint Resolved")) {
+            if(req.getStatus().equalsIgnoreCase("Request Accepted")) {
                   date = req.getResolveDate();
             }
 
-            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(), receiver, req.getRequestDate(),date};
+            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
             request.addRow(objs);
             
         }
     }
 
+ 
 }

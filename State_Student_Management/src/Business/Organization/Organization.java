@@ -145,6 +145,22 @@ public abstract class Organization {
         this.workQueue = workQueue;
     }
 
+    public MedicinesDirectory getMedicinesDirectory() {
+        return medicinesDirectory;
+    }
+
+    public void setMedicinesDirectory(MedicinesDirectory medicinesDirectory) {
+        this.medicinesDirectory = medicinesDirectory;
+    }
+
+    public ItsServicesDirectory getItsServicesDirectory() {
+        return itsServicesDirectory;
+    }
+
+    public void setItsServicesDirectory(ItsServicesDirectory itsServicesDirectory) {
+        this.itsServicesDirectory = itsServicesDirectory;
+    }
+
     
 
     
