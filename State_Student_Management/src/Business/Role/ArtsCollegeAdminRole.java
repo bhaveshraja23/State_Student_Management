@@ -27,7 +27,7 @@ public class ArtsCollegeAdminRole extends Role {
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new CollegeAdminDashboard(userProcessContainer, ecosystem, organization);
+        return new CollegeAdminDashboard(userProcessContainer, ecosystem, organization, network);
     }
     
 }

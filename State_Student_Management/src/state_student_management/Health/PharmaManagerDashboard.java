@@ -436,7 +436,7 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         String currentStatus = order.getValueAt(row, 4).toString();
         if(currentStatus.equalsIgnoreCase("Request raised"))
         {
-            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
             
         }
          else if(currentStatus.equalsIgnoreCase("Request Declined")){
@@ -476,7 +476,7 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
            
         }
         
-        else if(currentStatus.equalsIgnoreCase("Complaint Declined")){
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
             
             JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);        
             
