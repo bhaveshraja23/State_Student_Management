@@ -7,6 +7,8 @@ package Business.UserAccount;
 import Business.Employee.Employee;
 import Business.Role.Role;
 import Business.Student.Student;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 
 /**
  *
@@ -19,8 +21,12 @@ public class UserAccount {
     private Employee employee;
     private Student student;
     private Role role;
+    private WorkQueue workQueue;
     
-
+    public UserAccount(){
+        workQueue = new WorkQueue();
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -60,6 +66,23 @@ public class UserAccount {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public WorkQueue getWorkQueue() {
+        return workQueue;
+    }
+
+    public void setWorkQueue(WorkQueue workQueue) {
+        this.workQueue = workQueue;
+    }
      
-    
+    public boolean isEmployeeBusy()
+    {
+        for (WorkRequest workRequest : workQueue.getListOfWorkQueues())
+        { 
+            if(workRequest.getStatus() != null && workRequest.getStatus().equalsIgnoreCase("Employee On the way"))
+                return true;
+        }
+        return false;
+        //"Employee On the way"
+    }
 }

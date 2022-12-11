@@ -9,6 +9,7 @@ import Business.Role.Role;
 import Business.Student.Student;
 import Business.Student.StudentDirectory;
 import Business.UserAccount.UserAccountDirectory;
+import Business.WorkQueue.WorkQueue;
 import java.util.ArrayList;
 
 /**
@@ -18,8 +19,12 @@ import java.util.ArrayList;
 public abstract class Organization {
     
     public String name;
+    private WorkQueue workQueue;
     public EmployeeDirectory employeeDirectory;
     public BusDirectory busDirectory;
+    public CourseDirectory courseDirectory;
+    public BooksDirectory booksDirectory;
+    public TrainDirectory trainDirectory;
     public UserAccountDirectory userAccountDirectory;
     public StudentDirectory studentDirectory;
     public int organizationID;
@@ -50,10 +55,14 @@ public abstract class Organization {
 
     public Organization(String name) {
         this.name = name;
+        workQueue = new WorkQueue();
         employeeDirectory = new EmployeeDirectory();
         studentDirectory = new StudentDirectory();
         busDirectory = new BusDirectory();
+        booksDirectory = new BooksDirectory();
+        trainDirectory = new TrainDirectory();
         userAccountDirectory = new UserAccountDirectory();
+        courseDirectory = new CourseDirectory();
         organizationID = counter;
         ++counter;
     }
@@ -95,8 +104,41 @@ public abstract class Organization {
     public void setBusDirectory(BusDirectory busDirectory) {
         this.busDirectory = busDirectory;
     }
+
+    public CourseDirectory getCourseDirectory() {
+        return courseDirectory;
+    }
+
+    public void setCoursesDirectory(CourseDirectory coursesDirectory) {
+        this.courseDirectory = coursesDirectory;
+    }
+
+    public BooksDirectory getBooksDirectory() {
+        return booksDirectory;
+    }
+
+    public void setBooksDirectory(BooksDirectory booksDirectory) {
+        this.booksDirectory = booksDirectory;
+    }
+
+    public TrainDirectory getTrainDirectory() {
+        return trainDirectory;
+    }
+
+    public void setTrainDirectory(TrainDirectory trainDirectory) {
+        this.trainDirectory = trainDirectory;
+    }
+
+    public WorkQueue getWorkQueue() {
+        return workQueue;
+    }
+
+    public void setWorkQueue(WorkQueue workQueue) {
+        this.workQueue = workQueue;
+    }
     
 
+    
     @Override
     public String toString() {
         return name;

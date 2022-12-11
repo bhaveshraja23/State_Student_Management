@@ -29,7 +29,7 @@ public class BusManagerRole extends Role {
                                  Network network
                                  ) {
        
-        return new BusManagerDashboard(userProcessContainer, ecosystem, ecosystem.getBusDirectory());
+        return new BusManagerDashboard(userProcessContainer, ecosystem, organization);
     }
     
 }

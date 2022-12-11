@@ -4,10 +4,13 @@
  */
 package state_student_management.University;
 
+import Business.Organization.CourseDirectory;
+import Business.Organization.Course;
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.util.ArrayList;
@@ -24,26 +27,24 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
      * Creates new form CollegeAdminDashboard1
      */
     EcoSystem ecosystem;
-    University university;
+    Organization organization;
     UserAccount userAccount;
     JPanel userProcessContainer;
+    //Courses courses;
+    //CoursesDirectory coursesDirectory;
     private Enterprise enterprise;
-    ArrayList<University> universityList = new ArrayList<>();
-    DefaultTableModel cl1,crse1,sdnt1,prof1;
+    //private OrganizationDirectory organizationDirectory;
+    //ArrayList<Courses> coursesList = new ArrayList<>();
+    DefaultTableModel crse1,sdnt1,prof1;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public CollegeAdminDashboard(JPanel userProcessContainer, EcoSystem ecosystem, UserAccount account) {
+    public CollegeAdminDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
-        this.userAccount = userAccount;
-        this.ecosystem = ecosystem;
-        this.university = university;
-
-        //cl1 = (DefaultTableModel) tblColleges.getModel();
-
-        this.enterprise=enterprise;
+        this.ecosystem = ecosystem; 
+        this.organization = organization;
 
 
         crse1 = (DefaultTableModel) tblCourses1.getModel();
@@ -52,7 +53,8 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
 
 
         dB4OUtil = DB4OUtil.getInstance();
-        //populateUniversityTable();
+
+        //populateCoursesTable();
         
     }
 
@@ -148,12 +150,13 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -169,11 +172,11 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Name", "Credit Hours", "Professor", "University", "College", "Price", "Seats"
+                "ID", "Name", "Credit Hours", "Description"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -219,7 +222,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
 
         jLabel22.setText("Name");
 
-        jLabel21.setText("Seats");
+        jLabel21.setText("Description");
 
         jLabel24.setText("Credit Hours");
 
@@ -262,7 +265,6 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(19, 19, 19))
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -663,6 +665,8 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         txtCourse.setText("");
         txtSeats.setText("");
         txtCreditHours.setText("");
+        
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnDeleteCourseActionPerformed
 
     private void btnUpdateCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateCourseActionPerformed
@@ -752,43 +756,35 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     private void btnAddCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCourseActionPerformed
         // TODO add your handling code here:
        String nameCourse1 = txtCourse.getText().trim();
-       int seatsCourse1 = Integer.parseInt(txtSeats.getText().trim());
-       int creditHours1 = Integer.parseInt(txtCreditHours.getText().trim());
-       //int price1 = Integer.parseInt(txtPrice.getText().trim());
+       String seatsCourse1 = txtSeats.getText().trim();
+       String creditHours1 = txtCreditHours.getText().trim();
+       
+       int seats = Integer.parseInt(seatsCourse1);
+       int credits = Integer.parseInt(creditHours1);
+       Course course = new Course(nameCourse1, seats,credits);
+       
+       System.out.println(course.getCourseName());
+       System.out.println(course.getSeats());
+       System.out.println(course.getCreditHours());
+
+       System.out.println(organization.getName());
+       System.out.println(organization.courseDirectory);
+       organization.getCourseDirectory().addCourse(course);
+       
+       System.out.println(organization.getCourseDirectory().getCoursesList());
+
+       populateCoursesTable();
+        //Object[] data = {nameCourse1, seatsCourse1, creditHours1};
+        //crse1.addRow(data);
         
-        //University universityList=new University(name,offemail, offtel, established, address);
-        //cityList.add(city);
-        Object[] data = {nameCourse1, seatsCourse1, creditHours1};
-        crse1.addRow(data);
-        
-//        if (!name.isEmpty()) {
-//            if (ecosystem.isUnique(name)) {
-//                University university = ecosystem.createAndAddUniversity();
-//                university.setName(name);
-//                university.setOffemail(offemail);
-//                university.setOfftel(offtel);
-//                university.setEstablished(established);
-//                university.setAddress(address);
-//              
-//                JOptionPane.showMessageDialog(null, "University Successfully Created");
-//                
-//            {
-//               JOptionPane.showMessageDialog(null, "University Already Exits");
-//            }
-//        }
-//        else {
-//            JOptionPane.showMessageDialog(null, "Enter university name");
-//        }
-//        
-        //populateUniversityTable();
+
         txtCourse.setText("");
         txtSeats.setText("");
         txtCreditHours.setText("");
-//        txtPrice.setText("");
+
         
         dB4OUtil.storeSystem(ecosystem);
                                                    
-    //}  
     }//GEN-LAST:event_btnAddCourseActionPerformed
 
     private void tblCourses1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourses1MouseClicked
@@ -960,15 +956,20 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtSeats;
     // End of variables declaration//GEN-END:variables
-}
-//public void populateOrganizationEmployeeComboBox() {
+
+     private void populateCoursesTable() {
+       
+        crse1.setRowCount(0);
         
-   //     jComboUniversities1.removeAllItems();
-        //System.out.println(this);
-       //
-     //   for (Organization organization : this.enterprise) {
-         //   jComboUniversities1.addItem(organization);
-        //}
-    //}
+        System.out.println(organization.getCourseDirectory().getCoursesList());
+        for (Course courses : this.organization.getCourseDirectory().getCoursesList()) {
+            
+               Object[] objs = {courses.getCourseName(),courses.getCreditHours(),courses.getSeats()};                       
+               crse1.addRow(objs);
+           }
+        }
+
+}
+
 
 
