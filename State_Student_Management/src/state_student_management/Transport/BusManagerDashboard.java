@@ -30,7 +30,7 @@ public class BusManagerDashboard extends javax.swing.JPanel {
      */
    
     EcoSystem ecosystem;
-    University university;
+    Organization organization;
     UserAccount userAccount;
     JPanel userProcessContainer;
     Bus bus;
@@ -38,27 +38,22 @@ public class BusManagerDashboard extends javax.swing.JPanel {
     private Enterprise enterprise;
     private OrganizationDirectory organizationDirectory;
     ArrayList<Bus> busList = new ArrayList<>();
-    DefaultTableModel bs,trn,loco;
+    DefaultTableModel bs,loco;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public BusManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, BusDirectory busDirectory ) {
+    public BusManagerDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
-        this.userAccount = userAccount;
         this.ecosystem = ecosystem;
-        this.university = university;
-        this.enterprise=enterprise;
-        this.bus = bus;
-        this.busDirectory = busDirectory;
-        this.organizationDirectory = organizationDirectory;
+        this.organization = organization;
 
         bs = (DefaultTableModel) tblBuses.getModel();
         loco = (DefaultTableModel) tblLocoEngineers.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
-       // populateBusTable();
+        populateBusTable();
     }
 
     /**
@@ -562,17 +557,17 @@ public class BusManagerDashboard extends javax.swing.JPanel {
 
         tblTransportRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Univeristy Name", "No.of Students", "Route Name", "Type of Transport", "Time"
+                "Student Name", "Priority", "Message", "Status", "Employee", "Request Date", "Resolve Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -676,6 +671,8 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         txtRouteNameBus.setText("");
         txtStartingPoint.setText("");
         txtEndingPoint.setText("");
+        
+        dB4OUtil.storeSystem(ecosystem);
 
     }//GEN-LAST:event_btnDeleteBusActionPerformed
 
@@ -690,8 +687,9 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         String startingPoint = txtStartingPoint.getText().trim();
         String endingPoint = txtEndingPoint.getText().trim();
         
+        Bus bus = new Bus(busNumber,routeName,startingPoint,endingPoint);
         
-        busDirectory.addBus(bus);
+        organization.busDirectory.addBus(bus);
         populateBusTable();
         
         //Object[] data = {busNumber, routeName, startingPoint, endingPoint};
@@ -846,11 +844,10 @@ public class BusManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtStartingPoint;
     // End of variables declaration//GEN-END:variables
     private void populateBusTable() {
-        
-
+       
         bs.setRowCount(0);
       
-        for (Bus bus : this.ecosystem.busDirectory.getBusList()) {
+        for (Bus bus : this.organization.getBusDirectory().getBusList()) {
             
                Object[] objs = {bus.getBusNumber(),bus.getRouteName(),bus.getStartingPoint(),bus.getEndingPoint()};                       
                bs.addRow(objs);

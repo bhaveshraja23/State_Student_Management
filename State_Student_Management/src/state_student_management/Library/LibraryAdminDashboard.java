@@ -6,6 +6,11 @@ package state_student_management.Library;
 
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.Books;
+import Business.Organization.BooksDirectory;
+import Business.Organization.Organization;
+import Business.Organization.OrganizationDirectory;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.util.ArrayList;
@@ -23,25 +28,31 @@ public class LibraryAdminDashboard extends javax.swing.JPanel {
      * Creates new form LibraryAdminDashboard1
      */
     EcoSystem ecosystem;
-    University university;
+    Organization organization;
     UserAccount userAccount;
     JPanel userProcessContainer;
-    ArrayList<University> universityList = new ArrayList<>();
+    Books books;
+    BooksDirectory booksDirectory;
+    private Enterprise enterprise;
+    private OrganizationDirectory organizationDirectory;
+    ArrayList<Books> booksList = new ArrayList<>();
     DefaultTableModel its,book;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public LibraryAdminDashboard() {
+    public LibraryAdminDashboard(JPanel userProcessContainer, EcoSystem ecosystem, Organization organization) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
-        this.userAccount = userAccount;
         this.ecosystem = ecosystem;
-        this.university = university;
+        this.organization = organization;
+        
         its = (DefaultTableModel) tblITSstaff.getModel();
         book = (DefaultTableModel) tblBooks.getModel();       
         
         dB4OUtil = DB4OUtil.getInstance();
+        
+        populateBooksTable();
     }
 
     /**
@@ -570,8 +581,13 @@ public class LibraryAdminDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
         String bookName = txtBookName.getText().trim();
         
-        Object[] data = {bookName};
-        book.addRow(data);
+        Books books = new Books(bookName);
+        
+        organization.booksDirectory.addBook(books);
+        populateBooksTable();
+        
+       // Object[] data = {bookName};
+       // book.addRow(data);
         
         txtBookName.setText("");
         
@@ -692,4 +708,15 @@ public class LibraryAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JTextField txtItsSsn;
     private javax.swing.JTextField txtRole;
     // End of variables declaration//GEN-END:variables
+
+private void populateBooksTable() {
+       
+        book.setRowCount(0);
+      
+        for (Books books : this.organization.getBooksDirectory().getBooksList()) {
+            
+               Object[] objs = {books.getBookName()};                       
+               book.addRow(objs);
+           }
+        }
 }

@@ -14,7 +14,7 @@ public class Bus {
     private String startingPoint;
     private String endingPoint;
     
-    private Bus(int busNumber, String routeName, String startingPoint, String endingPoint){
+    public Bus(int busNumber, String routeName, String startingPoint, String endingPoint){
         this.busNumber = busNumber;
         this.routeName = routeName;
         this.startingPoint = startingPoint;
