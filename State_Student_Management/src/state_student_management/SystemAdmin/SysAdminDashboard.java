@@ -44,9 +44,10 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         dtm = (DefaultTableModel) tblNetwork.getModel();
         dtmEnterprise = (DefaultTableModel) tableEnterprise.getModel();
         dtmEnterpriseAdmin = (DefaultTableModel) tblUniversityAdmin1.getModel();
-        dtmAdmissions = (DefaultTableModel) tblAdmissionApplications.getModel();
+        //dtmAdmissions = (DefaultTableModel) tblAdmissionApplications.getModel();
         dB4OUtil = DB4OUtil.getInstance();
         txtRole.setText("System Admin");
+        txtRole.setEditable(false);
         populateNetworkTable();
         populateEnterpriseTable();
         displayEnterpriseTypeComboBox();
@@ -106,12 +107,6 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         txtAdminPassword = new javax.swing.JPasswordField();
         txtAdminContact = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tblAdmissionApplications = new javax.swing.JTable();
-        btnReject = new javax.swing.JButton();
-        btnAccept = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -447,78 +442,6 @@ public class SysAdminDashboard extends javax.swing.JPanel {
 
         ProfessorDirectoryPane.addTab("Manage Enterprise Admins", jPanel4);
 
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel21.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel21.setText("Admission Applications");
-
-        tblAdmissionApplications.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Name", "Email", "Gender", "Age", "GRE", "IELTS", "Address", "University", "College"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane6.setViewportView(tblAdmissionApplications);
-
-        btnReject.setBackground(new java.awt.Color(255, 51, 51));
-        btnReject.setForeground(new java.awt.Color(255, 255, 255));
-        btnReject.setText("Reject");
-        btnReject.setBorder(null);
-        btnReject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRejectActionPerformed(evt);
-            }
-        });
-
-        btnAccept.setBackground(new java.awt.Color(0, 153, 0));
-        btnAccept.setForeground(new java.awt.Color(255, 255, 255));
-        btnAccept.setText("Accept");
-        btnAccept.setBorder(null);
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21)
-                    .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(262, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("Admissions Applications", jPanel8);
-
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SSM.png"))); // NOI18N
@@ -822,10 +745,6 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         
         
     }//GEN-LAST:event_btnDelete3ActionPerformed
-
-    private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRejectActionPerformed
     
 //    public void populateAdmissionTable() {
 //        
@@ -841,14 +760,12 @@ public class SysAdminDashboard extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
-    private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAddEnterprise;
     private javax.swing.JButton btnAddEnterpriseAdmin;
     private javax.swing.JButton btnAddNetwork;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDelete3;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnReject;
     private javax.swing.JComboBox cbEnterprise;
     private javax.swing.JComboBox cbEnterpriseType;
     private javax.swing.JComboBox cbNetwork;
@@ -865,7 +782,6 @@ public class SysAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -876,13 +792,10 @@ public class SysAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable tableEnterprise;
-    private javax.swing.JTable tblAdmissionApplications;
     private javax.swing.JTable tblNetwork;
     private javax.swing.JTable tblUniversityAdmin1;
     private javax.swing.JTextField txtAdminContact;

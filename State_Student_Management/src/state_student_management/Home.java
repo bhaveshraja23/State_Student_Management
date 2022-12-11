@@ -14,7 +14,7 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import javax.swing.JPanel;
 //import state_student_management.Auth.RegisterAsPatient;
-import state_student_management.University.University;
+
 
 /**
  *
@@ -27,7 +27,6 @@ public class Home extends javax.swing.JFrame {
      */
     EcoSystem system;
     Network network;
-    University university;
     private DB4OUtil dB4OUtil;
     
     public Home() {
@@ -35,7 +34,6 @@ public class Home extends javax.swing.JFrame {
         dB4OUtil = DB4OUtil.getInstance();
         this.system = dB4OUtil.retrieveSystem();
         this.network=network;
-        this.university = university;
         this.setContentPane(userProcessContainer);
         this.setVisible(true);
     }
