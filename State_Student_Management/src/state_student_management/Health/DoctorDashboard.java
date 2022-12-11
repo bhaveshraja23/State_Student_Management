@@ -55,6 +55,8 @@ public class DoctorDashboard extends javax.swing.JPanel {
         app = (DefaultTableModel) tblDoctorAppointments.getModel();
         populateAppointmentsTable();
         dB4OUtil = DB4OUtil.getInstance();
+        txtRole.setText("Doctor");
+        txtRole.setEditable(false);
     }
 
     /**
@@ -107,11 +109,11 @@ public class DoctorDashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "PatientID", "Student Name", "Priority", "Message", "Status", "Request Date", "Assigned Date"
+                "PatientID", "Student Name", "Priority", "Message", "Status", "Request Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, true, false, false, false
+                true, false, false, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

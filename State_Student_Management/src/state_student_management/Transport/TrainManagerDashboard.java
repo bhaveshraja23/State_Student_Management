@@ -16,7 +16,7 @@ import java.awt.CardLayout;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
-import state_student_management.University.University;
+
 
 /**
  *

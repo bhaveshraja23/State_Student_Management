@@ -12,7 +12,12 @@ import Business.Student.Student;
 import Business.Student.StudentDirectory;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -26,6 +31,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.BorderFactory;
+import javax.swing.Timer;
 /**
  *
  * @author bhaveshraja
@@ -49,6 +56,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         
         this.userProcessContainer = userProcessContainer;
         this.ecosystem = ecosystem;
+        displayTime(); 
         //sdt = (DefaultTableModel) tblUniversityAdmin1.getModel();
        
         dB4OUtil = DB4OUtil.getInstance();  
@@ -90,6 +98,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         txtEmail = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtielts = new javax.swing.JTextField();
+        txttimedisplay = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -123,6 +132,12 @@ public class ApplyToUniversity extends javax.swing.JPanel {
 
         jLabel3.setText("GRE");
 
+        txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUsernameKeyTyped(evt);
+            }
+        });
+
         jLabel4.setText("Password");
 
         jLabel12.setText("Username");
@@ -132,17 +147,36 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                 txtStudentPasswordActionPerformed(evt);
             }
         });
+        txtStudentPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtStudentPasswordKeyTyped(evt);
+            }
+        });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SSM (1).png"))); // NOI18N
         jLabel5.setText("jLabel5");
 
         jLabel7.setText("Gender");
 
+        txtage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtageKeyTyped(evt);
+            }
+        });
+
         jLabel14.setText("Mobile");
 
         jLabel8.setText("Age");
 
+        txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEmailKeyTyped(evt);
+            }
+        });
+
         jLabel2.setText("Email");
+
+        txttimedisplay.setBorder(null);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -153,10 +187,6 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(146, 146, 146)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(215, 215, 215)
-                        .addComponent(jLabel6)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -181,8 +211,12 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                                 .addComponent(txtStudentPassword)
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel15)
-                                .addComponent(cbNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(215, 215, 215))))
+                                .addComponent(cbNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txttimedisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(215, 215, 215))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,7 +230,8 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txttimedisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -248,7 +283,22 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                 .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void displayTime() {
+        Timer timer = new Timer(1000, new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txttimedisplay.setText(DateFormat.getDateTimeInstance().format(new Date())); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        timer.setRepeats(true);
+        timer.setCoalesce(true);
+        timer.setInitialDelay(0);
+        timer.start();
+
+    }
+    
     private void btnUniversityApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUniversityApplyActionPerformed
         // TODO add your handling code here:
 
@@ -264,13 +314,74 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         long studentMobile = Long.parseLong(txtMobile.getText().trim());
         UUID uuid=UUID.randomUUID();
         Network network = (Network) cbNetwork.getSelectedItem();
+        
+        
+        if (network == null) {
+            cbNetwork.setBorder(BorderFactory.createLineBorder(Color.RED));
+            cbNetwork.setForeground(Color.red);
+
+        }
+        if (txtName.getText().isEmpty()) {
+            txtName.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtName.setForeground(Color.red);
+
+        }
+        if (txtage.getText().isEmpty()) {
+            txtage.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtage.setForeground(Color.red);
+
+        }
+        if (txtUsername.getText().isEmpty()) {
+            txtUsername.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtUsername.setForeground(Color.red);
+
+        }
+        if (txtStudentPassword.getText().isEmpty()) {
+            txtStudentPassword.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtStudentPassword.setForeground(Color.red);
+
+        }
+        if (txtEmail.getText().isEmpty()) {
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtEmail.setForeground(Color.red);
+
+        }
+        if (txtgre.getText().isEmpty()) {
+            txtgre.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtgre.setForeground(Color.red);
+
+        }
+        if (txtgender == null) {
+            txtgender.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtgender.setForeground(Color.red);
+
+        }
+        if (txtMobile.getText().isEmpty()) {
+            txtMobile.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtMobile.setForeground(Color.red);
+
+        }
+        if (txtielts.getText().isEmpty()) {
+            txtielts.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtielts.setForeground(Color.red);
+
+        }
+
+//        if (studentName.isEmpty()|| studentEmail.isEmpty() || studentGender.isEmpty() || studentAge.isEmpty()|| studentGre.isEmpty()|| studentIelts.isEmpty()|| studentUsername.isEmpty() || studentPassword.isEmpty() || studentMobile.isEmpty())
+//        {
+//            JOptionPane.showMessageDialog(this, "One or More fields are empty..!", "Empty Fields", 2);
+//        }
+        
+        else if(!validContact(txtMobile.getText())){
+            JOptionPane.showMessageDialog(null, "Invalid Phone Number");
+        }
 
         //populateAdmissionTable();
 
         if (validEmail(studentEmail) && validUsername(studentUsername)){
 
             //int age = Integer.parseInt(strAge);
-            //sendEmailMessage(studentEmail);
+            sendEmailMessage(studentEmail);
             Student student = new Student(uuid.toString(), studentEmail, studentPassword, studentUsername, studentName, studentAge, studentMobile, studentGender, studentGre, studentIelts);
             UserAccount userAccount = network.getUserAccountDirectory().createStudentAccount(studentUsername, studentPassword, student, new StudentRole());
             
@@ -310,11 +421,89 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtStudentPasswordActionPerformed
 
+    private void txtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyTyped
+        // TODO add your handling code here:
+        if (!validEmail(txtEmail.getText())) {
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtEmail.setForeground(Color.RED);
+            
+        } else {
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            txtEmail.setForeground(Color.BLACK);
+            int delay = 3000; //milliseconds
+            ActionListener taskPerformer = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {   
+                }  
+            };
+            javax.swing.Timer tick = new javax.swing.Timer(delay, taskPerformer);
+            tick.setRepeats(false);
+            tick.start();
+        }
+    }//GEN-LAST:event_txtEmailKeyTyped
+
+    private void txtStudentPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStudentPasswordKeyTyped
+        // TODO add your handling code here:
+        if (!validPassword(txtStudentPassword.getText())) {
+            txtStudentPassword.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtStudentPassword.setForeground(Color.RED);
+        } else {
+            txtStudentPassword.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            txtStudentPassword.setForeground(Color.BLACK);
+            int delay = 3000; //milliseconds
+            ActionListener taskPerformer = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                }  
+            };
+            javax.swing.Timer tick = new javax.swing.Timer(delay, taskPerformer);
+            tick.setRepeats(false);
+            tick.start();
+        }
+    }//GEN-LAST:event_txtStudentPasswordKeyTyped
+
+    private void txtUsernameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyTyped
+        // TODO add your handling code here:
+        if (!validUsername(txtUsername.getText())) {
+            txtUsername.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtUsername.setForeground(Color.RED);
+        } else {
+            txtUsername.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            txtUsername.setForeground(Color.BLACK);
+            int delay = 3000; //milliseconds
+            ActionListener taskPerformer = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                }  
+            };
+            javax.swing.Timer tick = new javax.swing.Timer(delay, taskPerformer);
+            tick.setRepeats(false);
+            tick.start();
+        }
+    }//GEN-LAST:event_txtUsernameKeyTyped
+
+    private void txtageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtageKeyTyped
+        // TODO add your handling code here:
+        if (!isNumber(txtage.getText())) {
+            txtage.setBorder(BorderFactory.createLineBorder(Color.RED));
+            txtage.setForeground(Color.RED);
+
+        } else {
+            txtage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            txtage.setForeground(Color.BLACK);
+            int delay = 3000; //milliseconds
+            ActionListener taskPerformer = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                }  
+            };
+            javax.swing.Timer tick = new javax.swing.Timer(delay, taskPerformer);
+            tick.setRepeats(false);
+            tick.start();
+        }
+    }//GEN-LAST:event_txtageKeyTyped
+
     public static void sendEmailMessage(String emailId) {
 // Recipient's email ID needs to be mentioned.
         String to = emailId;
-        String from = "stdntmngmnt99@gmail.com";
-        String pass = "Student@123";
+        String from = "rajabhavesh@gmail.com";
+        String pass = "shdjpnbeulzntaup";
 // Assuming you are sending email from localhost
 // String host = "192.168.0.16";
 
@@ -347,18 +536,37 @@ public class ApplyToUniversity extends javax.swing.JPanel {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
 // Set Subject: header field
-            message.setSubject("Resident Registration");
+            message.setSubject("Student Registration");
             message.setText("Thank you for registering with us. Your account will be activated within 24 hours.");
 // Send message
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-            System.out.println("Sent message successfully....");
+            //System.out.println("Sent message successfully....");
         } catch (MessagingException mex) {
             mex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Invalid email id");
         }
+    }
+    
+    public Boolean validContact(String contact) {
+        String regex = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(contact);
+        if(matcher.matches()){
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean validname(String name) {
+        Pattern pattern;
+        Matcher matcher;
+        String NAME_PATTERN = "^[A-Za-z]{1,}[\\s]{0,1}[A-Za-z]{0,}$";
+        pattern = Pattern.compile(NAME_PATTERN);
+        matcher = pattern.matcher(name);
+        return matcher.matches();
     }
     
     public static boolean validUsername(String name) {
@@ -370,7 +578,8 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         return matcher.matches();
     }
         
-    public static boolean validEmail(String email) {
+        
+   public static boolean validEmail(String email) {
         Pattern pattern;
         Matcher matcher;
         String EMAIL_PATTERN
@@ -378,6 +587,25 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public static boolean validPassword(String passwordValue) {
+        Pattern pattern;
+        Matcher matcher;
+        String PASSWORD_PATTERN
+                = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=~|?])(?=\\S+$).{8,}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(passwordValue);
+        return matcher.matches();
+    }
+    
+    private static boolean isNumber(String n) {
+		try {
+			Integer.parseInt(n);
+			return true;
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
     }
     
     public void populateNetworkComboBox()
@@ -416,5 +644,6 @@ public class ApplyToUniversity extends javax.swing.JPanel {
     private javax.swing.JTextField txtgender;
     private javax.swing.JTextField txtgre;
     private javax.swing.JTextField txtielts;
+    private javax.swing.JTextField txttimedisplay;
     // End of variables declaration//GEN-END:variables
 }

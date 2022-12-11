@@ -19,7 +19,7 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
-import state_student_management.University.University;
+
 
 /**
  *
@@ -50,6 +50,8 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
         populateMedicinesTable();
         populateOrdersTable();
         dB4OUtil = DB4OUtil.getInstance();
+        txtRole.setText("Pharma Manager");
+        txtRole.setEditable(false);
     }
 
     /**
@@ -307,11 +309,11 @@ public class PharmaManagerDashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "StudentID", "Student Name", "Priority", "Message", "Status", "Request Date", "Update Date"
+                "StudentID", "Student Name", "Priority", "Message", "Status", "Request Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

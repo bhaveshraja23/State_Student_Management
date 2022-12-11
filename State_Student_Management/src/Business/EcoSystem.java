@@ -9,7 +9,7 @@ import Business.Organization.Organization;
 import Business.Role.Role;
 import Business.Role.SystemAdminRole;
 import java.util.ArrayList;
-import state_student_management.University.University;
+//import state_student_management.University.University;
 
 /**
  *
@@ -19,7 +19,7 @@ public class EcoSystem extends Organization{
 
   public static EcoSystem business;
   public ArrayList<Network> networkList;
-  public ArrayList<University>universityList = new ArrayList<University>();
+  //public ArrayList<University>universityList = new ArrayList<University>();
 
 
     public static EcoSystem getInstance() {
@@ -39,7 +39,7 @@ public class EcoSystem extends Organization{
     private EcoSystem() {
         super(null);
         networkList = new ArrayList<Network>();
-        universityList = new ArrayList<University>();
+//        universityList = new ArrayList<University>();
 
     }
 
@@ -79,24 +79,24 @@ public class EcoSystem extends Organization{
         return true;
     }
     
-     public ArrayList<University> getUniversityList() {
-        return universityList;
-    }
-
-     public University getUniversity(String universityName){
-         
-        for (University university : universityList)
-        {
-            if (university.getName().equals(universityName))
-                return university;
-        }
-        return null;
-    }
-    
-    public University createAndAddUniversity() {
-        University university = new University();
-        universityList.add(university);
-        return university;
-    }
+//     public ArrayList<University> getUniversityList() {
+//        return universityList;
+//    }
+//
+//     public University getUniversity(String universityName){
+//         
+//        for (University university : universityList)
+//        {
+//            if (university.getName().equals(universityName))
+//                return university;
+//        }
+//        return null;
+//    }
+//    
+//    public University createAndAddUniversity() {
+//        University university = new University();
+//        universityList.add(university);
+//        return university;
+//    }
     
 }
