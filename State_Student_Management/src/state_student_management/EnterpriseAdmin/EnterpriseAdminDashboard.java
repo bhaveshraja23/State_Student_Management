@@ -593,28 +593,28 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
                 role = new TrainManagerRole();
                 break;
                 
-            case "ITSManager":
+            case "LocoEngineer":
                 
                 n = 11;
+                role = new LocoEngineerRole();
+                break;
+                
+            case "ITSManager":
+                
+                n = 12;
                 role = new ITSManagerRole();
                 break;
                 
             case "ITSEmployee":
                 
-                n = 12;
+                n = 13;
                 role = new ITSEmployeeRole();
                 break;
                 
             case "BooksManager":
                 
-                n = 13;
-                role = new BooksManagerRole();
-                break;
-                
-            case "LocoEngineer":
-                
                 n = 14;
-                role = new LocoEngineerRole();
+                role = new BooksManagerRole();
                 break;
                 
         }
@@ -732,6 +732,7 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
 
     private void ProfessorDirectoryPaneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProfessorDirectoryPaneKeyPressed
         // TODO add your handling code here:
+        populateOrganizationEmployeeComboBox();
         
         
     }//GEN-LAST:event_ProfessorDirectoryPaneKeyPressed

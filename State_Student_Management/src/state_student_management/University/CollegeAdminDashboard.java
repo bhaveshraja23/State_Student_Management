@@ -54,7 +54,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
 
         dB4OUtil = DB4OUtil.getInstance();
 
-        //populateCoursesTable();
+        populateCoursesTable();
         
     }
 
@@ -769,6 +769,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
 
        System.out.println(organization.getName());
        System.out.println(organization.courseDirectory);
+       
        organization.getCourseDirectory().addCourse(course);
        
        System.out.println(organization.getCourseDirectory().getCoursesList());

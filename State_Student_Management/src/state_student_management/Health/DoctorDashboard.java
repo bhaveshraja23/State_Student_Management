@@ -12,8 +12,12 @@ import Business.Organization.Organization;
 import Business.Organization.VitalSign;
 import Business.Student.Student;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -32,11 +36,11 @@ public class DoctorDashboard extends javax.swing.JPanel {
     UserAccount userAccount;
     JPanel userProcessContainer;
     Organization organization;
-    DefaultTableModel enc;
+    DefaultTableModel enc, app;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
-    public DoctorDashboard(JPanel userProcessContainer, Organization organization) {
+    public DoctorDashboard(JPanel userProcessContainer, UserAccount userAccount, Organization organization) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -44,7 +48,8 @@ public class DoctorDashboard extends javax.swing.JPanel {
         this.userAccount = userAccount;
         this.ecosystem = ecosystem;
         enc = (DefaultTableModel) tblEncounters.getModel();
-        
+        app = (DefaultTableModel) tblDoctorAppointments.getModel();
+        populateAppointmentsTable();
         dB4OUtil = DB4OUtil.getInstance();
     }
 
@@ -61,7 +66,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblOrganizationManager = new javax.swing.JTable();
+        tblDoctorAppointments = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblEncounters = new javax.swing.JTable();
@@ -95,7 +100,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel8.setText("Appointments");
 
-        tblOrganizationManager.setModel(new javax.swing.table.DefaultTableModel(
+        tblDoctorAppointments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -111,12 +116,12 @@ public class DoctorDashboard extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblOrganizationManager.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblDoctorAppointments.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblOrganizationManagerMouseClicked(evt);
+                tblDoctorAppointmentsMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblOrganizationManager);
+        jScrollPane1.setViewportView(tblDoctorAppointments);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -386,9 +391,9 @@ public class DoctorDashboard extends javax.swing.JPanel {
         dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void tblOrganizationManagerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrganizationManagerMouseClicked
+    private void tblDoctorAppointmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDoctorAppointmentsMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tblOrganizationManagerMouseClicked
+    }//GEN-LAST:event_tblDoctorAppointmentsMouseClicked
 
     private void btnAddEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEncountersActionPerformed
         // TODO add your handling code here:
@@ -437,6 +442,30 @@ public class DoctorDashboard extends javax.swing.JPanel {
         enc.addRow(obj);
         
     }
+    
+    private void populateAppointmentsTable() {
+      app.setRowCount(0);
+  
+        WorkQueue workQueue = userAccount.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            LibraryRequest request = (LibraryRequest) workRequest;
+            
+            String receiver = "Not yet Assigned"; 
+            if( request.getReceiver() != null)
+                receiver = request.getReceiver().getEmployee().getName();
+            
+            Date date = null;
+       
+            if(request.getStatus().equalsIgnoreCase("Complaint Resolved")) {
+                  date = request.getResolveDate();
+            }
+            
+            Object[] objs = {request.getSender().getStudent().getId(), request.getSender().getStudent().getName(),request.getPriority(), request.getMessage(), request.getStatus(),request.getRequestDate(),date};
+            app.addRow(objs);
+            
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
@@ -460,8 +489,8 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblDoctorAppointments;
     private javax.swing.JTable tblEncounters;
-    private javax.swing.JTable tblOrganizationManager;
     private javax.swing.JTextField txtPatientID;
     private javax.swing.JTextField txtPatientName;
     private javax.swing.JTextField txtPulse;

@@ -6,8 +6,15 @@ package state_student_management.Health;
 
 import Business.DB4OUtil.DB4OUtil;
 import Business.EcoSystem;
+import Business.Organization.Organization;
+import Business.Role.DoctorRole;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.LibraryRequest;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,22 +25,26 @@ import javax.swing.table.DefaultTableModel;
 public class HospitalManagerDashboard extends javax.swing.JPanel {
 
     /**
-     * Creates new form HealthAdminDashboard1
+     * Creates new form HospitalManagerDashboard
      */
-    
     EcoSystem ecosystem;
     UserAccount userAccount;
     JPanel userProcessContainer;
+    Organization organization;
  
-    //private DB4OUtil dB4OUtil; 
+    DefaultTableModel app;
+    private DB4OUtil dB4OUtil;
+    int row,col;
     
-    public HospitalManagerDashboard() {
+    public HospitalManagerDashboard(JPanel userProcessContainer, UserAccount userAccount, Organization organization) {
         initComponents();
-        
-        
-        //dB4OUtil = DB4OUtil.getInstance();
+        this.userProcessContainer = userProcessContainer;
+        this.userAccount = userAccount;
+        this.organization = organization;
+        app = (DefaultTableModel) tblAppointments.getModel();
+        populateAppointmentTable();
+        dB4OUtil = DB4OUtil.getInstance();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,199 +54,22 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ProfessorDirectoryPane = new javax.swing.JTabbedPane();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblPatients = new javax.swing.JTable();
-        btnDelete2 = new javax.swing.JButton();
-        btnView2 = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        btnReject = new javax.swing.JButton();
-        btnAccept = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblOrganizationManager = new javax.swing.JTable();
-        cbdoctors = new javax.swing.JComboBox<>();
-        jLabel14 = new javax.swing.JLabel();
-        btnAssignDoctor = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
         txtRole = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblAppointments = new javax.swing.JTable();
+        comboDoctors = new javax.swing.JComboBox();
+        jLabel17 = new javax.swing.JLabel();
+        btnAssignDoctor3 = new javax.swing.JButton();
+        btnAccept = new javax.swing.JButton();
+        btnReject = new javax.swing.JButton();
 
-        ProfessorDirectoryPane.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel8.setText("Patients");
-
-        tblPatients.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Name", "Phone", "Email", "Age", "Gender", "Address", "Encounters"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(tblPatients);
-
-        btnDelete2.setBackground(new java.awt.Color(245, 1, 1));
-        btnDelete2.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete2.setText("Delete");
-        btnDelete2.setBorder(null);
-
-        btnView2.setBackground(new java.awt.Color(52, 51, 242));
-        btnView2.setForeground(new java.awt.Color(255, 255, 255));
-        btnView2.setText("View");
-        btnView2.setBorder(null);
-        btnView2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnView2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
-                            .addComponent(jLabel8)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 983, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8)
-                    .addComponent(btnView2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(103, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("Patients", jPanel5);
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel19.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel19.setText("Appointments");
-
-        btnReject.setBackground(new java.awt.Color(255, 51, 51));
-        btnReject.setForeground(new java.awt.Color(255, 255, 255));
-        btnReject.setText("Reject");
-        btnReject.setBorder(null);
-        btnReject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRejectActionPerformed(evt);
-            }
-        });
-
-        btnAccept.setBackground(new java.awt.Color(0, 153, 0));
-        btnAccept.setForeground(new java.awt.Color(255, 255, 255));
-        btnAccept.setText("Accept");
-        btnAccept.setBorder(null);
-
-        tblOrganizationManager.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "StudentID", "Student Name", "Priority", "Message", "Status", "Doctor", "Request Date", "Assigned Date"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, false, false, true, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblOrganizationManager.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblOrganizationManagerMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tblOrganizationManager);
-
-        jLabel14.setText("Assign Doctor");
-
-        btnAssignDoctor.setBackground(new java.awt.Color(52, 51, 242));
-        btnAssignDoctor.setForeground(new java.awt.Color(255, 255, 255));
-        btnAssignDoctor.setText("Assign Doctor");
-        btnAssignDoctor.setBorder(null);
-        btnAssignDoctor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAssignDoctorActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel14)
-                            .addComponent(cbdoctors, 0, 249, Short.MAX_VALUE)
-                            .addComponent(btnAssignDoctor, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)))
-                    .addComponent(jLabel19))
-                .addContainerGap(47, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jLabel19)
-                .addGap(53, 53, 53)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jLabel14)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbdoctors, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(btnAssignDoctor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("Appointments", jPanel6);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
@@ -264,7 +98,7 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 708, Short.MAX_VALUE)
                 .addComponent(btnLogout)
                 .addGap(43, 43, 43))
         );
@@ -282,69 +116,243 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel22.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel22.setText("Appointments");
+
+        tblAppointments.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "StudentID", "Student Name", "Priority", "Message", "Status", "Doctor", "Request Date", "Assigned Date"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, true, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblAppointments.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAppointmentstblAppointmentsMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tblAppointments);
+
+        comboDoctors.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDoctorsActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("Assign Doctor");
+
+        btnAssignDoctor3.setBackground(new java.awt.Color(52, 51, 242));
+        btnAssignDoctor3.setForeground(new java.awt.Color(255, 255, 255));
+        btnAssignDoctor3.setText("Assign Doctor");
+        btnAssignDoctor3.setBorder(null);
+        btnAssignDoctor3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignDoctor3btnAssignDoctorActionPerformed(evt);
+            }
+        });
+
+        btnAccept.setBackground(new java.awt.Color(0, 153, 0));
+        btnAccept.setForeground(new java.awt.Color(255, 255, 255));
+        btnAccept.setText("Accept");
+
+        btnReject.setBackground(new java.awt.Color(255, 51, 51));
+        btnReject.setForeground(new java.awt.Color(255, 255, 255));
+        btnReject.setText("Reject");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel22)
+                        .addContainerGap(899, Short.MAX_VALUE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel17)
+                            .addComponent(comboDoctors, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAssignDoctor3, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34))))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jLabel22)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboDoctors, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAssignDoctor3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAccept, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnReject, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(ProfessorDirectoryPane)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ProfessorDirectoryPane))
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnView2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnView2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnView2ActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         userProcessContainer.remove(this);
         layout.next(userProcessContainer);
-        //dB4OUtil.storeSystem(ecosystem);
+        dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
+    private void tblAppointmentstblAppointmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAppointmentstblAppointmentsMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnRejectActionPerformed
+    }//GEN-LAST:event_tblAppointmentstblAppointmentsMouseClicked
 
-    private void tblOrganizationManagerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrganizationManagerMouseClicked
+    private void comboDoctorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDoctorsActionPerformed
         // TODO add your handling code here:
+    }//GEN-LAST:event_comboDoctorsActionPerformed
 
-    }//GEN-LAST:event_tblOrganizationManagerMouseClicked
-
-    private void btnAssignDoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignDoctorActionPerformed
+    private void btnAssignDoctor3btnAssignDoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignDoctor3btnAssignDoctorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAssignDoctorActionPerformed
+        
+        UserAccount doctor =  (UserAccount) comboDoctors.getSelectedItem();
+        
+        if(doctor.isEmployeeBusy())
+        {        
+            JOptionPane.showMessageDialog(this, "Selected employee is busy please select other employee.", " Complaint not assigned", 1);
+            return;
+        }
+        
+        row = tblAppointments.getSelectedRow();
+        String currentStatus = app.getValueAt(row, 4).toString();
+        
+        LibraryRequest request = (LibraryRequest) organization.getWorkQueue().getListOfWorkQueues().get(row);
+        
+        if(!currentStatus.equalsIgnoreCase("Complaint Accepted"))
+        {
 
+            JOptionPane.showMessageDialog(this, "Please accept complaint to assign", " Complaint not accepted", 1);
+           return;
+        }
+        if(currentStatus.equalsIgnoreCase("Complaint Accepted"))
+        {
 
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Assigned Employee");
+            
+          
+            JOptionPane.showMessageDialog(this, "Complaint is Accepted and assigned to respective Employee", " Complaint is forwarded to employee", 1);
+           
+        }
+        
+        else if(currentStatus.equalsIgnoreCase("Complaint Declined")){
+            
+            JOptionPane.showMessageDialog(this, "This complaint is Already declined earlier", " Complaint declined", 1);
+            
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Complaint is already Assigend to Employee", " Complaint Accepted", 1);
+            
+        }
+        
+//        UserAccount grievanceEmployeee = null;
+//        for (UserAccount user : organization.getUserAccountDirectory().getUserAccountList()){
+//                grievanceEmployeee = user;
+//            }
+        
+        
+        request.setReceiver(doctor);
+        request.setStatus("Assigned to Doctor");
+        doctor.getWorkQueue().addWorkRequest(request);
+        populateAppointmentTable();
+    }//GEN-LAST:event_btnAssignDoctor3btnAssignDoctorActionPerformed
+    
+    private void populateAppointmentTable() {
+      
+        app.setRowCount(0);
+  
+        WorkQueue workQueue = organization.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            LibraryRequest req = (LibraryRequest) workRequest;
+            
+            String receiver = "Not yet Assigned"; 
+            if( req.getReceiver() != null)
+                receiver = req.getReceiver().getEmployee().getName();
+            
+            Date date = null;
+       
+            if(req.getStatus().equalsIgnoreCase("Complaint Resolved")) {
+                  date = req.getResolveDate();
+            }
+
+            Object[] objs = {req.getSender().getStudent().getId(),req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(), receiver, req.getRequestDate(),date};
+            app.addRow(objs);
+            
+        }
+    }
+    
+    private void displayDoctors() {
+                         
+         for(UserAccount userAccount : organization.getUserAccountDirectory().getUserAccountList()){
+                    if (userAccount.getRole() instanceof DoctorRole) comboDoctors.addItem(userAccount);
+                              
+         }
+    }
+    
+         
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane ProfessorDirectoryPane;
     private javax.swing.JButton btnAccept;
-    private javax.swing.JButton btnAssignDoctor;
-    private javax.swing.JButton btnDelete2;
+    private javax.swing.JButton btnAssignDoctor3;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReject;
-    private javax.swing.JButton btnView2;
-    private javax.swing.JComboBox<String> cbdoctors;
+    private javax.swing.JComboBox comboDoctors;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tblOrganizationManager;
-    private javax.swing.JTable tblPatients;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTable tblAppointments;
     private javax.swing.JTextField txtRole;
     // End of variables declaration//GEN-END:variables
 }

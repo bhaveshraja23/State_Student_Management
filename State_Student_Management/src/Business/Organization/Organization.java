@@ -28,6 +28,7 @@ public abstract class Organization {
     public UserAccountDirectory userAccountDirectory;
     public StudentDirectory studentDirectory;
     public PatientDirectory patientDirectory;
+    public MedicinesDirectory medicinesDirectory;
     public int organizationID;
     public static int counter = 0;
 
@@ -63,7 +64,7 @@ public abstract class Organization {
         booksDirectory = new BooksDirectory();
         trainDirectory = new TrainDirectory();
         userAccountDirectory = new UserAccountDirectory();
-
+        medicinesDirectory = new MedicinesDirectory();
         patientDirectory = new PatientDirectory();
 
         courseDirectory = new CourseDirectory();
@@ -140,6 +141,14 @@ public abstract class Organization {
 
     public void setWorkQueue(WorkQueue workQueue) {
         this.workQueue = workQueue;
+    }
+
+    public MedicinesDirectory getMedicinesDirectory() {
+        return medicinesDirectory;
+    }
+
+    public void setMedicinesDirectory(MedicinesDirectory medicinesDirectory) {
+        this.medicinesDirectory = medicinesDirectory;
     }
     
 
