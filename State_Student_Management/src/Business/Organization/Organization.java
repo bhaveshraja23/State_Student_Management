@@ -22,6 +22,7 @@ public abstract class Organization {
     public BusDirectory busDirectory;
     public UserAccountDirectory userAccountDirectory;
     public StudentDirectory studentDirectory;
+    public PatientDirectory patientDirectory;
     public int organizationID;
     public static int counter = 0;
 
@@ -54,6 +55,7 @@ public abstract class Organization {
         studentDirectory = new StudentDirectory();
         busDirectory = new BusDirectory();
         userAccountDirectory = new UserAccountDirectory();
+        patientDirectory = new PatientDirectory();
         organizationID = counter;
         ++counter;
     }

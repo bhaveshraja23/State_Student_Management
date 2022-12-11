@@ -4,6 +4,8 @@
  */
 package Business.Student;
 
+import Business.Organization.Encounter;
+import Business.Organization.EncounterDirectory;
 import java.util.Date;
 import javax.swing.ImageIcon;
 
@@ -13,6 +15,7 @@ import javax.swing.ImageIcon;
  */
 public class Student {
     
+    private String id;
     private String emailId;
     private String password;
     private String userName;
@@ -23,8 +26,10 @@ public class Student {
 //    private ImageIcon document;
     private int GRE;
     private double IELTS;
+    private EncounterDirectory encounterHistory;
 
-    public Student(String emailId, String password, String userName, String name, int age, long mobile, String gender, int GRE, double IELTS) {
+    public Student(String id, String emailId, String password, String userName, String name, int age, long mobile, String gender, int GRE, double IELTS) {
+        this.id = id;
         this.emailId = emailId;
         this.password = password;
         this.userName = userName;
@@ -34,9 +39,17 @@ public class Student {
         this.gender = gender;
         this.GRE = GRE;
         this.IELTS = IELTS;
+        this.encounterHistory = new EncounterDirectory();
     }
 
-    
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getEmailId() {
         return emailId;
     }
@@ -118,6 +131,17 @@ public class Student {
         this.IELTS = IELTS;
     }
 
-   
+    public EncounterDirectory getEncounterHistory() {
+        return encounterHistory;
+    }
+
+    public void setEncounterHistory(EncounterDirectory encounterHistory) {
+        this.encounterHistory = encounterHistory;
+    }
+
+   public void addEncounter(Encounter encounter){
+       
+        encounterHistory.addEncounter(encounter);
+    }
     
 }

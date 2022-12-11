@@ -22,7 +22,7 @@ public class EmployeeDirectory {
         return employeeList;
     }
 
-    public Employee createEmployee(String name, int role ) {
+    public Employee createEmployee(String name, int role) {
         Employee employee = null;
         
          switch (role) {
@@ -47,18 +47,18 @@ public class EmployeeDirectory {
                 employee = new ProfessorEmployee(name);
                 break;
                 
-            case 6:
-                employee = new HospitalManager(name);
+             case 6:
+                employee = new DoctorEmployee(name);
                 break;
                 
             case 7:
+                employee = new HospitalManager(name);
+                break;
+                     
+             case 8:
                 employee = new PharmaManager(name);
                 break;
                 
-            case 8:
-                employee = new DoctorEmployee(name);
-                break;
-
             case 9:
                 employee = new BusManager(name);
                 break;
