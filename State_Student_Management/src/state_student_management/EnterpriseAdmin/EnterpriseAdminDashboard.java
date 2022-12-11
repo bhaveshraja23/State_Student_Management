@@ -58,18 +58,20 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
     private Enterprise enterprise;
     private OrganizationDirectory organizationDirectory;
     private EcoSystem ecosystem;
+    private Network network;
     private DB4OUtil dB4OUtil;
-    DefaultTableModel model;
+    DefaultTableModel model, sdt;
     DefaultTableModel model1;
     DefaultTableModel dtm;
     
-    public EnterpriseAdminDashboard(JPanel userProcessContainer,EcoSystem ecosystem,Enterprise enterprise, OrganizationDirectory organizationDirectory) {
+    public EnterpriseAdminDashboard(JPanel userProcessContainer,EcoSystem ecosystem,Enterprise enterprise, OrganizationDirectory organizationDirectory, Network network) {
         
         initComponents();
         this.userProcessContainer = userProcessContainer;
         this.enterprise=enterprise;
         this.organizationDirectory = organizationDirectory;
         this.ecosystem = ecosystem;
+        this.network = network;
         dB4OUtil = DB4OUtil.getInstance();
         model = (DefaultTableModel) tblOrganization.getModel();
         model1 = (DefaultTableModel) tableEmployee.getModel();
@@ -77,6 +79,7 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
         populateTable();
         populateComboBox();
         populateEmployeeTable();
+        //populateAdmissionTable();
         //populateEmployeeRoleComboBox();
         populateOrganizationEmployeeComboBox();
     }
@@ -123,8 +126,6 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
         jLabel18 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tblAdmissionApplications = new javax.swing.JTable();
-        btnReject = new javax.swing.JButton();
-        btnAccept = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -406,46 +407,23 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
         });
         jScrollPane6.setViewportView(tblAdmissionApplications);
 
-        btnReject.setBackground(new java.awt.Color(255, 51, 51));
-        btnReject.setForeground(new java.awt.Color(255, 255, 255));
-        btnReject.setText("Reject");
-        btnReject.setBorder(null);
-        btnReject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRejectActionPerformed(evt);
-            }
-        });
-
-        btnAccept.setBackground(new java.awt.Color(0, 153, 0));
-        btnAccept.setForeground(new java.awt.Color(255, 255, 255));
-        btnAccept.setText("Accept");
-        btnAccept.setBorder(null);
-
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel18)
-                    .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel18)
+                .addGap(17, 17, 17)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(257, Short.MAX_VALUE))
         );
@@ -739,12 +717,9 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
 
     private void ProfessorDirectoryPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProfessorDirectoryPaneMouseClicked
         // TODO add your handling code here:
+        populateAdmissionTable();
         
     }//GEN-LAST:event_ProfessorDirectoryPaneMouseClicked
-
-    private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRejectActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
@@ -802,18 +777,27 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
         }
     }
     
+    public void populateAdmissionTable() {
+        dtm.setRowCount(0);
+        
+        System.out.println(network.getStudentDirectory().getStudentList().size());
+        
+        for (Student student : this.network.getStudentDirectory().getStudentList()) {
+            
+            Object obj[] = {student.getId(), student.getName(), student.getEmailId(),student.getGender(),student.getAge(),student.getGRE(),student.getIELTS(),student.getUserName(),student.getPassword(),student.getMobile()};        
+            dtm.addRow(obj);
+        }
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
     private javax.swing.JComboBox boxOrganization;
-    private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAddEmployee;
     private javax.swing.JButton btnAddOrg;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDelete3;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnReject;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

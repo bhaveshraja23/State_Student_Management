@@ -85,4 +85,11 @@ public class UserAccount {
         return false;
         //"Employee On the way"
     }
+    
+    @Override
+    public String toString() {
+        if (this.employee != null) return this.employee.getName();
+        else if (this.student != null) return this.student.getName();
+        else return "";
+    }
 }
