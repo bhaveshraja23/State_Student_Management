@@ -22,7 +22,7 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
-import state_student_management.University.University;
+
 
 /**
  *

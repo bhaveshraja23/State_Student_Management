@@ -22,10 +22,8 @@ public class ProfessorDashboard extends javax.swing.JPanel {
      * Creates new form ProfessorDashboard1
      */
     EcoSystem ecosystem;
-    University university;
     UserAccount userAccount;
     JPanel userProcessContainer;
-    ArrayList<University> universityList = new ArrayList<>();
     DefaultTableModel gr;
     int row, col;
     private DB4OUtil dB4OUtil; 
@@ -36,10 +34,11 @@ public class ProfessorDashboard extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.userAccount = userAccount;
         this.ecosystem = ecosystem;
-        this.university = university;
         gr = (DefaultTableModel) tblGradeStudent.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
+        txtRole.setText("Professor");
+        txtRole.setEditable(false);
         //populateUniversityTable();
     }
 
