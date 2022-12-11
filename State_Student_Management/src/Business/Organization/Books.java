@@ -11,9 +11,11 @@ package Business.Organization;
 public class Books {
     
     private String bookName;
+    private String bookStock;
     
-    public Books(String bookName){
+    public Books(String bookName, String bookStock){
         this.bookName = bookName;
+        this.bookStock = bookStock;
     }
 
     public String getBookName() {
@@ -22,6 +24,14 @@ public class Books {
 
     public void setBookName(String bookName) {
         this.bookName = bookName;
+    }
+
+    public String getBookStock() {
+        return bookStock;
+    }
+
+    public void setBookStock(String bookStock) {
+        this.bookStock = bookStock;
     }
     
 }

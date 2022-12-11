@@ -24,6 +24,7 @@ public abstract class Organization {
     public BusDirectory busDirectory;
     public CourseDirectory courseDirectory;
     public BooksDirectory booksDirectory;
+    public ItsServicesDirectory itsServicesDirectory;
     public TrainDirectory trainDirectory;
     public UserAccountDirectory userAccountDirectory;
     public StudentDirectory studentDirectory;
@@ -60,6 +61,7 @@ public abstract class Organization {
         employeeDirectory = new EmployeeDirectory();
         studentDirectory = new StudentDirectory();
         busDirectory = new BusDirectory();
+        itsServicesDirectory = new ItsServicesDirectory();
         booksDirectory = new BooksDirectory();
         trainDirectory = new TrainDirectory();
         userAccountDirectory = new UserAccountDirectory();
@@ -140,6 +142,14 @@ public abstract class Organization {
 
     public void setWorkQueue(WorkQueue workQueue) {
         this.workQueue = workQueue;
+    }
+
+    public ItsServicesDirectory getItsServicesDirectory() {
+        return itsServicesDirectory;
+    }
+
+    public void setItsServicesDirectory(ItsServicesDirectory itsServicesDirectory) {
+        this.itsServicesDirectory = itsServicesDirectory;
     }
     
 
