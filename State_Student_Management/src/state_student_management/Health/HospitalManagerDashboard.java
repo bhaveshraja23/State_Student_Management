@@ -328,7 +328,7 @@ public class HospitalManagerDashboard extends javax.swing.JPanel {
            
         }
         
-        else if(currentStatus.equalsIgnoreCase("Complaint Declined")){
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
             
             JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);        
             
