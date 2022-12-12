@@ -587,6 +587,13 @@ public class SysAdminDashboard extends javax.swing.JPanel {
             return;
         }
 
+        String enterpriseName = tableEnterprise.getValueAt(row, 0).toString();
+        String selectedEnterpriseType = tableEnterprise.getValueAt(row, 2).toString();
+        String NetworkName = tableEnterprise.getValueAt(row, 1).toString();
+        System.out.println(ecosystem);
+        System.out.println(ecosystem.getNetworkList());
+        for (Network network : ecosystem.getNetworkList()) {
+             System.out.println(network.getName() + " " +NetworkName );
         String enterpriseName = tableEnterprise.getValueAt(row, 2).toString();
         String selectedEnterpriseType = tableEnterprise.getValueAt(row, 1).toString();
         String NetworkName = tableEnterprise.getValueAt(row, 0).toString();
@@ -597,12 +604,13 @@ public class SysAdminDashboard extends javax.swing.JPanel {
             if (!network.getName().equalsIgnoreCase(NetworkName)) {
                 continue;
             }
-
+              System.out.println("hi maddi");
             Enterprise deleteEnterprise = null;
             for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
                 String enterpriseType = enterprise.getEnterpriseType().toString();
 
                 if (enterpriseType.equals(selectedEnterpriseType) && enterpriseName.equalsIgnoreCase(enterprise.getName())) {
+                    System.out.println("hi1");
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     int dialogResult = JOptionPane.showConfirmDialog(this, "Delete this data", "Delete", dialogButton);
                     if (dialogResult == 0) {
@@ -614,6 +622,7 @@ public class SysAdminDashboard extends javax.swing.JPanel {
             }
 
             if (deleteEnterprise != null) {
+                System.out.println("hi2");
                 network.getEnterpriseDirectory().getEnterpriseList().remove(deleteEnterprise);
                 JOptionPane.showMessageDialog(this, "Enterprise deleted successfully", "User deleted", 1);
                 populateEnterpriseTable();
