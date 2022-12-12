@@ -12,19 +12,21 @@ import static Business.Enterprise.Enterprise.EnterpriseType.Library;
 import static Business.Enterprise.Enterprise.EnterpriseType.Transport;
 import static Business.Enterprise.Enterprise.EnterpriseType.University;
 import Business.Network.Network;
+import Business.Organization.Encounter;
+import Business.Organization.EncounterDirectory;
 import Business.Organization.Organization;
+import Business.Organization.VitalSign;
+import Business.Student.Student;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LibraryRequest;
 import Business.WorkQueue.TransportRequest;
-<<<<<<< HEAD
 import Business.WorkQueue.WorkQueue;
 import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Date;
-=======
 import java.awt.CardLayout;
->>>>>>> aa9bd5cd60ccd26bf7f49d3450ff9b0c6eafe39e
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -44,7 +46,7 @@ public class StudentDashboard extends javax.swing.JPanel {
     Enterprise enterprise;
     Organization organization;
     Network network;
-    DefaultTableModel courses,transport,library,hospital,encounter;
+    DefaultTableModel courses,reqStatus,enc;
     
     private DB4OUtil dB4OUtil; 
     
@@ -58,10 +60,8 @@ public class StudentDashboard extends javax.swing.JPanel {
         this.userAccount = userAccount;
         
         //courses = (DefaultTableModel) tblCourseRequest.getModel();
-        transport = (DefaultTableModel) tblStudentTransportRequests.getModel();
-        library = (DefaultTableModel) tblStudentLibraryRequests.getModel();
-        hospital = (DefaultTableModel) tblMedicalRequestsDirectory.getModel();
-        encounter = (DefaultTableModel) tblEncounters.getModel();
+        enc = (DefaultTableModel) tblEncounters.getModel();
+        reqStatus = (DefaultTableModel) tblRequestStatus.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
         txtRole.setText("Student");
@@ -69,13 +69,12 @@ public class StudentDashboard extends javax.swing.JPanel {
         
         displayRequestType();
         displayTransRequestType();
-<<<<<<< HEAD
+        populateRequestStatus();
         //populateTransportRequest();
         //populateLibraryRequest();
-=======
         displayMedicalRequestType();
         displayCourseRequestType();
->>>>>>> aa9bd5cd60ccd26bf7f49d3450ff9b0c6eafe39e
+        populateEncounters();
     }
 
     /**
@@ -102,14 +101,7 @@ public class StudentDashboard extends javax.swing.JPanel {
         btnRequestCourse = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         tblStudentTransportRequests1 = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblRegisteredCourses = new javax.swing.JTable();
-        btnDrop1 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        tblStudentTransportRequests = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         comboRequestType1 = new javax.swing.JComboBox();
         jLabel16 = new javax.swing.JLabel();
@@ -121,8 +113,6 @@ public class StudentDashboard extends javax.swing.JPanel {
         btnRequestTransport = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblStudentLibraryRequests = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
         comboRequestType = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
@@ -134,8 +124,6 @@ public class StudentDashboard extends javax.swing.JPanel {
         comboRequestPriority = new javax.swing.JComboBox<>();
         txtRequest = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tblMedicalRequestsDirectory = new javax.swing.JTable();
         jLabel20 = new javax.swing.JLabel();
         cbMedicalRequest = new javax.swing.JComboBox();
         jLabel21 = new javax.swing.JLabel();
@@ -150,6 +138,10 @@ public class StudentDashboard extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblEncounters = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblRequestStatus = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -283,90 +275,7 @@ public class StudentDashboard extends javax.swing.JPanel {
 
         LibraryPane.addTab("Course Request", jPanel4);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel6.setText("Registered Courses");
-
-        tblRegisteredCourses.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Course Name", "Credit Hours", "Description", "Professor", "Grade"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblRegisteredCourses);
-        if (tblRegisteredCourses.getColumnModel().getColumnCount() > 0) {
-            tblRegisteredCourses.getColumnModel().getColumn(3).setResizable(false);
-        }
-
-        btnDrop1.setBackground(new java.awt.Color(52, 51, 242));
-        btnDrop1.setForeground(new java.awt.Color(255, 255, 255));
-        btnDrop1.setText("Apply for Degree");
-        btnDrop1.setBorder(null);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDrop1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(188, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addComponent(btnDrop1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
-        );
-
-        LibraryPane.addTab("Registered Courses", jPanel3);
-
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-
-        tblStudentTransportRequests.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Request Type", "Request Name", "From Date", "To Date", "Status"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane5.setViewportView(tblStudentTransportRequests);
-        if (tblStudentTransportRequests.getColumnModel().getColumnCount() > 0) {
-            tblStudentTransportRequests.getColumnModel().getColumn(4).setHeaderValue("To Date");
-        }
 
         jLabel15.setText("Request Type");
 
@@ -424,9 +333,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                             .addComponent(jLabel17)
                             .addComponent(comboRequestPriority1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(161, 161, 161))))
+                        .addGap(161, 891, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,53 +341,29 @@ public class StudentDashboard extends javax.swing.JPanel {
                 .addContainerGap(30, Short.MAX_VALUE)
                 .addComponent(jLabel19)
                 .addGap(32, 32, 32)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboRequestType1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboRequestPriority1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRequestTransport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboRequestType1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboRequestPriority1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMessage1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(btnRequestTransport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58))
         );
 
         LibraryPane.addTab("Transport", jPanel6);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        tblStudentLibraryRequests.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Request Type", "Request Name", "From Date", "To Date", "Status"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(tblStudentLibraryRequests);
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel10.setText("Books & Services Request");
@@ -534,9 +417,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                     .addComponent(jLabel14)
                     .addComponent(comboRequestPriority, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtRequest))
-                .addGap(45, 45, 45)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(885, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -544,53 +425,29 @@ public class StudentDashboard extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel10)
                 .addGap(35, 35, 35)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboRequestType, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboRequestPriority, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(btnRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboRequestType, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboRequestPriority, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btnRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
         LibraryPane.addTab("Library", jPanel5);
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-
-        tblMedicalRequestsDirectory.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Request Type", "Request Name", "From Date", "To Date", "Status"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane4.setViewportView(tblMedicalRequestsDirectory);
 
         jLabel20.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel20.setText("Medical Request");
@@ -647,9 +504,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                             .addComponent(jLabel24))
                         .addGap(0, 223, Short.MAX_VALUE))
                     .addComponent(cbMedicalRequest, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                .addGap(755, 755, 755))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -657,30 +512,27 @@ public class StudentDashboard extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel20)
                 .addGap(35, 35, 35)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbMedicalRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMedicalTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel24)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboMedicalRequestPriority, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel23)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMedicalMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(btnMedicalRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jLabel21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbMedicalRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMedicalTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboMedicalRequestPriority, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMedicalMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btnMedicalRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
-        LibraryPane.addTab("Hospital", jPanel7);
+        LibraryPane.addTab("Health", jPanel7);
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -736,6 +588,55 @@ public class StudentDashboard extends javax.swing.JPanel {
 
         LibraryPane.addTab("Encounters", jPanel8);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel6.setText("Request Status");
+
+        tblRequestStatus.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Student Name", "Priority", "Message", "Status", "Date"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane8.setViewportView(tblRequestStatus);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(188, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                .addGap(59, 59, 59))
+        );
+
+        LibraryPane.addTab("Request Status", jPanel3);
+
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/SSM.png"))); // NOI18N
@@ -777,12 +678,12 @@ public class StudentDashboard extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
                         .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnLogout)))
+                        .addComponent(btnLogout))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -854,8 +755,6 @@ public class StudentDashboard extends javax.swing.JPanel {
         txtRequest.setText("");
         txtMessage.setText("");
         
-        populateLibraryRequest();
-
         
     }//GEN-LAST:event_btnRequestActionPerformed
 
@@ -912,10 +811,6 @@ public class StudentDashboard extends javax.swing.JPanel {
         comboRequestPriority1.setSelectedIndex(-1);
         txtRequest1.setText("");
         txtMessage1.setText("");
-        
-        populateTransportRequest();
-
-        
         
     }//GEN-LAST:event_btnRequestTransportActionPerformed
 
@@ -1045,10 +940,38 @@ public class StudentDashboard extends javax.swing.JPanel {
         txtMessage1.setText("");
     }//GEN-LAST:event_btnRequestCourseActionPerformed
 
+    private void populateEncounters(){
+        
+        enc.setRowCount(0);
+//        for (Student patient : this.network.getStudentDirectory().getStudentList())
+//        {
+//            EncounterDirectory ed = patient.getEncounterHistory();
+//            displayEncounters(ed.getEncounterDirectory(),patient);
+//        }
+        String studentName = userAccount.getStudent().getName();
+        Student patient = this.network.getStudentDirectory().getStudent(studentName);
+        displayEncounters(patient.getEncounterHistory().getEncounterDirectory(), patient);
+    }
+    
+    private void displayEncounters(List<Encounter> encounterList, Student patient) {
+        
+        for (Encounter encounter : encounterList )
+        {
+            displayEcounter(encounter, patient);
+        }
+        
+    }
+    
+    private void displayEcounter(Encounter encounter, Student patient){
+        
+        VitalSign vitalsign = encounter.getVitalSign();
+        Object[] obj = {patient.getId(), patient.getName(),encounter.getDate(),vitalsign.getBloodPressure(),vitalsign.getSugar(),vitalsign.getPulse(),vitalsign.getTemperature()};
+        enc.addRow(obj);
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane LibraryPane;
-    private javax.swing.JButton btnDrop1;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnMedicalRequest;
     private javax.swing.JButton btnRequest;
@@ -1094,17 +1017,11 @@ public class StudentDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable tblEncounters;
-    private javax.swing.JTable tblMedicalRequestsDirectory;
-    private javax.swing.JTable tblRegisteredCourses;
-    private javax.swing.JTable tblStudentLibraryRequests;
-    private javax.swing.JTable tblStudentTransportRequests;
+    private javax.swing.JTable tblRequestStatus;
     private javax.swing.JTable tblStudentTransportRequests1;
     private javax.swing.JTextField txtBackground;
     private javax.swing.JTextField txtMedicalMessage;
@@ -1154,10 +1071,10 @@ public class StudentDashboard extends javax.swing.JPanel {
         }
     }
  
-<<<<<<< HEAD
-  private void populateTransportRequest(){
+  
+  private void populateRequestStatus(){
      
-     transport.setRowCount(0);
+     reqStatus.setRowCount(0);
        WorkQueue workQueue = userAccount.getWorkQueue();
         
         for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
@@ -1169,29 +1086,11 @@ public class StudentDashboard extends javax.swing.JPanel {
             }
 
             Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
-            transport.addRow(objs);
-            
-        }
-    }
+            reqStatus.addRow(objs);
+        }          
+  }       
   
-  private void populateLibraryRequest(){
-     
-     library.setRowCount(0);
-       WorkQueue workQueue = userAccount.getWorkQueue();
-        
-        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
-            LibraryRequest req = (LibraryRequest) workRequest;
-                      
-            Date date = null;
-            if(req.getStatus().equalsIgnoreCase("Request Accepted")) {
-                  date = req.getResolveDate();
-            }
-
-            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
-            library.addRow(objs);
-            
-=======
- private void displayCourseRequestType() {
+  private void displayCourseRequestType() {
       
         System.out.println(network);
         for(Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()){
@@ -1200,7 +1099,6 @@ public class StudentDashboard extends javax.swing.JPanel {
                     cbCollege.addItem(org);
             }
    
->>>>>>> aa9bd5cd60ccd26bf7f49d3450ff9b0c6eafe39e
         }
     }
 }
