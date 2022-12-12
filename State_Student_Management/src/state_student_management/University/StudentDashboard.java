@@ -16,7 +16,15 @@ import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LibraryRequest;
 import Business.WorkQueue.TransportRequest;
+<<<<<<< HEAD
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
+import java.util.ArrayList;
+import java.util.Date;
+=======
+import java.awt.CardLayout;
+>>>>>>> aa9bd5cd60ccd26bf7f49d3450ff9b0c6eafe39e
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -34,12 +42,13 @@ public class StudentDashboard extends javax.swing.JPanel {
     JPanel userProcessContainer;
     private UserAccount userAccount;
     Enterprise enterprise;
+    Organization organization;
     Network network;
     DefaultTableModel courses,transport,library,hospital,encounter;
     
     private DB4OUtil dB4OUtil; 
     
-    public StudentDashboard(JPanel userProcessContainer, EcoSystem ecosystem, UserAccount userAccount, Enterprise enterprise, Network network) {
+    public StudentDashboard(JPanel userProcessContainer, EcoSystem ecosystem, UserAccount userAccount, Enterprise enterprise, Network network,   Organization organization) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -60,8 +69,13 @@ public class StudentDashboard extends javax.swing.JPanel {
         
         displayRequestType();
         displayTransRequestType();
+<<<<<<< HEAD
+        //populateTransportRequest();
+        //populateLibraryRequest();
+=======
         displayMedicalRequestType();
         displayCourseRequestType();
+>>>>>>> aa9bd5cd60ccd26bf7f49d3450ff9b0c6eafe39e
     }
 
     /**
@@ -835,11 +849,13 @@ public class StudentDashboard extends javax.swing.JPanel {
         
         JOptionPane.showMessageDialog(this, "Request placed successfully !!", "Request", 1);
 
-        
         comboRequestType.setSelectedIndex(0);
         comboRequestPriority.setSelectedIndex(0);
         txtRequest.setText("");
         txtMessage.setText("");
+        
+        populateLibraryRequest();
+
         
     }//GEN-LAST:event_btnRequestActionPerformed
 
@@ -890,10 +906,15 @@ public class StudentDashboard extends javax.swing.JPanel {
         
         JOptionPane.showMessageDialog(this, "Request placed successfully !!", "Request", 1);
 
+        
+
         comboRequestType1.setSelectedIndex(-1);
         comboRequestPriority1.setSelectedIndex(-1);
         txtRequest1.setText("");
         txtMessage1.setText("");
+        
+        populateTransportRequest();
+
         
         
     }//GEN-LAST:event_btnRequestTransportActionPerformed
@@ -1133,6 +1154,43 @@ public class StudentDashboard extends javax.swing.JPanel {
         }
     }
  
+<<<<<<< HEAD
+  private void populateTransportRequest(){
+     
+     transport.setRowCount(0);
+       WorkQueue workQueue = userAccount.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            TransportRequest req = (TransportRequest) workRequest;
+                      
+            Date date = null;
+            if(req.getStatus().equalsIgnoreCase("Request Accepted")) {
+                  date = req.getResolveDate();
+            }
+
+            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
+            transport.addRow(objs);
+            
+        }
+    }
+  
+  private void populateLibraryRequest(){
+     
+     library.setRowCount(0);
+       WorkQueue workQueue = userAccount.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            LibraryRequest req = (LibraryRequest) workRequest;
+                      
+            Date date = null;
+            if(req.getStatus().equalsIgnoreCase("Request Accepted")) {
+                  date = req.getResolveDate();
+            }
+
+            Object[] objs = {req.getSender().getStudent().getName(),req.getPriority(), req.getMessage(), req.getStatus(),req.getRequestDate(),date};
+            library.addRow(objs);
+            
+=======
  private void displayCourseRequestType() {
       
         System.out.println(network);
@@ -1142,6 +1200,7 @@ public class StudentDashboard extends javax.swing.JPanel {
                     cbCollege.addItem(org);
             }
    
+>>>>>>> aa9bd5cd60ccd26bf7f49d3450ff9b0c6eafe39e
         }
     }
 }
