@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="State_Student_Management">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/State_Student_Management.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

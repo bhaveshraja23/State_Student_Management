@@ -31,7 +31,7 @@ public abstract class Role {
         PharmaAdmin("PharmaAdmin"),
         BooksManager("BooksManager"),
         ITSEmployee("ITSEmployee"),
-        LocoEngineer("LocoEngineer"),
+        //LocoEngineer("LocoEngineer"),
         SystemAdminRole("SystemAdminRole");
        
         
