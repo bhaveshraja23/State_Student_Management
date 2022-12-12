@@ -73,7 +73,7 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
         this.ecosystem = ecosystem;
         this.network = network;
         dB4OUtil = DB4OUtil.getInstance();
-        txtRole.setText("Enterprise Admin");
+        txtRole.setText(enterprise.getName()+""+"Admin");
         txtRole.setEditable(false);
         model = (DefaultTableModel) tblOrganization.getModel();
         model1 = (DefaultTableModel) tableEmployee.getModel();
@@ -386,7 +386,7 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel18.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel18.setText("Admission Applications");
+        jLabel18.setText("Student Registrations");
 
         tblAdmissionApplications.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -396,11 +396,11 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Email", "Gender", "Age", "GRE", "IELTS", "Address", "University", "College"
+                "ID", "Name", "Email", "Gender", "Age", "GRE", "IELTS", "Username", "Password", "Contact"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -430,7 +430,7 @@ public class EnterpriseAdminDashboard extends javax.swing.JPanel {
                 .addContainerGap(257, Short.MAX_VALUE))
         );
 
-        ProfessorDirectoryPane.addTab("Admissions Applications", jPanel8);
+        ProfessorDirectoryPane.addTab("Student Registrations", jPanel8);
 
         jPanel2.setBackground(new java.awt.Color(201, 3, 3));
 

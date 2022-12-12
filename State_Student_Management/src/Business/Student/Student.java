@@ -6,8 +6,8 @@ package Business.Student;
 
 import Business.Organization.Encounter;
 import Business.Organization.EncounterDirectory;
-import java.util.Date;
-import javax.swing.ImageIcon;
+import Business.Organization.GradeDirectory;
+import Business.Organization.Grading;
 
 /**
  *
@@ -23,10 +23,10 @@ public class Student {
     private int age;
     private long mobile;
     private String gender;
-//    private ImageIcon document;
     private int GRE;
     private double IELTS;
     private EncounterDirectory encounterHistory;
+    private GradeDirectory gradeHistory;
 
     public Student(String id, String emailId, String password, String userName, String name, int age, long mobile, String gender, int GRE, double IELTS) {
         this.id = id;
@@ -40,6 +40,7 @@ public class Student {
         this.GRE = GRE;
         this.IELTS = IELTS;
         this.encounterHistory = new EncounterDirectory();
+        this.gradeHistory = new GradeDirectory();
     }
 
     public String getId() {
@@ -99,14 +100,6 @@ public class Student {
         this.gender = gender;
     }
 
-//    public ImageIcon getDocument() {
-//        return document;
-//    }
-//
-//    public void setDocument(ImageIcon document) {
-//        this.document = document;
-//    }
-
     public long getMobile() {
         return mobile;
     }
@@ -139,9 +132,20 @@ public class Student {
         this.encounterHistory = encounterHistory;
     }
 
-   public void addEncounter(Encounter encounter){
-       
+    public GradeDirectory getGradeDirectory() {
+        return gradeHistory;
+    }
+
+    public void setGradeDirectory(GradeDirectory gradeHistory) {
+        this.gradeHistory = gradeHistory;
+    }
+
+   public void addEncounter(Encounter encounter){      
         encounterHistory.addEncounter(encounter);
+    }
+   
+   public void addGrade(Grading grading){      
+        gradeHistory.addGrade(grading);
     }
     
 }

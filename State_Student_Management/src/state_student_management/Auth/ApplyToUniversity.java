@@ -103,7 +103,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        jLabel6.setText("Apply to University");
+        jLabel6.setText("Register as Student");
 
         jLabel1.setText("Name");
 
@@ -111,7 +111,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
 
         btnUniversityApply.setBackground(new java.awt.Color(201, 3, 3));
         btnUniversityApply.setForeground(new java.awt.Color(255, 255, 255));
-        btnUniversityApply.setText("Apply");
+        btnUniversityApply.setText("Register");
         btnUniversityApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUniversityApplyActionPerformed(evt);
@@ -185,9 +185,9 @@ public class ApplyToUniversity extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(146, 146, 146)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(146, 146, 146)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel14)
@@ -199,7 +199,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                             .addComponent(jLabel3)
                             .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtage, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -211,12 +211,14 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                                 .addComponent(txtStudentPassword)
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel15)
-                                .addComponent(cbNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                                .addComponent(cbNetwork, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txttimedisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(215, 215, 215))
+                        .addComponent(jLabel6)
+                        .addGap(201, 201, 201)))
+                .addComponent(txttimedisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,7 +282,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
                 .addComponent(btnUniversityApply, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -302,19 +304,30 @@ public class ApplyToUniversity extends javax.swing.JPanel {
     private void btnUniversityApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUniversityApplyActionPerformed
         // TODO add your handling code here:
 
+        
         String studentName = txtName.getText().trim();
         String studentEmail = txtEmail.getText().trim();
         String studentGender = txtgender.getText().trim();
-        int studentAge = Integer.parseInt(txtage.getText().trim());
-        int studentGre = Integer.parseInt(txtgre.getText().trim());
-        double studentIelts = Double.parseDouble(txtielts.getText().trim());
+        String studentAge = txtage.getText().trim();
+        String studentGre = txtgre.getText().trim();
+        String studentIelts = txtielts.getText().trim();
         String studentUsername = txtUsername.getText().trim();
         char[] passwordCharArray = txtStudentPassword.getPassword();
         String studentPassword = String.valueOf(passwordCharArray);
-        long studentMobile = Long.parseLong(txtMobile.getText().trim());
+        String studentMobile = txtMobile.getText().trim();
         UUID uuid=UUID.randomUUID();
         Network network = (Network) cbNetwork.getSelectedItem();
         
+        if (studentName.isEmpty()|| studentEmail.isEmpty() || studentGender.isEmpty() || studentAge.isEmpty()|| studentGre.isEmpty()|| studentIelts.isEmpty() || studentUsername.isEmpty() || studentPassword.isEmpty() || studentMobile.isEmpty())
+       {            JOptionPane.showMessageDialog(this, "One or More fields are empty..!", "Empty Fields", 2);
+                    return;
+        }
+        
+        
+        int age = Integer.parseInt(studentAge);
+        int gre = Integer.parseInt(studentGre);
+        double ielts = Double.parseDouble(studentIelts);
+        long mobile = Long.parseLong(studentMobile);
         
         if (network == null) {
             cbNetwork.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -367,13 +380,10 @@ public class ApplyToUniversity extends javax.swing.JPanel {
 
         }
 
-//        if (studentName.isEmpty()|| studentEmail.isEmpty() || studentGender.isEmpty() || studentAge.isEmpty()|| studentGre.isEmpty()|| studentIelts.isEmpty()|| studentUsername.isEmpty() || studentPassword.isEmpty() || studentMobile.isEmpty())
-//        {
-//            JOptionPane.showMessageDialog(this, "One or More fields are empty..!", "Empty Fields", 2);
-//        }
-        
-        else if(!validContact(txtMobile.getText())){
+      
+       if(!validContact(txtMobile.getText())){
             JOptionPane.showMessageDialog(null, "Invalid Phone Number");
+            return;
         }
 
         //populateAdmissionTable();
@@ -382,7 +392,7 @@ public class ApplyToUniversity extends javax.swing.JPanel {
 
             //int age = Integer.parseInt(strAge);
             sendEmailMessage(studentEmail);
-            Student student = new Student(uuid.toString(), studentEmail, studentPassword, studentUsername, studentName, studentAge, studentMobile, studentGender, studentGre, studentIelts);
+            Student student = new Student(uuid.toString(), studentEmail, studentPassword, studentUsername, studentName, age, mobile, studentGender, gre, ielts);
             UserAccount userAccount = network.getUserAccountDirectory().createStudentAccount(studentUsername, studentPassword, student, new StudentRole());
             
             network.getStudentDirectory().addStudent(student);

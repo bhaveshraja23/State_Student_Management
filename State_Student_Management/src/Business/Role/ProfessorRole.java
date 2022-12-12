@@ -9,9 +9,7 @@ import Business.Enterprise.Enterprise;
 import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import state_student_management.Transport.TrainManagerDashboard;
 import state_student_management.University.ProfessorDashboard;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -27,7 +25,7 @@ public class ProfessorRole extends Role{
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new ProfessorDashboard();
+        return new ProfessorDashboard(userProcessContainer, account, organization, network);
     }
     
 }

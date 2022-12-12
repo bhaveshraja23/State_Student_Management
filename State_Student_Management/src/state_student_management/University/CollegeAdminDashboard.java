@@ -12,10 +12,17 @@ import Business.Enterprise.Enterprise;
 import Business.Network.Network;
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
+import Business.Role.DoctorRole;
+import Business.Role.ProfessorRole;
 import Business.Student.Student;
 import Business.UserAccount.UserAccount;
+import Business.WorkQueue.TransportRequest;
+import Business.WorkQueue.WorkQueue;
+import Business.WorkQueue.WorkRequest;
 import java.awt.CardLayout;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -38,7 +45,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     private Enterprise enterprise;
     //private OrganizationDirectory organizationDirectory;
     //ArrayList<Courses> coursesList = new ArrayList<>();
-    DefaultTableModel crse1,sdnt1,prof1;
+    DefaultTableModel crse1,sdnt1,prof1, req;
     int row, col;
     private DB4OUtil dB4OUtil; 
     
@@ -51,13 +58,14 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         this.network = network;
 
         crse1 = (DefaultTableModel) tblCourses1.getModel();
-        prof1 = (DefaultTableModel) tblProfessors1.getModel();
         sdnt1 = (DefaultTableModel) tblAdmissionApplications.getModel();
-
+        req = (DefaultTableModel) tblCourseRequests.getModel();
 
         dB4OUtil = DB4OUtil.getInstance();
 
         populateCoursesTable();
+        populateCourseRequestTable();
+        displayProfessors();
         
     }
 
@@ -92,9 +100,14 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         btnUpdateCourse = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        tblProfessors1 = new javax.swing.JTable();
-        jLabel10 = new javax.swing.JLabel();
+        tblCourseRequests = new javax.swing.JTable();
+        jLabel17 = new javax.swing.JLabel();
+        btnAssignProfessor = new javax.swing.JButton();
+        btnAccept = new javax.swing.JButton();
+        btnReject = new javax.swing.JButton();
+        comboProfessors = new javax.swing.JComboBox();
         jPanel8 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -129,7 +142,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                 .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLogout)
-                .addGap(43, 43, 43))
+                .addGap(105, 105, 105))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,10 +151,9 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLogout))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -247,17 +259,16 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                         .addComponent(btnDeleteCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
-                                    .addComponent(txtCreditHours, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel24)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCreditHours, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel21)
-                            .addComponent(txtSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel9)
@@ -265,7 +276,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                                 .addComponent(btnViewCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnUpdateCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(44, 44, 44))
         );
         jPanel5Layout.setVerticalGroup(
@@ -277,9 +288,9 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                     .addComponent(btnViewCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdateCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addGap(27, 27, 27)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
                         .addComponent(jLabel22)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -293,64 +304,129 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                         .addComponent(txtSeats, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(btnAddCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21)
                 .addComponent(btnDeleteCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Courses", jPanel5);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        tblProfessors1.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel23.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        jLabel23.setText("Requests");
+
+        tblCourseRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Email", "Mobile", "Specialization", "Salary"
+                "StudentID", "Student Name", "Priority", "Message", "Status", "Professsor", "Request Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                true, false, false, true, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tblProfessors1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblCourseRequests.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblProfessors1MouseClicked(evt);
+                tblCourseRequeststblAppointmentsMouseClicked(evt);
             }
         });
-        jScrollPane5.setViewportView(tblProfessors1);
+        jScrollPane5.setViewportView(tblCourseRequests);
+        if (tblCourseRequests.getColumnModel().getColumnCount() > 0) {
+            tblCourseRequests.getColumnModel().getColumn(3).setResizable(false);
+        }
 
-        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel10.setText("Professors");
+        jLabel17.setText("Assign Professor");
+
+        btnAssignProfessor.setBackground(new java.awt.Color(52, 51, 242));
+        btnAssignProfessor.setForeground(new java.awt.Color(255, 255, 255));
+        btnAssignProfessor.setText("Assign Professor");
+        btnAssignProfessor.setBorder(null);
+        btnAssignProfessor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignProfessorbtnAssignDoctorActionPerformed(evt);
+            }
+        });
+
+        btnAccept.setBackground(new java.awt.Color(0, 153, 0));
+        btnAccept.setForeground(new java.awt.Color(255, 255, 255));
+        btnAccept.setText("Accept");
+        btnAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAcceptActionPerformed(evt);
+            }
+        });
+
+        btnReject.setBackground(new java.awt.Color(255, 51, 51));
+        btnReject.setForeground(new java.awt.Color(255, 255, 255));
+        btnReject.setText("Reject");
+        btnReject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRejectActionPerformed(evt);
+            }
+        });
+
+        comboProfessors.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboProfessorsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 1078, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(btnAccept, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReject, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel23)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel17)
+                                    .addComponent(comboProfessors, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnAssignProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(105, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jLabel10)
+                .addGap(36, 36, 36)
+                .addComponent(jLabel23)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboProfessors, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnAssignProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAccept, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnReject, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        ProfessorDirectoryPane.addTab("Professors", jPanel6);
+        ProfessorDirectoryPane.addTab("Course Requests", jPanel6);
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -387,7 +463,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel18)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 964, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,7 +472,7 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                 .addComponent(jLabel18)
                 .addGap(17, 17, 17)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         ProfessorDirectoryPane.addTab("Admissions Applications", jPanel8);
@@ -531,24 +607,6 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         
     }//GEN-LAST:event_tblCourses1MouseClicked
 
-    private void tblProfessors1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProfessors1MouseClicked
-        // TODO add your handling code here:
-         DefaultTableModel model = (DefaultTableModel) tblProfessors1.getModel();
-
-        String professorName1 = model.getValueAt(tblProfessors1.getSelectedRow(), 0).toString();
-        String professorEmail1 = model.getValueAt(tblProfessors1.getSelectedRow(), 1).toString();
-        String professorTelephone1 = model.getValueAt(tblProfessors1.getSelectedRow(), 2).toString();
-        String professorSalary1 = model.getValueAt(tblProfessors1.getSelectedRow(), 3).toString();
-        String professorPassword1 = model.getValueAt(tblProfessors1.getSelectedRow(), 4).toString();
-
-//        txtProfessorsName.setText(professorName1);
-//        txtProfessorsEmail.setText(professorEmail1);
-//        txtProfessorsTelephone.setText(professorTelephone1);
-//        txtProfessorUsername.setText(professorSalary1);
-//        jPasswordFieldProfessors.setText(professorPassword1);
-        
-    }//GEN-LAST:event_tblProfessors1MouseClicked
-
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
@@ -562,30 +620,150 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
         populateAdmissionTable();
     }//GEN-LAST:event_ProfessorDirectoryPaneMouseClicked
 
+    private void tblCourseRequeststblAppointmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseRequeststblAppointmentsMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblCourseRequeststblAppointmentsMouseClicked
+
+    private void btnAssignProfessorbtnAssignDoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignProfessorbtnAssignDoctorActionPerformed
+        // TODO add your handling code here:
+
+        UserAccount professor = (UserAccount) comboProfessors.getSelectedItem();
+
+        if(professor.isEmployeeBusy())
+        {
+            JOptionPane.showMessageDialog(this, "Selected employee is busy please select other employee.", " Complaint not assigned", 1);
+            return;
+        }
+
+        row = tblCourseRequests.getSelectedRow();
+        String currentStatus = req.getValueAt(row, 4).toString();
+
+        TransportRequest request = (TransportRequest) organization.getWorkQueue().getListOfWorkQueues().get(row);
+
+        if(!currentStatus.equalsIgnoreCase("Request Accepted"))
+        {
+
+            JOptionPane.showMessageDialog(this, "Please accept complaint to assign", " Request not accepted", 1);
+            return;
+        }
+        if(currentStatus.equalsIgnoreCase("Request Accepted"))
+        {
+
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Assigned to Professor");
+
+            JOptionPane.showMessageDialog(this, "Request is Accepted and assigned to respective Professor", " Request is forwarded to employee", 1);
+
+        }
+
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
+
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);
+
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already Assigend to Employee", " Request Accepted", 1);
+
+        }
+
+        //        UserAccount grievanceEmployeee = null;
+        //        for (UserAccount user : organization.getUserAccountDirectory().getUserAccountList()){
+            //                grievanceEmployeee = user;
+            //            }
+
+        request.setReceiver(professor);
+        request.setStatus("Assigned to Professor");
+        professor.getWorkQueue().addWorkRequest(request);
+        populateCourseRequestTable();
+    }//GEN-LAST:event_btnAssignProfessorbtnAssignDoctorActionPerformed
+
+    private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
+        // TODO add your handling code here:
+        row = tblCourseRequests.getSelectedRow();
+
+        String currentStatus = req.getValueAt(row, 4).toString();
+
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+
+            organization.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Accepted");
+            JOptionPane.showMessageDialog(this, "Request is Accepted", " Request Accepted", 1);
+
+        }
+
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
+
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);
+
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+
+        }
+        populateCourseRequestTable();
+
+    }//GEN-LAST:event_btnAcceptActionPerformed
+
+    private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
+        // TODO add your handling code here:
+
+        row = tblCourseRequests.getSelectedRow();
+        String currentStatus = req.getValueAt(row, 4).toString();
+        if(currentStatus.equalsIgnoreCase("Request raised"))
+        {
+            userAccount.getWorkQueue().getListOfWorkQueues().get(row).setStatus("Request Declined");
+
+        }
+        else if(currentStatus.equalsIgnoreCase("Request Declined")){
+
+            JOptionPane.showMessageDialog(this, "This request is already declined earlier", " Request declined", 1);
+
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Request is already accepted", " Request Accepted", 1);
+
+        }
+        populateCourseRequestTable();
+    }//GEN-LAST:event_btnRejectActionPerformed
+
+    private void comboProfessorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboProfessorsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboProfessorsActionPerformed
+
     public void populateAdmissionTable() {
         sdnt1.setRowCount(0);
-        
-        
-        
+
         for (Student student : this.network.getStudentDirectory().getStudentList()) {
             
             Object obj[] = {student.getId(), student.getName(), student.getEmailId(),student.getGender(),student.getAge(),student.getGRE(),student.getIELTS(),student.getUserName(),student.getPassword(),student.getMobile()};        
             sdnt1.addRow(obj);
         }
     }
+    
+    private void displayProfessors() {
+                         
+         for(UserAccount userAccount : organization.getUserAccountDirectory().getUserAccountList()){
+                    if (userAccount.getRole() instanceof ProfessorRole) comboProfessors.addItem(userAccount);
+                              
+         }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
+    private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAddCourse;
+    private javax.swing.JButton btnAssignProfessor;
     private javax.swing.JButton btnDeleteCourse;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnReject;
     private javax.swing.JButton btnUpdateCourse;
     private javax.swing.JButton btnViewCourse;
+    private javax.swing.JComboBox comboProfessors;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
@@ -598,8 +776,8 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable tblAdmissionApplications;
+    private javax.swing.JTable tblCourseRequests;
     private javax.swing.JTable tblCourses1;
-    private javax.swing.JTable tblProfessors1;
     private javax.swing.JTextField txtCourse;
     private javax.swing.JTextField txtCreditHours;
     private javax.swing.JTextField txtRole;
@@ -616,6 +794,33 @@ public class CollegeAdminDashboard extends javax.swing.JPanel {
                Object[] objs = {courses.getCourseName(),courses.getCreditHours(),courses.getSeats()};                       
                crse1.addRow(objs);
            }
+        }
+     
+     private void populateCourseRequestTable() {
+       
+        req.setRowCount(0);
+        
+        WorkQueue workQueue = organization.getWorkQueue();
+        
+        for(WorkRequest workRequest  : workQueue.getListOfWorkQueues() ){
+            TransportRequest request = (TransportRequest) workRequest;
+            
+            String receiver = "Not yet Assigned"; 
+            if( request.getReceiver() != null)
+                receiver = request.getReceiver().getEmployee().getName();
+            
+            Date date = null;
+       
+            if(request.getStatus().equalsIgnoreCase("Assigned to Doctor")) {
+                  date = request.getResolveDate();
+            }
+            
+            System.out.println(request.getStatus());
+
+            Object[] objs = {request.getSender().getStudent().getId(),request.getSender().getStudent().getName(),request.getPriority(), request.getMessage(), request.getStatus(), receiver, request.getRequestDate(),date};
+            req.addRow(objs);
+            
+        }
         }
 
 }
