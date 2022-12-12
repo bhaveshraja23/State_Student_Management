@@ -26,7 +26,7 @@ public class StudentRole extends Role {
                                  EcoSystem ecosystem,
                                  Network network
                                  ) {
-        return new StudentDashboard(userProcessContainer, ecosystem, account, enterprise, network);
+        return new StudentDashboard(userProcessContainer, ecosystem, account, enterprise, network,organization );
     }
     
 }
