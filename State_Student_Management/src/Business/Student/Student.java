@@ -144,7 +144,9 @@ public class Student {
         encounterHistory.addEncounter(encounter);
     }
    
-   public void addGrade(Grading grading){      
+   public void addGrade(Grading grading){   
+       System.out.println("Inside add grade");
+       System.out.println(gradeHistory);
         gradeHistory.addGrade(grading);
     }
     

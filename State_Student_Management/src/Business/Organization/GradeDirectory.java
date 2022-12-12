@@ -22,6 +22,7 @@ public class GradeDirectory {
 
     public void addGrade(Grading grading)
     {
+        System.out.println("Inside add grade 2");
             gradeDirectory.add(grading);
     }
 
