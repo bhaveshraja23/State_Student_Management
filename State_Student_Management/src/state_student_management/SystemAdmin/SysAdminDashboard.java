@@ -592,11 +592,6 @@ public class SysAdminDashboard extends javax.swing.JPanel {
         String NetworkName = tableEnterprise.getValueAt(row, 1).toString();
         System.out.println(ecosystem);
         System.out.println(ecosystem.getNetworkList());
-        for (Network network : ecosystem.getNetworkList()) {
-             System.out.println(network.getName() + " " +NetworkName );
-        String enterpriseName = tableEnterprise.getValueAt(row, 2).toString();
-        String selectedEnterpriseType = tableEnterprise.getValueAt(row, 1).toString();
-        String NetworkName = tableEnterprise.getValueAt(row, 0).toString();
         
         System.out.println(ecosystem.getNetworkList());
         for (Network network : ecosystem.getNetworkList()) {

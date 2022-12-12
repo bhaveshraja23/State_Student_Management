@@ -80,11 +80,9 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         tblBooks = new javax.swing.JTable();
         btnDeleteBook = new javax.swing.JButton();
-        btnViewBook = new javax.swing.JButton();
         btnAddBook = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         txtBookName = new javax.swing.JTextField();
-        btnUpdateBook = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         comboBookStock = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
@@ -113,11 +111,11 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Book Name", "Status"
+                "Name", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -141,16 +139,6 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
             }
         });
 
-        btnViewBook.setBackground(new java.awt.Color(52, 51, 242));
-        btnViewBook.setForeground(new java.awt.Color(255, 255, 255));
-        btnViewBook.setText("View");
-        btnViewBook.setBorder(null);
-        btnViewBook.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewBookActionPerformed(evt);
-            }
-        });
-
         btnAddBook.setBackground(new java.awt.Color(201, 3, 3));
         btnAddBook.setForeground(new java.awt.Color(255, 255, 255));
         btnAddBook.setText("Add Book");
@@ -162,16 +150,6 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
         });
 
         jLabel6.setText("Book Name");
-
-        btnUpdateBook.setBackground(new java.awt.Color(52, 51, 242));
-        btnUpdateBook.setForeground(new java.awt.Color(255, 255, 255));
-        btnUpdateBook.setText("Update");
-        btnUpdateBook.setBorder(null);
-        btnUpdateBook.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateBookActionPerformed(evt);
-            }
-        });
 
         jLabel7.setText("Availability");
 
@@ -186,28 +164,20 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(591, 591, 591)
-                        .addComponent(btnViewBook, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnUpdateBook, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDeleteBook, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(40, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel6)
-                                    .addComponent(txtBookName, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(comboBookStock, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addComponent(btnAddBook, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))))
+                        .addComponent(btnDeleteBook, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel6)
+                                .addComponent(txtBookName, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                                .addComponent(jLabel7)
+                                .addComponent(comboBookStock, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnAddBook, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(94, 94, 94))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,20 +185,18 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(btnViewBook, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDeleteBook, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdateBook, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDeleteBook, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(30, 30, 30)
                         .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(comboBookStock, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(58, 58, 58)
+                        .addGap(35, 35, 35)
                         .addComponent(btnAddBook, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
@@ -245,17 +213,17 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
 
         tblRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Student Name", "Student Email", "Request Type", "Request Name", "From Date", "To Date"
+                "Name", "Priority", "Message", "Status", "Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -430,38 +398,6 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnRejectActionPerformed
 
-    private void btnUpdateBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBookActionPerformed
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) tblBooks.getModel();
-        
-        if(tblBooks.getSelectedRowCount() == 1){
-            
-        String name =  model.getValueAt(tblBooks.getSelectedRow(), 0).toString();       
-        String bookStock = model.getValueAt(tblBooks.getSelectedRow(), 1).toString();
-        
-        txtBookName.setText(name);
-        comboBookStock.setSelectedItem(bookStock);
-        
-        model.setValueAt(name, tblBooks.getSelectedRow(), 0);
-        model.setValueAt(bookStock,tblBooks.getSelectedRow() ,1 );
-       
-
-        
-        
-        JOptionPane.showMessageDialog(this, "Details updated");
-        }
-        else{
-            if(tblBooks.getRowCount() ==0){
-                JOptionPane.showMessageDialog(this, "Table is empty");
-            }else{
-                JOptionPane.showMessageDialog(this, "Select a row to update");
-            }
-              
-        }
-        
-        
-    }//GEN-LAST:event_btnUpdateBookActionPerformed
-
     private void btnAddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBookActionPerformed
         // TODO add your handling code here:
         String bookName = txtBookName.getText().trim();
@@ -480,10 +416,6 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
         
         dB4OUtil.storeSystem(ecosystem);
     }//GEN-LAST:event_btnAddBookActionPerformed
-
-    private void btnViewBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBookActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewBookActionPerformed
 
     private void btnDeleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBookActionPerformed
         // TODO add your handling code here:
@@ -559,8 +491,6 @@ public class BooksManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JButton btnDeleteBook;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReject;
-    private javax.swing.JButton btnUpdateBook;
-    private javax.swing.JButton btnViewBook;
     private javax.swing.JComboBox comboBookStock;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;

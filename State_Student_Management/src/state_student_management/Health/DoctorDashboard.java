@@ -208,6 +208,12 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jLabel23.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         jLabel23.setText("Add Encounter");
 
+        txtDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateActionPerformed(evt);
+            }
+        });
+
         btnViewAllEncounters.setBackground(new java.awt.Color(201, 3, 3));
         btnViewAllEncounters.setForeground(new java.awt.Color(255, 255, 255));
         btnViewAllEncounters.setText("View Encounters");
@@ -455,6 +461,10 @@ public class DoctorDashboard extends javax.swing.JPanel {
             displayEncounters(ed.getEncounterDirectory(),patient);
         }
     }//GEN-LAST:event_btnViewAllEncountersActionPerformed
+
+    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateActionPerformed
 
     private void displayEncounters(List<Encounter> encounterList, Student patient) {
         

@@ -57,7 +57,7 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         this.userAccount = userAccount;
 
         bs = (DefaultTableModel) tblBuses.getModel();
-        loco = (DefaultTableModel) tblLocoEngineers.getModel();
+        //loco = (DefaultTableModel) tblLocoEngineers.getModel();
         busReq = (DefaultTableModel)tblTransportRequests.getModel();
         
         dB4OUtil = DB4OUtil.getInstance();
@@ -97,26 +97,6 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         txtEndingPoint = new javax.swing.JTextField();
         btnViewBuses = new javax.swing.JButton();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tblLocoEngineers = new javax.swing.JTable();
-        btnDeleteLocoEngineer = new javax.swing.JButton();
-        btnUpdateLocoEngineer = new javax.swing.JButton();
-        btnAddEngineer = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        txtLocoEngineerName = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        txtLocoEngineerEmail = new javax.swing.JTextField();
-        jLabel17 = new javax.swing.JLabel();
-        txtLocoEngineerGender = new javax.swing.JTextField();
-        jLabel18 = new javax.swing.JLabel();
-        txtLocoEngineerAge = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
-        txtLocoEngineerSSN = new javax.swing.JTextField();
-        jLabel20 = new javax.swing.JLabel();
-        jComboTransportType = new javax.swing.JComboBox<>();
-        btnViewLocoEngineer = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -154,19 +134,18 @@ public class BusManagerDashboard extends javax.swing.JPanel {
                 .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLogout)
-                .addGap(43, 43, 43))
+                .addGap(83, 83, 83))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLogout)))
                 .addContainerGap())
         );
 
@@ -348,218 +327,6 @@ public class BusManagerDashboard extends javax.swing.JPanel {
 
         ProfessorDirectoryPane.addTab("Buses", jPanel4);
 
-        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        jLabel9.setText("Loco Engineers");
-
-        tblLocoEngineers.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Name", "Email", "Gender", "Age", "SSN", "Transport Type"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblLocoEngineers.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblLocoEngineersMouseClicked(evt);
-            }
-        });
-        jScrollPane4.setViewportView(tblLocoEngineers);
-
-        btnDeleteLocoEngineer.setBackground(new java.awt.Color(245, 1, 1));
-        btnDeleteLocoEngineer.setForeground(new java.awt.Color(255, 255, 255));
-        btnDeleteLocoEngineer.setText("Delete");
-        btnDeleteLocoEngineer.setBorder(null);
-        btnDeleteLocoEngineer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteLocoEngineerActionPerformed(evt);
-            }
-        });
-
-        btnUpdateLocoEngineer.setBackground(new java.awt.Color(52, 51, 242));
-        btnUpdateLocoEngineer.setForeground(new java.awt.Color(255, 255, 255));
-        btnUpdateLocoEngineer.setText("Update");
-        btnUpdateLocoEngineer.setBorder(null);
-        btnUpdateLocoEngineer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateLocoEngineerActionPerformed(evt);
-            }
-        });
-
-        btnAddEngineer.setBackground(new java.awt.Color(201, 3, 3));
-        btnAddEngineer.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddEngineer.setText("Add Engineer");
-        btnAddEngineer.setBorder(null);
-        btnAddEngineer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddEngineerActionPerformed(evt);
-            }
-        });
-
-        jLabel13.setText("Name");
-
-        jLabel14.setText("Email");
-
-        jLabel17.setText("Gender");
-
-        txtLocoEngineerGender.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLocoEngineerGenderActionPerformed(evt);
-            }
-        });
-
-        jLabel18.setText("Age");
-
-        txtLocoEngineerAge.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLocoEngineerAgeActionPerformed(evt);
-            }
-        });
-
-        jLabel19.setText("SSN");
-
-        txtLocoEngineerSSN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLocoEngineerSSNActionPerformed(evt);
-            }
-        });
-
-        jLabel20.setText("Transport Type");
-
-        jComboTransportType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bus", "Train" }));
-        jComboTransportType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboTransportTypeActionPerformed(evt);
-            }
-        });
-
-        btnViewLocoEngineer.setBackground(new java.awt.Color(52, 51, 242));
-        btnViewLocoEngineer.setForeground(new java.awt.Color(255, 255, 255));
-        btnViewLocoEngineer.setText("View");
-        btnViewLocoEngineer.setBorder(null);
-        btnViewLocoEngineer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewLocoEngineerActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnDeleteLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addGap(37, 37, 37)
-                            .addComponent(jLabel9)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnViewLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnUpdateLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel7Layout.createSequentialGroup()
-                                    .addGap(17, 17, 17)
-                                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(jPanel7Layout.createSequentialGroup()
-                                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jLabel13)
-                                                .addComponent(jLabel17)
-                                                .addComponent(txtLocoEngineerName)
-                                                .addComponent(txtLocoEngineerGender, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(18, 18, 18)
-                                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(txtLocoEngineerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel14)
-                                                    .addComponent(txtLocoEngineerEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
-                                                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(118, 118, 118))))
-                                        .addGroup(jPanel7Layout.createSequentialGroup()
-                                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel19)
-                                                .addComponent(txtLocoEngineerSSN, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(18, 18, 18)
-                                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel20)
-                                                .addComponent(jComboTransportType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                                .addGroup(jPanel7Layout.createSequentialGroup()
-                                    .addGap(125, 125, 125)
-                                    .addComponent(btnAddEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(43, 43, 43)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jLabel9))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnUpdateLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnViewLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel14))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtLocoEngineerName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLocoEngineerEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtLocoEngineerGender, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel18)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtLocoEngineerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtLocoEngineerSSN, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel20)
-                                .addGap(0, 0, 0)
-                                .addComponent(jComboTransportType, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAddEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDeleteLocoEngineer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
-
-        ProfessorDirectoryPane.addTab("Loco Engineers", jPanel7);
-
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
@@ -567,17 +334,17 @@ public class BusManagerDashboard extends javax.swing.JPanel {
 
         tblTransportRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Student Name", "Priority", "Message", "Status", "Employee", "Request Date", "Resolve Date"
+                "Student Name", "Priority", "Message", "Status", "Request Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -735,79 +502,6 @@ public class BusManagerDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnViewBusesActionPerformed
 
-    private void tblLocoEngineersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLocoEngineersMouseClicked
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) tblLocoEngineers.getModel();
-
-        String locoName = model.getValueAt(tblLocoEngineers.getSelectedRow(), 0).toString();
-        String locoEmail = model.getValueAt(tblLocoEngineers.getSelectedRow(), 1).toString();
-        String locoGender = model.getValueAt(tblLocoEngineers.getSelectedRow(), 2).toString();
-        String locoAge = model.getValueAt(tblLocoEngineers.getSelectedRow(), 3).toString();
-        String locoSSN = model.getValueAt(tblLocoEngineers.getSelectedRow(), 4).toString();
-
-        txtLocoEngineerName.setText(locoName);
-        txtLocoEngineerEmail.setText(locoEmail);
-        txtLocoEngineerGender.setText(locoGender);
-        txtLocoEngineerAge.setText(locoAge);
-        txtLocoEngineerSSN.setText(locoSSN);
-
-    }//GEN-LAST:event_tblLocoEngineersMouseClicked
-
-    private void btnDeleteLocoEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteLocoEngineerActionPerformed
-        // TODO add your handling code here:
-        loco.removeRow(row);
-
-        txtLocoEngineerName.setText("");
-        txtLocoEngineerEmail.setText("");
-        txtLocoEngineerGender.setText("");
-        txtLocoEngineerAge.setText("");
-        txtLocoEngineerSSN.setText("");
-    }//GEN-LAST:event_btnDeleteLocoEngineerActionPerformed
-
-    private void btnUpdateLocoEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateLocoEngineerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnUpdateLocoEngineerActionPerformed
-
-    private void btnAddEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEngineerActionPerformed
-        // TODO add your handling code here:
-        String locoName = txtLocoEngineerName.getText().trim();
-        String locoEmail = txtLocoEngineerEmail.getText().trim();
-        String locoGender = txtLocoEngineerGender.getText().trim();
-        int locoAge = Integer.parseInt(txtLocoEngineerAge.getText().trim());
-        int locoSSN = Integer.parseInt(txtLocoEngineerSSN.getText().trim());
-
-        Object[] data = {locoName, locoEmail, locoGender, locoAge, locoSSN};
-        loco.addRow(data);
-
-        txtLocoEngineerName.setText("");
-        txtLocoEngineerEmail.setText("");
-        txtLocoEngineerGender.setText("");
-        txtLocoEngineerAge.setText("");
-        txtLocoEngineerSSN.setText("");
-
-        dB4OUtil.storeSystem(ecosystem);
-    }//GEN-LAST:event_btnAddEngineerActionPerformed
-
-    private void txtLocoEngineerGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocoEngineerGenderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtLocoEngineerGenderActionPerformed
-
-    private void txtLocoEngineerAgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocoEngineerAgeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtLocoEngineerAgeActionPerformed
-
-    private void txtLocoEngineerSSNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocoEngineerSSNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtLocoEngineerSSNActionPerformed
-
-    private void jComboTransportTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboTransportTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboTransportTypeActionPerformed
-
-    private void btnViewLocoEngineerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewLocoEngineerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewLocoEngineerActionPerformed
-
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         // TODO add your handling code here:
         row = tblTransportRequests.getSelectedRow();
@@ -869,48 +563,28 @@ public class BusManagerDashboard extends javax.swing.JPanel {
     private javax.swing.JTabbedPane ProfessorDirectoryPane;
     private javax.swing.JButton btnAccept;
     private javax.swing.JButton btnAddBus;
-    private javax.swing.JButton btnAddEngineer;
     private javax.swing.JButton btnDeleteBus;
-    private javax.swing.JButton btnDeleteLocoEngineer;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReject;
     private javax.swing.JButton btnUpdateBuses;
-    private javax.swing.JButton btnUpdateLocoEngineer;
     private javax.swing.JButton btnViewBuses;
-    private javax.swing.JButton btnViewLocoEngineer;
-    private javax.swing.JComboBox<String> jComboTransportType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable tblBuses;
-    private javax.swing.JTable tblLocoEngineers;
     private javax.swing.JTable tblTransportRequests;
     private javax.swing.JTextField txtBusNumber;
     private javax.swing.JTextField txtEndingPoint;
-    private javax.swing.JTextField txtLocoEngineerAge;
-    private javax.swing.JTextField txtLocoEngineerEmail;
-    private javax.swing.JTextField txtLocoEngineerGender;
-    private javax.swing.JTextField txtLocoEngineerName;
-    private javax.swing.JTextField txtLocoEngineerSSN;
     private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtRouteNameBus;
     private javax.swing.JTextField txtStartingPoint;
